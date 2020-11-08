@@ -3,7 +3,7 @@
 import torch
 import torch.nn as nn
 
-from encoder import resnet_encoder
+from encoder import *
 
 from depth_decoder.depth_decoder import MidasNet_decoder
 
@@ -27,7 +27,7 @@ class VisionNet(nn.Module,path=None):
 
 		use_pretrained = False if path is None else True
 		
-		self.encoder = resnet_encoder(use_pretrained)
+		self.encoder = _make_resnet_encoder(use_pretrained)
 
 		
 
