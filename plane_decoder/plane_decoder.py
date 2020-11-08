@@ -29,7 +29,7 @@ from plane_decoder.roialign.roi_align.crop_and_resize import CropAndResizeFuncti
 
 
 import cv2
-from modules import *
+from plane_decoder.modules import *
 from plane_decoder.utils import *
 
 
