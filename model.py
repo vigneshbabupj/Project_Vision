@@ -9,7 +9,7 @@ from depth_decoder.depth_decoder import MidasNet_decoder
 
 from plane_decoder.plane_decoder import MaskRCNN
 
-class VisionNet(nn.Module,path=None):
+class VisionNet(nn.Module):
 	'''
 		Network for detecting objects, generate depth map and identify plane surfaces
 	'''
