@@ -65,10 +65,10 @@ class create_data(Dataset):
 		#planercnn_params : self, options, config, image_list, camera, random=False
 		#yolo_params : self, path, img_size=416, batch_size=16, augment=False, hyp=None, rect=False, image_weights=False,
         #        cache_labels=True, cache_images=False, single_cls=False
-        
+
 		## InferenceDataset start
 		""" camera: [fx, fy, cx, cy, image_width, image_height, dummy, dummy, dummy, dummy] """
-        
+
         self.options = options
         self.config = config
         self.random = random
@@ -81,9 +81,9 @@ class create_data(Dataset):
                                                       config.RPN_ANCHOR_STRIDE)
         #return
         ## InferenceDataset END
-        
+
         ## Yolo LoadImagesAndLabels Start
-        
+
         path = str(Path(path))  # os-agnostic
         assert os.path.isfile(path), 'File not found %s. See %s' % (path, help_url)
         with open(path, 'r') as f:
@@ -107,7 +107,7 @@ class create_data(Dataset):
         # Define labels
         self.label_files = [x.replace('images', 'labels').replace(os.path.splitext(x)[-1], '.txt')
                             for x in self.img_files]
-                            
+
         # Rectangular Training  https://github.com/ultralytics/yolov3/issues/232
         if self.rect:
             # Read image shapes (wh)
@@ -502,6 +502,7 @@ class create_data(Dataset):
 
     @staticmethod
     def collate_fn(batch):
+        
         img, label, path, shapes = zip(*batch)  # transposed
         for i, l in enumerate(label):
             l[:, 0] = i  # add target image index for build_targets()
