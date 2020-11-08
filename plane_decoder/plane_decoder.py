@@ -19,7 +19,7 @@ import torch.optim as optim
 import torch.utils.data
 from torch.autograd import Variable
 
-import utils
+import plane_decoder.utils as utils
 
 ''' Vignesh
 from nms.nms_wrapper import nms
