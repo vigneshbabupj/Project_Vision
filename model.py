@@ -15,11 +15,12 @@ from plane_decoder.config import InferenceConfig
 from bbox_decoder.yolov3_bbox_decoder import *
 
 class VisionNet(nn.Module):
+
 	'''
 		Network for detecting objects, generate depth map and identify plane surfaces
 	'''
 
-	def __init__(self,yolo_cfg,midas_cfg,planercnn_cfg,path):
+	def __init__(self,yolo_cfg,midas_cfg,planercnn_cfg,path=None):
 		super(VisionNet, self).__init__()
 		"""
 			Get required configuration for all the 3 models
@@ -28,7 +29,7 @@ class VisionNet(nn.Module):
 		self.yolo_params = yolo_cfg
 		self.midas_params = midas_cfg
 		self.planercnn_params = planercnn_cfg
-		self.path =path
+		self.path = path
 
 		use_pretrained = False if path is None else True
 		
