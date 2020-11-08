@@ -3,7 +3,7 @@
 import torch
 import torch.nn as nn
 
-from encoder import *
+from encoder import _make_resnet_encoder
 
 from depth_decoder.depth_decoder import MidasNet_decoder
 
