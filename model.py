@@ -9,33 +9,37 @@ from depth_decoder.depth_decoder import MidasNet_decoder
 
 from plane_decoder.plane_decoder import MaskRCNN
 
+from plane_decoder.config import InferenceConfig
+
+
+from bbox_decoder.yolov3_bbox_decoder import *
+
 class VisionNet(nn.Module):
 	'''
 		Network for detecting objects, generate depth map and identify plane surfaces
 	'''
 
-	def __init__(self,yolo_cfg,midas_cfg,planercnn_cfg):
+	def __init__(self,yolo_cfg,midas_cfg,planercnn_cfg,path):
 		super(VisionNet, self).__init__()
 		"""
 			Get required configuration for all the 3 models
 		
 		"""
-		self.yolo_params = parse(yolo_cfg)
-		self.midas_params = parse(midas_cfg)
-		self.planercnn_params = parse(planercnn_cfg)
-		self.path =  path
+		self.yolo_params = yolo_cfg
+		self.midas_params = midas_cfg
+		self.planercnn_params = planercnn_cfg
+		self.path =path
 
 		use_pretrained = False if path is None else True
 		
 		self.encoder = _make_resnet_encoder(use_pretrained)
 
-		
 
 		self.depth_decoder = MidasNet_decoder(path)
 
-		self.plane_decoder = MaskRCNN(self.planercnn_params,self.encoder)
+		self.plane_decoder = MaskRCNN(InferenceConfig(self.planercnn_params),self.encoder) #options, config, modelType='final'
 
-		self.bbox_decoder =  Darknet(self.yolo_params)
+		self.bbox_decoder =  Darknet(self.yolo_params.cfg)
 
 
 	def forward(self,x):

@@ -1,6 +1,6 @@
-from utils.google_utils import *
-from utils.layers import *
-from utils.parse_config import *
+from bbox_decoder.utils.google_utils import *
+from bbox_decoder.utils.layers import *
+from bbox_decoder.utils.parse_config import *
 
 ONNX_EXPORT = False
 

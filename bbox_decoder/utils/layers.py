@@ -1,6 +1,6 @@
 import torch.nn.functional as F
 
-from utils.utils import *
+from bbox_decoder.utils.utils import *
 
 
 def make_divisible(v, divisor):
