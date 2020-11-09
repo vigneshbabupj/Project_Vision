@@ -52,7 +52,7 @@ class MidasNet_decoder(nn.Module):
             tensor: depth
         """
 
-        layer_1, layer_2, layer_3, layer_4 =  [xs[i] for i in range(4)]
+        layer_1, layer_2, layer_3, layer_4 =  [xs[0][i] for i in range(4)]
 
 
         layer_1_rn = self.scratch.layer1_rn(layer_1)
