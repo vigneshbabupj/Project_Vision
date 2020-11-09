@@ -16,6 +16,7 @@ class MidasNet_decoder(nn.Module):
     """
 
     def __init__(self, path=None, features=256):
+        super(MidasNet_decoder, self).__init__()
         """Init.
 
         Args:
@@ -23,9 +24,6 @@ class MidasNet_decoder(nn.Module):
             features (int, optional): Number of features. Defaults to 256.
 
         """
-        super(MidasNet_decoder, self).__init__()
-
-
         self.scratch = _make_encoder_scratch(features)
 
         self.scratch.refinenet4 = FeatureFusionBlock(features)
