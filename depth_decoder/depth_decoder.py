@@ -7,7 +7,7 @@ https://github.com/thomasjpfan/pytorch_refinenet/blob/master/pytorch_refinenet/r
 import torch
 import torch.nn as nn
 
-from .blocks import FeatureFusionBlock, Interpolate, _make_encoder_scratch
+from depth_decoder.blocks import FeatureFusionBlock, Interpolate, _make_encoder_scratch
 
 
 class MidasNet_decoder(nn.Module):
