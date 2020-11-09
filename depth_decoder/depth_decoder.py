@@ -9,13 +9,12 @@ import torch.nn as nn
 
 from depth_decoder.blocks import FeatureFusionBlock, Interpolate, _make_encoder_scratch
 
-temp=_make_encoder_scratch(256)
 
 class MidasNet_decoder(nn.Module):
     """Network for monocular depth estimation.
     """
 
-    def __init__(self, path=None, features=256):
+    def __init__(self, path=None, features=256,non_negative=True):
         super(MidasNet_decoder, self).__init__()
         """Init.
 
