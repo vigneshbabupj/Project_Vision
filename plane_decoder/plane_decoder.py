@@ -1653,7 +1653,7 @@ class MaskRCNN(nn.Module):
             })
         return results
 
-    def predict(self, input, mode, use_nms=1, use_refinement=False, return_feature_map=False):
+    def forward(self, input, mode, use_nms=1, use_refinement=False, return_feature_map=False):
         molded_images = input[0]
         image_metas = input[1]
 
