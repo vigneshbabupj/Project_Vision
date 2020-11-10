@@ -20,13 +20,14 @@ from torch.autograd import Variable
 
 import plane_decoder.utils as utils
 
-from plane_decoder.nms.nms_wrapper import nms
-from plane_decoder.roialign.roi_align.crop_and_resize import CropAndResizeFunction
+#Vignesh 
+#from plane_decoder.nms.nms_wrapper import nms
+#from plane_decoder.roialign.roi_align.crop_and_resize import CropAndResizeFunction
 
 
-#from torchvision.ops import nms
-#from RoIAlign.roi_align_folder.crop_and_resize import CropAndResizeFunction #https://github.com/longcw/RoIAlign.pytorch
-
+from torchvision.ops import nms
+from roi_align.crop_and_resize import CropAndResizeFunction #https://github.com/longcw/RoIAlign.pytorch
+#Vignesh 
 
 import cv2
 from plane_decoder.modules import *

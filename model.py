@@ -43,7 +43,9 @@ class VisionNet(nn.Module):
 		self.bbox_decoder =  Darknet(self.yolo_params.cfg)
 
 
-	def forward(self,x):
+	def forward(self,yolo_ip,midas_ip,plane_ip):
+
+		x = yolo_ip
 
 		# Encoder blocks
 		layer_1 = self.encoder.layer1(x)
@@ -53,12 +55,12 @@ class VisionNet(nn.Module):
 		
 
 		# MiDaS depth decoder
-		depth_out = self.depth_decoder([layer_1,layer_2,layer_3,layer_4])
+		depth_out = self.depth_decoder([layer_1, layer_2, layer_3, layer_4])
 
 		# PlaneRCNN decoder
-		#plane_out = self.plane_decoder.predict() #have to decide passing params
+		plane_out = self.plane_decoder.predict(**plane_ip) #have to decide passing params
 
 		#YOLOv3 bbox decoder
 		bbox_out = self.bbox_decoder(layer_4)
 
-		return bbox_out,depth_out#,plane_out
+		return bbox_out, depth_out, plane_out

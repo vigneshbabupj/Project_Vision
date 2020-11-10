@@ -39,8 +39,9 @@ class MidasNet_decoder(nn.Module):
             nn.ReLU(True) if non_negative else nn.Identity(),
         )
 
-        if path:
-            self.load(path)
+        #Vignesh
+        #if path:
+            #self.load(path)
 
     def forward(self, *xs):
         """Forward pass.

@@ -273,6 +273,7 @@ class create_data(Dataset):
 
         imagePath = self.imagePaths[index]
         image = cv2.imread(imagePath)
+        orig_image = image.copy()
         extrinsics = np.eye(4, dtype=np.float32)
 
         if isinstance(self.camera, list):
@@ -489,8 +490,8 @@ class create_data(Dataset):
 		img_name = self.img_names[index]
 		depth_name = self.depth_names[index]
 
-		img = utils.read_image(img_name)
-        img_input = self.transform({"image": img})["image"]
+		img_ip = utils.read_image(img_name)
+        img_input = self.transform({"image": img_ip})["image"]
 
         depth_img = cv2.imread(depth_name)
 
