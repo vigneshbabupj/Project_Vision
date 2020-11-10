@@ -7,9 +7,9 @@ from encoder import _make_resnet_encoder
 
 from depth_decoder.depth_decoder import MidasNet_decoder
 
-#from plane_decoder.plane_decoder import MaskRCNN
+from plane_decoder.plane_decoder import MaskRCNN
 
-#from plane_decoder.config import InferenceConfig
+from plane_decoder.config import InferenceConfig
 
 
 from bbox_decoder.yolov3_bbox_decoder import *
@@ -38,7 +38,7 @@ class VisionNet(nn.Module):
 
 		self.depth_decoder = MidasNet_decoder(path)
 
-		#self.plane_decoder = MaskRCNN(InferenceConfig(self.planercnn_params),self.encoder) #options, config, modelType='final'
+		self.plane_decoder = MaskRCNN(InferenceConfig(self.planercnn_params),self.encoder) #options, config, modelType='final'
 
 		self.bbox_decoder =  Darknet(self.yolo_params.cfg)
 
