@@ -69,26 +69,54 @@ class create_data(Dataset):
 		## InferenceDataset start
 		""" camera: [fx, fy, cx, cy, image_width, image_height, dummy, dummy, dummy, dummy] """
 
-        self.options = options
-        self.config = config
-        self.random = random
-        self.camera = camera
-        self.imagePaths = image_list
-        self.anchors = generate_pyramid_anchors(config.RPN_ANCHOR_SCALES,
-                                                      config.RPN_ANCHOR_RATIOS,
-                                                      config.BACKBONE_SHAPES,
-                                                      config.BACKBONE_STRIDES,
-                                                      config.RPN_ANCHOR_STRIDE)
+
+
+        self.options = planercnn_params[options]
+        self.config = planercnn_params[config]
+        self.random = planercnn_params[random]
+        #self.camera = camera
+        #self.imagePaths = image_list
+        self.anchors = generate_pyramid_anchors(self.config.RPN_ANCHOR_SCALES,
+                                                      self.config.RPN_ANCHOR_RATIOS,
+                                                      self.config.BACKBONE_SHAPES,
+                                                      self.config.BACKBONE_STRIDES,
+                                                      self.config.RPN_ANCHOR_STRIDE)
+
+        if os.path.exists(self.options.customDataFolder + '/camera.txt'):
+            self.camera = np.zeros(6)
+            with open(self.options.customDataFolder + '/camera.txt', 'r') as f:
+                for line in f:
+                    values = [float(token.strip()) for token in line.split(' ') if token.strip() != '']
+                    for c in range(6):
+                        self.camera[c] = values[c]
+                        continue
+                    break
+                pass
+        else:
+            self.camera = [filename.replace('.png', '.txt').replace('.jpg', '.txt') for filename in image_list]
+            pass
         #return
         ## InferenceDataset END
 
         ## Yolo LoadImagesAndLabels Start
+        path = yolo_params['path']
+        img_size = yolo_params['img_size']
+        batch_size = yolo_params['batch_size']
+        augment = yolo_params['augment']
+        hyp = yolo_params['hyp']
+        rect = yolo_params['rect']
+        image_weights = yolo_params['image_weights']
+        cache_labels = yolo_params['cache_labels']
+        cache_images = yolo_params['cache_images']
+        single_cls = yolo_params['single_cls']
 
         path = str(Path(path))  # os-agnostic
         assert os.path.isfile(path), 'File not found %s. See %s' % (path, help_url)
         with open(path, 'r') as f:
             self.img_files = [x.replace('/', os.sep) for x in f.read().splitlines()  # os-agnostic
                               if os.path.splitext(x)[-1].lower() in img_formats]
+
+        self.imagePaths = self.img_files
 
         n = len(self.img_files)
         assert n > 0, 'No images found in %s. See %s' % (path, help_url)
@@ -102,7 +130,7 @@ class create_data(Dataset):
         self.hyp = hyp
         self.image_weights = image_weights
         self.rect = False if image_weights else rect
-        self.mosaic = self.augment and not self.rect  # load 4 images at a time into a mosaic (only during training)
+        self.mosaic = False #self.augment and not self.rect  # load 4 images at a time into a mosaic (only during training)
 
         # Define labels
         self.label_files = [x.replace('images', 'labels').replace(os.path.splitext(x)[-1], '.txt')
@@ -232,8 +260,10 @@ class create_data(Dataset):
 
         # midas params : inp_path,depth_path
 		# midas dataset start
-		self.img_path = inp_path
-		self.depth_path = depth_path
+
+        self.depth_names = [x.replace('images', 'depths') for x in self.img_files]
+		#self.img_path = inp_path
+		#self.depth_path = depth_path
 		self.transform = Compose(
 							[
 					            Resize(
@@ -250,16 +280,12 @@ class create_data(Dataset):
 					        ]
 					    		)
 
-	     # get input
-    	self.img_names = glob.glob(os.path.join(self.img_path, "*"))
-    	self.depth_names = glob.glob(os.path.join(self.depth_path, "*"))
-
     	# midas dataset end
 
 
 	def __getitem__(self,index):
 
-		## InferenceDataset start
+		## plane InferenceDataset start
 		t = int(time.time() * 1000000)
         np.random.seed(((t & 0xff000000) >> 24) +
                        ((t & 0x00ff0000) >> 8) +
@@ -487,7 +513,7 @@ class create_data(Dataset):
 
         # midas dataset start
 
-		img_name = self.img_names[index]
+		img_name = self.img_files[index] #vig
 		depth_name = self.depth_names[index]
 
 		img_ip = utils.read_image(img_name)

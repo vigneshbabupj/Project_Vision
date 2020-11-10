@@ -5,39 +5,7 @@ from dataset import *
 
 import pytorch_ssim
 
-
-def dataloader():
-	
-	train_dataset = create_data(yolo_params,planercnn_params,midas_params)
-
-	test_dataset = create_data(yolo_params,planercnn_params,midas_params)
-
-
-	#yolo data loader
-
-	# Dataloader
-    batch_size = min(batch_size, len(train_dataset))
-    nw = min([os.cpu_count(), batch_size if batch_size > 1 else 0, 8])  # number of workers
-    trainloader = torch.utils.data.DataLoader(train_dataset,
-                                             batch_size=batch_size,
-                                             num_workers=nw,
-                                             shuffle=not opt.rect,  # Shuffle=True unless rectangular training is used
-                                             pin_memory=True )
-                                             #collate_fn=dataset.collate_fn)
-
-    # Testloader
-    testloader = torch.utils.data.DataLoader(test_dataset
-                                             batch_size=batch_size,
-                                             num_workers=nw,
-                                             pin_memory=True )
-                                             #collate_fn=dataset.collate_fn)
-
-    return trainloader,testloader
-
-
-
-
-def train(model, device, train_loader, optimizer,scheduler,lambda_l1,criterion):
+def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas_loss):
 
     #Plane config
     options = plane_args
@@ -181,10 +149,26 @@ def train(model, device, train_loader, optimizer,scheduler,lambda_l1,criterion):
         model.yolo_layers = model.module.yolo_layers  # move yolo layer indices to top level
 
 
+    yolo_params = dict(path = train_path, img_size = img_size, batch_size = batch_size, augment=True,hyp=hyp,  # augmentation hyperparameters
+                                  rect=opt.rect,  # rectangular training
+                                  cache_images=opt.cache_images,
+                                  single_cls=opt.single_cls)
+
+
+    planercnn_params = dict(options=options, config=config,random=False)
+
+    midas_params=None
+
     ## Intit dataset
     train_dataset = create_data(yolo_params,planercnn_params,midas_params)
 
-    test_dataset = create_data(yolo_params,planercnn_params,midas_params)
+    yolo_params_test = dict(path = test_path, img_size = imgsz_test, batch_size = batch_size, augment=False,hyp=hyp,  # augmentation hyperparameters
+                                  rect=opt.rect,  # rectangular training
+                                  cache_images=opt.cache_images,
+                                  single_cls=opt.single_cls)
+
+
+    test_dataset = create_data(yolo_params_test,planercnn_params,midas_params)
 
 
     #yolo data loader
@@ -417,8 +401,21 @@ def train(model, device, train_loader, optimizer,scheduler,lambda_l1,criterion):
                             .cpu()
                             .numpy()
                             )
+            bits=2
+
+            depth_min = dp_prediction.min()
+            depth_max = dp_prediction.max()
+
+            max_val = (2**(8*bits))-1
+
+            if depth_max - depth_min > np.finfo("float").eps:
+                depth = max_val * (dp_prediction - depth_min) / (depth_max - depth_min)
+            else:
+                depth = 0
+
             ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
-            ssim_out = -ssim_loss(dp_prediction,depth_target) 
+            ssim_out = -ssim_loss(depth,depth_target) 
+
 
             ## Midas End
 
@@ -462,5 +459,7 @@ def train(model, device, train_loader, optimizer,scheduler,lambda_l1,criterion):
         scheduler.step()
 
             ##Yolov3 END
-
+        print('%g epochs completed in %.3f hours.\n' % (epoch - start_epoch + 1, (time.time() - t0) / 3600))
+        dist.destroy_process_group() if torch.cuda.device_count() > 1 else None
+        torch.cuda.empty_cache()
 
