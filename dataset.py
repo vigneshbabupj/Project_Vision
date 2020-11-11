@@ -534,12 +534,12 @@ class create_data(Dataset):
         print('yolo',len(yolo_item))
         print('depth',len(dp_item))
         
-        img, label, path, shapes = yolo_item#zip(*batch)  # transposed
+        img, label, path, shapes = zip(*yolo_item)  # transposed
         for i, l in enumerate(label):
             l[:, 0] = i  # add target image index for build_targets()
 
         yolo_item = torch.cat([torch.stack(img, 0), torch.cat(label, 0), path, shapes],dim=0)
-        
+
         return plane_item,yolo_item,dp_item
 
     def __len__(self):
