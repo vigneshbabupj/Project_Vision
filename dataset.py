@@ -522,9 +522,9 @@ class create_data(Dataset):
         data = [img_input,depth_img]
 
         # midas dataset end
-        print('plane:',len(data_pair))
-        print('yolo:',len(yolo_item))
-        print('depth:',len(data))
+        #print('plane:',len(data_pair))
+        #print('yolo:',len(yolo_item))
+        #print('depth:',len(data))
 
         return data_pair,yolo_item,data
 
@@ -545,13 +545,8 @@ class create_data(Dataset):
 
         yolo_item = [torch.stack(img, 0), torch.cat(label, 0), path, shapes]
 
-        up_plane_data=[]
-        for item in zip(*plane_item):
-            up_plane_data.append(torch.stack(item, 0))
-
-
-        plane_item = [zip(*plane_item)]
-        dp_item = [zip(*dp_item)]
+        plane_item = list(zip(*plane_item))
+        dp_item = list(zip(*dp_item))
 
         return plane_item,yolo_item,dp_item
 
