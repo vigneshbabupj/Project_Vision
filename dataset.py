@@ -549,7 +549,7 @@ class create_data(Dataset):
         yolo_item = [torch.stack(img, 0), torch.cat(label, 0), path, shapes]
 
 
-        return plane_item,yolo_item,dp_item
+        return torch.stack(plane_item,0),yolo_item,torch.stack(dp_item,0)
 
     def __len__(self):
         return len(self.img_files)
