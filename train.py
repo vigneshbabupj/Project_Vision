@@ -270,7 +270,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                                              #collate_fn=dataset.collate_fn)
 
     # Testloader
-    testloader = torch.utils.data.DataLoader(test_dataset
+    testloader = torch.utils.data.DataLoader(test_dataset,
                                              batch_size=batch_size,
                                              num_workers=nw,
                                              pin_memory=True )
@@ -500,7 +500,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                 depth = 0
 
             ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
-            ssim_out = -ssim_loss(depth,depth_target) 
+            ssim_out = -ssim_loss(depth,depth_target)
 
 
             ## Midas End
