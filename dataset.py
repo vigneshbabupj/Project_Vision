@@ -540,7 +540,7 @@ class create_data(Dataset):
             for i in range(batch):
                 up_plane.append(plane_item[i][0])
                 up_depth.append(dp_item[i][0])
-        else
+        else:
             up_plane = plane_item[0]
             up_depth = dp_item[0]
 
