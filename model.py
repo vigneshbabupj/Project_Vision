@@ -56,7 +56,7 @@ class VisionNet(nn.Module):
 		depth_out = self.depth_decoder([layer_1, layer_2, layer_3, layer_4])
 
 		# PlaneRCNN decoder
-		plane_out = self.plane_decoder.predict(**plane_ip) #have to decide passing params
+		plane_out = self.plane_decoder.forward(**plane_ip) #have to decide passing params
 
 		#YOLOv3 bbox decoder
 		bbox_out = self.bbox_decoder(layer_4)
