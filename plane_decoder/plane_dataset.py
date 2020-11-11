@@ -12,7 +12,7 @@ import time
 import os
 import cv2
 import sys
-import plane_decoder.utils
+import plane_decoder.utils as utils
 #from datasets.scannet_scene import ScanNetScene
 
 class PlaneDatasetSingle(Dataset):
