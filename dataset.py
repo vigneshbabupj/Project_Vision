@@ -530,16 +530,7 @@ class create_data(Dataset):
 
         plane_item,yolo_item,dp_item = zip(*batch)
 
-        print('plane',len(plane_item))
-        print('yolo',len(yolo_item), np.array(yolo_item).shape)
-        print('depth',len(dp_item))
-        #print('zip yolo',np.array(zip(*yolo_item)).shape)
-        
         img, label, path, shapes = zip(*yolo_item)  # transposed
-        print('img',len(img))
-        print('label',len(label))
-        print('path',len(path))
-        print('shapes',len(shapes))
 
         for i, l in enumerate(label):
             l[:, 0] = i  # add target image index for build_targets()
