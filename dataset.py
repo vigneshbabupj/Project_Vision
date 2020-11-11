@@ -539,10 +539,11 @@ class create_data(Dataset):
         print('label',len(label),label.shape)
         print('path',len(path))
         print('shapes',len(shapes))
+
         for i, l in enumerate(label):
             l[:, 0] = i  # add target image index for build_targets()
 
-        yolo_item = torch.cat([torch.stack(img, 0), torch.cat(label, 0), path, shapes],dim=0)
+        yolo_item = [torch.stack(img, 0), torch.cat(label, 0), path, shapes]
 
         return plane_item,yolo_item,dp_item
 
