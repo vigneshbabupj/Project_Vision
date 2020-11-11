@@ -531,12 +531,12 @@ class create_data(Dataset):
     @staticmethod
     def collate_fn(batch):
 
-        print('len batch',len(batch))
+        #print('len batch',len(batch))
 
         plane_item,yolo_item,dp_item = zip(*batch)
 
-        print('plane item:',len(plane_item[0]))
-        print('depth item:',len(dp_item[0]))
+        #print('plane item:',len(plane_item[0]))
+        #print('depth item:',len(dp_item[0]))
 
         img, label, path, shapes = zip(*yolo_item)  # transposed
 
