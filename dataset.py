@@ -533,7 +533,7 @@ class create_data(Dataset):
 
         #print('len batch',len(batch))
 
-        plane_item,yolo_item,dp_item = zip(*batch)
+        plane_item,yolo_item,dp_item = batch
 
         #print('plane item:',len(plane_item[0]))
         #print('depth item:',len(dp_item[0]))
@@ -545,8 +545,6 @@ class create_data(Dataset):
 
         yolo_item = [torch.stack(img, 0), torch.cat(label, 0), path, shapes]
 
-        plane_item = list(zip(*plane_item))
-        dp_item = list(zip(*dp_item))
 
         return plane_item,yolo_item,dp_item
 
