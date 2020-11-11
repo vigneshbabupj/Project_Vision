@@ -354,14 +354,14 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
 
             #depth init start
-            #depth_img,depth_target = depth_data #######
+            depth_img,depth_target = depth_data #######
 
             #print('depth:',type(depth_img),len(depth_img))
             #print('np size:',np.asarray(depth_img).shape)
 
-            #dp_sample = torch.from_numpy(np.asarray(depth_img)).to(device).unsqueeze(0) ######
+            dp_sample = torch.from_numpy(np.asarray(depth_img)).to(device).unsqueeze(0) ######
 
-            #midas_inp = dp_sample ####
+            midas_inp = dp_sample ####
             #dp_prediction = model.forward()
             #depth init end
 
