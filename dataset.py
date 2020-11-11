@@ -98,15 +98,15 @@ class create_data(Dataset):
 
         ## Yolo LoadImagesAndLabels Start
         path = yolo_params['path']
-        img_size = yolo_params['img_size']
-        batch_size = yolo_params['batch_size']
-        augment = yolo_params['augment']
-        hyp = yolo_params['hyp']
-        rect = yolo_params['rect']
-        image_weights = yolo_params['image_weights']
-        cache_labels = yolo_params['cache_labels']
-        cache_images = yolo_params['cache_images']
-        single_cls = yolo_params['single_cls']
+        img_size = yolo_params.get('img_size',416)
+        batch_size = yolo_params.get('batch_size',16)
+        augment = yolo_params.get('augment',False)
+        hyp = yolo_params.get('hyp',None)
+        rect = yolo_params.get('rect',False)
+        image_weights = yolo_params.get('image_weights',False)
+        cache_labels = yolo_params.get('cache_labels',True)
+        cache_images = yolo_params.get('cache_images',False)
+        single_cls = yolo_params.get('single_cls',False)
 
         path = str(Path(path))  # os-agnostic
         assert os.path.isfile(path), 'File not found %s. See %s' % (path, help_url)
