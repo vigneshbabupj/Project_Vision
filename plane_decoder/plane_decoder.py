@@ -99,11 +99,11 @@ class FPN(nn.Module):
         super(FPN, self).__init__()
         self.out_channels = out_channels
         self.bilinear_upsampling = bilinear_upsampling
-        self.C1 = C1
-        self.C2 = C2
-        self.C3 = C3
-        self.C4 = C4
-        self.C5 = C5
+        #self.C1 = C1
+        #self.C2 = C2
+        #self.C3 = C3
+        #self.C4 = C4
+        #self.C5 = C5
         self.P6 = nn.MaxPool2d(kernel_size=1, stride=2)
         self.P5_conv1 = nn.Conv2d(2048, self.out_channels, kernel_size=1, stride=1)
         self.P5_conv2 = nn.Sequential(
@@ -126,15 +126,15 @@ class FPN(nn.Module):
             nn.Conv2d(self.out_channels, self.out_channels, kernel_size=3, stride=1),
         )
 
-    def forward(self, x):
-        x = self.C1(x)
-        x = self.C2(x)
-        c2_out = x
-        x = self.C3(x)
-        c3_out = x
-        x = self.C4(x)
-        c4_out = x
-        x = self.C5(x)
+    def forward(self, x,resnet_out):
+        #x = self.C1(x)
+        #x = self.C2(x)
+        c2_out = resnet_out[0]
+        #x = self.C3(x)
+        c3_out = resnet_out[1]
+        #x = self.C4(x)
+        c4_out = resnet_out[2]
+        x = resnet_out[3]#self.C5(x)
         p5_out = self.P5_conv1(x)
         
         if self.bilinear_upsampling:
@@ -1653,7 +1653,15 @@ class MaskRCNN(nn.Module):
             })
         return results
 
-    def forward(self, input, mode, use_nms=1, use_refinement=False, return_feature_map=False):
+    #def forward(self, input, mode, use_nms=1, use_refinement=False, return_feature_map=False):
+    def forward(self, planercnn_inp,resnet_out):
+
+        input=planercnn_inp['input']
+        mode=planercnn_inp['mode']
+        use_nms = planercnn_inp.get('use_nms',1)
+        use_refinement = planercnn_inp.get('use_refinement',False)
+        return_feature_map = planercnn_inp.get('return_feature_map',False)
+
         molded_images = input[0]
         image_metas = input[1]
 
@@ -1670,7 +1678,7 @@ class MaskRCNN(nn.Module):
             self.apply(set_bn_eval)
 
         ## Feature extraction
-        [p2_out, p3_out, p4_out, p5_out, p6_out] = self.fpn(molded_images)
+        [p2_out, p3_out, p4_out, p5_out, p6_out] = self.fpn(molded_images,resnet_out)
         ## Note that P6 is used in RPN, but not in the classifier heads.
 
         rpn_feature_maps = [p2_out, p3_out, p4_out, p5_out, p6_out]
