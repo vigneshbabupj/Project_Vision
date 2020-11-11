@@ -38,7 +38,7 @@ class VisionNet(nn.Module):
 
 		self.plane_decoder = MaskRCNN(self.planercnn_params,self.encoder) #options, config, modelType='final'
 
-		self.bbox_decoder =  Darknet(self.yolo_params.cfg)
+		self.bbox_decoder =  Darknet(self.yolo_params)
 
 
 	def forward(self,yolo_ip,midas_ip,plane_ip):
