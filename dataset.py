@@ -531,9 +531,9 @@ class create_data(Dataset):
     @staticmethod
     def collate_fn(batch):
 
-        #print('len batch',len(batch))
+        print('len batch',len(batch))
 
-        plane_item,yolo_item,dp_item = batch
+        plane_item,yolo_item,dp_item = zip(*batch)
         up_plane = [item[0] for item in batch]
         up_depth = [item[2] for item in batch]
 
