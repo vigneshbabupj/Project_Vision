@@ -522,13 +522,21 @@ class create_data(Dataset):
         data = [img_input,depth_img]
 
         # midas dataset end
+        print('plane:',len(data_pair))
+        print('yolo:',len(yolo_item))
+        print('depth:',len(data))
 
         return data_pair,yolo_item,data
 
     @staticmethod
     def collate_fn(batch):
 
+        print('len batch',len(batch))
+
         plane_item,yolo_item,dp_item = zip(*batch)
+
+        print('plane item:',len(plane_item[0]))
+        print('depth item:',len(dp_item[0]))
 
         img, label, path, shapes = zip(*yolo_item)  # transposed
 
@@ -536,6 +544,12 @@ class create_data(Dataset):
             l[:, 0] = i  # add target image index for build_targets()
 
         yolo_item = [torch.stack(img, 0), torch.cat(label, 0), path, shapes]
+
+        up_plane_data=[]
+        for item in zip(*plane_item):
+            up_plane_data.append(torch.stack(item, 0))
+
+
         plane_item = [zip(*plane_item)]
         dp_item = [zip(*dp_item)]
 
