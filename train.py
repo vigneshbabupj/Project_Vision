@@ -1,3 +1,89 @@
+#Yolo import
+import argparse
+
+import torch.distributed as dist
+import torch.optim as optim
+import torch.optim.lr_scheduler as lr_scheduler
+
+import test  # import test.py to get mAP after each epoch
+#from models import *
+#from utils.datasets import *
+from bbox_decoder.utils.utils import *
+from bbox_decoder.utils import torch_utils
+
+mixed_precision = True
+try:  # Mixed precision training https://github.com/NVIDIA/apex
+    from apex import amp
+except:
+    # print('Apex recommended for mixed precision and faster training: https://github.com/NVIDIA/apex')
+    mixed_precision = False  # not installed
+
+wdir = 'weights' + os.sep  # weights dir
+last = wdir + 'last.pt'
+best = wdir + 'best.pt'
+results_file = 'results.txt'
+
+# Hyperparameters https://github.com/ultralytics/yolov3/issues/310
+
+hyp = {'giou': 3.54,  # giou loss gain
+       'cls': 37.4,  # cls loss gain
+       'cls_pw': 1.0,  # cls BCELoss positive_weight
+       'obj': 64.3,  # obj loss gain (*=img_size/320 if img_size != 320)
+       'obj_pw': 1.0,  # obj BCELoss positive_weight
+       'iou_t': 0.225,  # iou training threshold
+       'lr0': 0.01,  # initial learning rate (SGD=5E-3, Adam=5E-4)
+       'lrf': 0.0005,  # final learning rate (with cos scheduler)
+       'momentum': 0.937,  # SGD momentum
+       'weight_decay': 0.000484,  # optimizer weight decay
+       'fl_gamma': 0.0,  # focal loss gamma (efficientDet default is gamma=1.5)
+       'hsv_h': 0.0138,  # image HSV-Hue augmentation (fraction)
+       'hsv_s': 0.678,  # image HSV-Saturation augmentation (fraction)
+       'hsv_v': 0.36,  # image HSV-Value augmentation (fraction)
+       'degrees': 1.98 * 0,  # image rotation (+/- deg)
+       'translate': 0.05 * 0,  # image translation (+/- fraction)
+       'scale': 0.05 * 0,  # image scale (+/- gain)
+       'shear': 0.641 * 0}  # image shear (+/- deg)
+
+# Overwrite hyp with hyp*.txt (optional)
+f = glob.glob('hyp*.txt')
+if f:
+    print('Using %s' % f[0])
+    for k, v in zip(hyp.keys(), np.loadtxt(f[0])):
+        hyp[k] = v
+
+# Print focal loss if gamma > 0
+if hyp['fl_gamma']:
+    print('Using FocalLoss(gamma=%g)' % hyp['fl_gamma'])
+
+#Yolo import
+
+#Planercnn
+import torch
+from torch import optim
+from torch.utils.data import DataLoader
+
+import os
+from tqdm import tqdm
+import numpy as np
+import cv2
+import sys
+
+#from models.model import *
+#from models.refinement_net import *
+from plane_decoder.modules import *
+#from datasets.plane_stereo_dataset import *
+
+from plane_decoder.utils import *
+#from visualize_utils import *
+#from evaluate_utils import *
+#from options import parse_args
+from plane_decoder.config import InferenceConfig# PlaneConfig
+
+#planercnn
+import glob
+import numpy as np
+import math
+
 
 from model import *
 
