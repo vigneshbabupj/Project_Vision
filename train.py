@@ -312,10 +312,10 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
         for i,(plane_data,yolo_data,depth_data) in pbar:
 
-            print('i:',i)
-            print('plane :',len(plane_data))
-            print('yolo :',len(yolo_data))
-            print('depth :',len(depth_data))
+            #print('i:',i)
+            #print('plane :',len(plane_data))
+            #print('yolo :',len(yolo_data))
+            #print('depth :',len(depth_data))
 
             #yolov3 init start
             imgs, targets, paths, _ = yolo_data
@@ -355,7 +355,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #depth init start
             depth_img,depth_target = depth_data
 
-            print('depth:',len(depth_img))
+            print('depth:',type(depth_img),len(depth_img))
             print('np size:',np.asarray(depth_img).shape)
 
             dp_sample = torch.from_numpy(np.asarray(depth_img)).to(device).unsqueeze(0)
