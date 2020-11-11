@@ -268,15 +268,15 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                                              batch_size=batch_size,
                                              num_workers=nw,
                                              shuffle=not opt.rect,  # Shuffle=True unless rectangular training is used
-                                             pin_memory=True )
-                                             #collate_fn=dataset.collate_fn)
+                                             pin_memory=True 
+                                             collate_fn=train_dataset.collate_fn)
 
     # Testloader
     testloader = torch.utils.data.DataLoader(test_dataset,
                                              batch_size=batch_size,
                                              num_workers=nw,
-                                             pin_memory=True )
-                                             #collate_fn=dataset.collate_fn)
+                                             pin_memory=True 
+                                             collate_fn=test_dataset.collate_fn)
  
 
     # Model parameters

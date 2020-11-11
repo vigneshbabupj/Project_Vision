@@ -527,11 +527,20 @@ class create_data(Dataset):
 
     @staticmethod
     def collate_fn(batch):
+
+        plane_item,yolo_item,dp_item = zip(*batch)
+
+        print('plane',len(plane_item))
+        print('yolo',len(yolo_item))
+        print('depth',len(dp_item))
         
-        img, label, path, shapes = zip(*batch)  # transposed
+        img, label, path, shapes = yolo_item#zip(*batch)  # transposed
         for i, l in enumerate(label):
             l[:, 0] = i  # add target image index for build_targets()
-        return torch.stack(img, 0), torch.cat(label, 0), path, shapes
+
+        yolo_item = torch.cat([torch.stack(img, 0), torch.cat(label, 0), path, shapes],dim=0)
+        
+        return plane_item,yolo_item,dp_item
 
     def __len__(self):
         return len(self.img_files)
