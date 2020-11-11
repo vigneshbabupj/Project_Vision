@@ -408,7 +408,7 @@ class create_data(Dataset):
 
         ## Add to batch
         rpn_match = rpn_match[:, np.newaxis]
-        image = utils.mold_image(image.astype(np.float32), self.config)
+        image = mold_image(image.astype(np.float32), self.config)
 
         depth = np.concatenate([np.zeros((80, 640)), depth, np.zeros((80, 640))], axis=0).astype(np.float32)
         segmentation = np.concatenate([np.full((80, 640), fill_value=-1), segmentation, np.full((80, 640), fill_value=-1)], axis=0).astype(np.float32)
@@ -532,6 +532,6 @@ class create_data(Dataset):
         for i, l in enumerate(label):
             l[:, 0] = i  # add target image index for build_targets()
         return torch.stack(img, 0), torch.cat(label, 0), path, shapes
-        
+
     def __len__(self):
         return len(self.img_files)
