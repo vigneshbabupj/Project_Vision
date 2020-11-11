@@ -60,20 +60,18 @@ from depth_decoder.transforms import Resize, NormalizeImage, PrepareForNet
 
 
 class create_data(Dataset):
-	#merge LoadImagesAndLabels from yolo and InferenceDataset from planercnn 
-	def __init__(self,yolo_params,planercnn_params,midas_params):
-		#planercnn_params : self, options, config, image_list, camera, random=False
-		#yolo_params : self, path, img_size=416, batch_size=16, augment=False, hyp=None, rect=False, image_weights=False,
+    #merge LoadImagesAndLabels from yolo and InferenceDataset from planercnn 
+    def __init__(self,yolo_params,planercnn_params,midas_params):
+        #planercnn_params : self, options, config, image_list, camera, random=False
+        #yolo_params : self, path, img_size=416, batch_size=16, augment=False, hyp=None, rect=False, image_weights=False,
         #        cache_labels=True, cache_images=False, single_cls=False
 
-		## InferenceDataset start
-		""" camera: [fx, fy, cx, cy, image_width, image_height, dummy, dummy, dummy, dummy] """
+        ## InferenceDataset start
+        
 
-
-
-        self.options = planercnn_params[options]
-        self.config = planercnn_params[config]
-        self.random = planercnn_params[random]
+        self.options = planercnn_params['options']
+        self.config = planercnn_params['config']
+        self.random = planercnn_params['random']
         #self.camera = camera
         #self.imagePaths = image_list
         self.anchors = generate_pyramid_anchors(self.config.RPN_ANCHOR_SCALES,
@@ -259,34 +257,34 @@ class create_data(Dataset):
 
 
         # midas params : inp_path,depth_path
-		# midas dataset start
+        # midas dataset start
 
         self.depth_names = [x.replace('images', 'depths') for x in self.img_files]
-		#self.img_path = inp_path
-		#self.depth_path = depth_path
-		self.transform = Compose(
-							[
-					            Resize(
-					                384,
-					                384,
-					                resize_target=None,
-					                keep_aspect_ratio=True,
-					                ensure_multiple_of=32,
-					                resize_method="upper_bound",
-					                image_interpolation_method=cv2.INTER_CUBIC,
-					            ),
-					            NormalizeImage(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-					            PrepareForNet(),
-					        ]
-					    		)
+        #self.img_path = inp_path
+        #self.depth_path = depth_path
+        self.transform = Compose(
+                            [
+                                Resize(
+                                    384,
+                                    384,
+                                    resize_target=None,
+                                    keep_aspect_ratio=True,
+                                    ensure_multiple_of=32,
+                                    resize_method="upper_bound",
+                                    image_interpolation_method=cv2.INTER_CUBIC,
+                                ),
+                                NormalizeImage(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+                                PrepareForNet(),
+                            ]
+                                )
 
-    	# midas dataset end
+        # midas dataset end
 
 
-	def __getitem__(self,index):
+    def __getitem__(self,index):
 
-		## plane InferenceDataset start
-		t = int(time.time() * 1000000)
+        ## plane InferenceDataset start
+        t = int(time.time() * 1000000)
         np.random.seed(((t & 0xff000000) >> 24) +
                        ((t & 0x00ff0000) >> 8) +
                        ((t & 0x0000ff00) << 8) +
@@ -426,11 +424,11 @@ class create_data(Dataset):
         data_pair.append(camera.astype(np.float32))
 
         #return data_pair
-		## InferenceDataset END
+        ## InferenceDataset END
 
-		## Yolo LoadImagesAndLabels START
+        ## Yolo LoadImagesAndLabels START
 
-		#if self.image_weights:
+        #if self.image_weights:
         #    index = self.indices[index]
 
         hyp = self.hyp
@@ -513,10 +511,10 @@ class create_data(Dataset):
 
         # midas dataset start
 
-		img_name = self.img_files[index] #vig
-		depth_name = self.depth_names[index]
+        img_name = self.img_files[index] #vig
+        depth_name = self.depth_names[index]
 
-		img_ip = utils.read_image(img_name)
+        img_ip = utils.read_image(img_name)
         img_input = self.transform({"image": img_ip})["image"]
 
         depth_img = cv2.imread(depth_name)

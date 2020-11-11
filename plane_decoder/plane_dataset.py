@@ -12,8 +12,8 @@ import time
 import os
 import cv2
 import sys
-import utils
-from datasets.scannet_scene import ScanNetScene
+import plane_decoder.utils
+#from datasets.scannet_scene import ScanNetScene
 
 class PlaneDatasetSingle(Dataset):
     def __init__(self, options, config, split, random=True, loadNeighborImage=False, load_semantics=False, load_boundary=False):
