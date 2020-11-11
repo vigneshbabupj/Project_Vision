@@ -534,6 +534,8 @@ class create_data(Dataset):
         #print('len batch',len(batch))
 
         plane_item,yolo_item,dp_item = batch
+        up_plane = [item[0] for item in batch]
+        up_depth = [item[2] for item in batch]
 
         #print('plane item:',len(plane_item[0]))
         #print('depth item:',len(dp_item[0]))
@@ -546,7 +548,7 @@ class create_data(Dataset):
         yolo_item = [torch.stack(img, 0), torch.cat(label, 0), path, shapes]
 
 
-        return plane_item,yolo_item,dp_item
+        return up_plane,yolo_item,up_depth
 
     def __len__(self):
         return len(self.img_files)
