@@ -304,7 +304,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
         model.train()
 
-        pbar = tqdm(enumerate(train_loader))
+        pbar = tqdm(enumerate(trainloader))
 
         #optimizer.zero_grad()
 
