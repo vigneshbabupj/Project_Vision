@@ -368,8 +368,9 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #planercnn init start
             sampleIndex = i
             sample = plane_data
-            sample = torch.from_numpy(sample)
-
+            for i in range(31):
+                #isinstance(sample[i],np.ndarray)
+                sample[i]=torch.from_numpy(sample[i])
 
             plane_losses = []            
 
@@ -377,7 +378,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             detection_pair = []
             dicts_pair = []
 
-            camera = sample[30][0].cuda() 
+            camera = sample[30][0].cuda()
 
             #for indexOffset in [0, ]:
             indexOffset=0
