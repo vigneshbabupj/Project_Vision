@@ -534,8 +534,16 @@ class create_data(Dataset):
         print('len batch',len(batch))
 
         plane_item,yolo_item,dp_item = zip(*batch)
-        #up_plane = [item[0] for item in batch]
-        #up_depth = [item[2] for item in batch]
+        up_plane=[]
+        up_depth=[]
+        if len(batch) > 1:
+            for i in range(batch):
+                up_plane.append(plane_item[i][0])
+                up_depth.append(dp_item[i][0])
+        else
+            up_plane = plane_item[0]
+            up_depth = dp_item[0]
+
 
         print('plane item:',len(plane_item[0]))
         print('yolo item:',len(yolo_item[0]))
@@ -549,7 +557,7 @@ class create_data(Dataset):
         yolo_item = [torch.stack(img, 0), torch.cat(label, 0), path, shapes]
 
 
-        return torch.stack(plane_item,0),yolo_item,torch.stack(dp_item,0)
+        return up_plane,yolo_item,up_depth
 
     def __len__(self):
         return len(self.img_files)
