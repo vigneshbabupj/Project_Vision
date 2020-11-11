@@ -536,6 +536,8 @@ class create_data(Dataset):
             l[:, 0] = i  # add target image index for build_targets()
 
         yolo_item = [torch.stack(img, 0), torch.cat(label, 0), path, shapes]
+        plane_item = [zip(*plane_item)]
+        dp_item = [zip(*dp_item)]
 
         return plane_item,yolo_item,dp_item
 
