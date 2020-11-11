@@ -197,7 +197,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
     #load midas pretrained weighta
 
-    midas_parameters = torch.load(path)
+    midas_parameters = torch.load(midas_args.weights)
 
     if "optimizer" in midas_parameters:
         midas_parameters = midas_parameters["model"]
