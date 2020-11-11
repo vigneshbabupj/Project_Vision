@@ -537,8 +537,9 @@ class create_data(Dataset):
         up_plane = [item[0] for item in batch]
         up_depth = [item[2] for item in batch]
 
-        #print('plane item:',len(plane_item[0]))
-        #print('depth item:',len(dp_item[0]))
+        print('plane item:',len(plane_item[0]))
+        print('yolo item:',len(yolo_item[0]))
+        print('depth item:',len(dp_item[0]))
 
         img, label, path, shapes = zip(*yolo_item)  # transposed
 
