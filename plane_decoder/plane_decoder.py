@@ -349,9 +349,13 @@ def proposal_layer(inputs, proposal_count, nms_threshold, anchors, config=None):
     ## According to Xinlei Chen's paper, this reduces detection accuracy
     ## for small objects, so we're skipping it.
 
+    print('boxes',boxes.shape)
+    print('scores',scores.shape)
+    print('nms_threshold',nms_threshold)
+
     ## Non-max suppression
-    #keep = nms(torch.cat((boxes, scores.unsqueeze(1)), 1).data, nms_threshold) #Vignesh
-    keep = nms(boxes.data, scores.data, nms_threshold)
+    keep = nms(torch.cat((boxes, scores.unsqueeze(1)), 1).data, nms_threshold) #Vignesh
+    #keep = nms(boxes.data, scores.data, nms_threshold)
 
     keep = keep[:proposal_count]
     boxes = boxes[keep, :]
@@ -587,8 +591,8 @@ def detection_target_layer(proposals, gt_class_ids, gt_boxes, gt_masks, gt_param
     if config.GPU_COUNT:
         no_crowd_bool = no_crowd_bool.cuda()
 
-    print('positive_rois',proposals.shape)
-    print('gt_boxes',gt_boxes.shape)
+    #print('positive_rois',proposals.shape)
+    #print('gt_boxes',gt_boxes.shape)
 
     ## Compute overlaps matrix [proposals, gt_boxes]
     overlaps = bbox_overlaps(proposals, gt_boxes)
