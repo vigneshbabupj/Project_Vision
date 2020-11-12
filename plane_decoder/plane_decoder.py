@@ -1781,6 +1781,8 @@ class MaskRCNN(nn.Module):
                 scale = scale.cuda()
             gt_boxes = gt_boxes / scale
 
+
+
             ## Generate detection targets
             ## Subsamples proposals and generates target outputs for training
             ## Note that proposal class IDs, gt_boxes, and gt_masks are zero
@@ -1824,7 +1826,13 @@ class MaskRCNN(nn.Module):
                 scale = scale.cuda()
 
             gt_boxes = gt_boxes / scale
-                        
+
+            print('proposals',rpn_rois.shape)
+            print('gt_boxes',gt_boxes.shape)
+
+            if True:
+                raise Exception("stopp here")
+
             ## Generate detection targets
             ## Subsamples proposals and generates target outputs for training
             ## Note that proposal class IDs, gt_boxes, and gt_masks are zero
