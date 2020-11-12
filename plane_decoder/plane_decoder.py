@@ -1886,6 +1886,8 @@ class MaskRCNN(nn.Module):
                 gt_masks = gt_masks.squeeze(0)
                 gt_parameters = gt_parameters.squeeze(0)
 
+                print('positive_rois',positive_rois.shape)
+                print('gt_boxes',gt_boxes)
                 ## Compute overlaps matrix [proposals, gt_boxes]
                 overlaps = bbox_overlaps(positive_rois, gt_boxes)
 
