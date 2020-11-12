@@ -350,7 +350,8 @@ def proposal_layer(inputs, proposal_count, nms_threshold, anchors, config=None):
     ## for small objects, so we're skipping it.
 
     ## Non-max suppression
-    keep = nms(torch.cat((boxes, scores.unsqueeze(1)), 1).data, nms_threshold)
+    #keep = nms(torch.cat((boxes, scores.unsqueeze(1)), 1).data, nms_threshold) #Vignesh
+    keep = nms(boxes.data, scores.data, nms_threshold)
 
     keep = keep[:proposal_count]
     boxes = boxes[keep, :]
