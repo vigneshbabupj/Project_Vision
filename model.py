@@ -9,7 +9,6 @@ from depth_decoder.depth_decoder import MidasNet_decoder
 
 from plane_decoder.plane_decoder import MaskRCNN
 
-
 from bbox_decoder.yolov3_bbox_decoder import *
 
 class VisionNet(nn.Module):
