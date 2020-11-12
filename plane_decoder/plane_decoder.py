@@ -587,7 +587,7 @@ def detection_target_layer(proposals, gt_class_ids, gt_boxes, gt_masks, gt_param
     if config.GPU_COUNT:
         no_crowd_bool = no_crowd_bool.cuda()
 
-    print('positive_rois',positive_rois.shape)
+    print('positive_rois',proposals.shape)
     print('gt_boxes',gt_boxes.shape)
 
     ## Compute overlaps matrix [proposals, gt_boxes]
