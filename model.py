@@ -39,7 +39,7 @@ class VisionNet(nn.Module):
 
 		self.bbox_decoder =  Darknet(self.yolo_params)
 
-		self.conv1 = nn.Conv2d(in_channels=2048, out_channels=1024, kernel_size=(1, 1), padding=0, bias=False)
+		self.conv1 = nn.Conv2d(in_channels=2048, out_channels=3, kernel_size=(1, 1), padding=0, bias=False)
 
 
 	def forward(self,yolo_ip,midas_ip,plane_ip):
