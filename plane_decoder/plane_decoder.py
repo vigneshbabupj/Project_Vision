@@ -1829,6 +1829,9 @@ class MaskRCNN(nn.Module):
 
             gt_boxes = gt_boxes / scale
 
+            print('rpn_rois',rpn_rois.shape)
+            print('gt_boxes',gt_boxes.shape)
+
             #if True:
             #    raise Exception("stopp here")
 
