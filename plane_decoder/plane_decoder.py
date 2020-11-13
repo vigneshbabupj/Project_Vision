@@ -589,7 +589,8 @@ def detection_target_layer(proposals, gt_class_ids, gt_boxes, gt_masks, gt_param
     gt_boxes = gt_boxes.squeeze(0)
     gt_masks = gt_masks.squeeze(0)
     gt_parameters = gt_parameters.squeeze(0)
-    no_crowd_bool =  Variable(torch.ByteTensor(proposals.size()[0]*[True]), requires_grad=False)
+    #no_crowd_bool =  Variable(torch.ByteTensor(proposals.size()[0]*[True]), requires_grad=False) 
+    no_crowd_bool =  Variable(torch.ones(proposals.size()[0], dtype=torch.bool), requires_grad=False)
     if config.GPU_COUNT:
         no_crowd_bool = no_crowd_bool.cuda()
 
