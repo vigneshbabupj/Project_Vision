@@ -371,10 +371,6 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             print('sample',len(sample))
 
-            for i in range(31):
-                #isinstance(sample[i],np.ndarray)
-                sample[i]=torch.from_numpy(sample[i])
-
             plane_losses = []            
 
             input_pair = []
