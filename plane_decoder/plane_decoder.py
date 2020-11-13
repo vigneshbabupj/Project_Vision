@@ -531,7 +531,7 @@ def bbox_overlaps(boxes1, boxes2):
     print('b1',boxes1.size())
     print('b2',boxes2.size())
     boxes1_repeat = boxes2.size()[0]
-    boxes2_repeat = boxes1.size()[0]*4
+    boxes2_repeat = boxes1.size()[0]
     boxes1 = boxes1.repeat(1,boxes1_repeat).view(-1,4)
     boxes2 = boxes2.repeat(boxes2_repeat,1)
 
