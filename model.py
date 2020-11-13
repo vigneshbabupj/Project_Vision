@@ -57,6 +57,8 @@ class VisionNet(nn.Module):
 		# PlaneRCNN decoder
 		plane_out = self.plane_decoder.forward(plane_ip,[layer_1, layer_2, layer_3, layer_4])
 
+		print('en layer 4',layer_4.shape)
+
 		#YOLOv3 bbox decoder
 		bbox_out = self.bbox_decoder(layer_4)
 
