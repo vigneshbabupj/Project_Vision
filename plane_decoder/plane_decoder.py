@@ -528,6 +528,8 @@ def bbox_overlaps(boxes1, boxes2):
     ## every boxes1 against every boxes2 without loops.
     ## TF doesn't have an equivalent to np.repeate() so simulate it
     ## using tf.tile() and tf.reshape.
+    print('b1',boxes1.size())
+    print('b2',boxes2.size())
     boxes1_repeat = boxes2.size()[0]
     boxes2_repeat = boxes1.size()[0]
     boxes1 = boxes1.repeat(1,boxes1_repeat).view(-1,4)
@@ -1827,11 +1829,8 @@ class MaskRCNN(nn.Module):
 
             gt_boxes = gt_boxes / scale
 
-            print('proposals',rpn_rois.shape)
-            print('gt_boxes',gt_boxes.shape)
-
-            if True:
-                raise Exception("stopp here")
+            #if True:
+            #    raise Exception("stopp here")
 
             ## Generate detection targets
             ## Subsamples proposals and generates target outputs for training
