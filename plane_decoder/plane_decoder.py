@@ -528,8 +528,8 @@ def bbox_overlaps(boxes1, boxes2):
     ## every boxes1 against every boxes2 without loops.
     ## TF doesn't have an equivalent to np.repeate() so simulate it
     ## using tf.tile() and tf.reshape.
-    print('b1',boxes1.size())
-    print('b2',boxes2.size())
+    #print('b1',boxes1.size())
+    #print('b2',boxes2.size())
     boxes1_repeat = boxes2.size()[0]
     boxes2_repeat = boxes1.size()[0]
     boxes1 = boxes1.repeat(1,boxes1_repeat).view(-1,4)
@@ -594,8 +594,8 @@ def detection_target_layer(proposals, gt_class_ids, gt_boxes, gt_masks, gt_param
     if config.GPU_COUNT:
         no_crowd_bool = no_crowd_bool.cuda()
 
-    print('proposals',proposals.shape)
-    print('gt_boxes',gt_boxes.shape)
+    #print('proposals',proposals.shape)
+    #print('gt_boxes',gt_boxes.shape)
 
     ## Compute overlaps matrix [proposals, gt_boxes]
     overlaps = bbox_overlaps(proposals, gt_boxes)
@@ -1830,8 +1830,8 @@ class MaskRCNN(nn.Module):
 
             gt_boxes = gt_boxes / scale
 
-            print('rpn_rois',rpn_rois.shape)
-            print('gt_boxes',gt_boxes.shape)
+            #print('rpn_rois',rpn_rois.shape)
+            #print('gt_boxes',gt_boxes.shape)
 
             #if True:
             #    raise Exception("stopp here")

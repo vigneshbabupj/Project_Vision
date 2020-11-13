@@ -369,7 +369,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             sampleIndex = i
             sample = plane_data
 
-            print('sample',len(sample))
+            #print('sample',len(sample))
 
             plane_losses = []            
 
@@ -382,18 +382,18 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #for indexOffset in [0, ]:
             indexOffset=0
             images, image_metas, rpn_match, rpn_bbox, gt_class_ids, gt_boxes, gt_masks, gt_parameters, gt_depth, extrinsics, planes, gt_segmentation = sample[indexOffset + 0].cuda(), sample[indexOffset + 1].numpy(), sample[indexOffset + 2].cuda(), sample[indexOffset + 3].cuda(), sample[indexOffset + 4].cuda(), sample[indexOffset + 5].cuda(), sample[indexOffset + 6].cuda(), sample[indexOffset + 7].cuda(), sample[indexOffset + 8].cuda(), sample[indexOffset + 9].cuda(), sample[indexOffset + 10].cuda(), sample[indexOffset + 11].cuda()
-            print('gt_boxes',gt_boxes.size())
-            print('images',images.size())
-            print('image_metas',image_metas)
-            print('rpn_match',rpn_match.size())
-            print('rpn_bbox',rpn_bbox.size())
-            print('gt_class_ids',gt_class_ids.size())
-            print('gt_masks',gt_masks.size())
-            print('gt_parameters',gt_parameters.size())
-            print('gt_depth',gt_depth.size())
-            print('extrinsics',extrinsics.size())
-            print('planes',planes.size())
-            print('gt_segmentation',gt_segmentation.size())
+            # print('gt_boxes',gt_boxes.size())
+            # print('images',images.size())
+            # print('image_metas',image_metas)
+            # print('rpn_match',rpn_match.size())
+            # print('rpn_bbox',rpn_bbox.size())
+            # print('gt_class_ids',gt_class_ids.size())
+            # print('gt_masks',gt_masks.size())
+            # print('gt_parameters',gt_parameters.size())
+            # print('gt_depth',gt_depth.size())
+            # print('extrinsics',extrinsics.size())
+            # print('planes',planes.size())
+            # print('gt_segmentation',gt_segmentation.size())
 
             masks = (gt_segmentation == torch.arange(gt_segmentation.max() + 1).cuda().view(-1, 1, 1)).float()
             input_pair.append({'image': images, 'depth': gt_depth, 'bbox': gt_boxes, 'extrinsics': extrinsics, 'segmentation': gt_segmentation, 'camera': camera, 'plane': planes[0], 'masks': masks, 'mask': gt_masks})
