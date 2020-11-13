@@ -545,6 +545,10 @@ class create_data(Dataset):
             up_depth = dp_item[0]
 
 
+        for p in range(31):
+            up_plane[p] = torch.from_numpy(up_plane[p]).unsqueeze(0)
+
+
         print('plane item:',len(plane_item[0]))
         print('yolo item:',len(yolo_item[0]))
         print('depth item:',len(dp_item[0]))
