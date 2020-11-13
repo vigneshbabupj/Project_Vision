@@ -1172,7 +1172,7 @@ class Depth(nn.Module):
         
         self.depth_pred = nn.Conv2d(64, num_output_channels, kernel_size=3, stride=1, padding=1)
 
-        self.crop = False#True#Vig
+        self.crop = True#Vig
         return
     
     def forward(self, feature_maps):
