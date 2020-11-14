@@ -158,7 +158,6 @@ class YOLOLayer(nn.Module):
             self.anchor_wh = self.anchor_wh.to(device)
 
     def forward(self, p, out):
-        print('################### p size ',p.shape)
         ASFF = False  # https://arxiv.org/abs/1911.09516
         if ASFF:
             i, n = self.index, self.nl  # index in layers, number of layers
@@ -304,19 +303,9 @@ class Darknet(nn.Module):
                     yolo_out.append(module(x, out))
                 else:  # run module directly, i.e. mtype = 'convolutional', 'upsample', 'maxpool', 'batchnorm2d' etc.
                     x = module(x)
-                    if i ==88:
-                        print(module)
-                        # print('in_channels',module.in_channels)
-                        # print('out_channels',module.out_channels)
-                        # print('kernel_size',module.kernel_size)
-                        # print('stride',module.stride)
-                        # print('padding',module.padding)
-                        # print('groups',module.groups)
-                        # print('bias',module.bias)
+
             out.append(x if self.routs[i] else [])
             
-            print(' x shape',x.shape)
-
             if verbose:
                 print('%g/%g %s -' % (i, len(self.module_list), name), list(x.shape), str)
                 str = ''
