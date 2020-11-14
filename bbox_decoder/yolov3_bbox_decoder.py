@@ -262,7 +262,7 @@ class Darknet(nn.Module):
             return y, None
 
     def forward_once(self, x,Yolo_61,Yolo_36, augment=False, verbose=False):
-        Yolo_75 = x.copy()
+        Yolo_75 = x
         img_size = x.shape[-2:]  # height, width
         yolo_out, out = [], []
         if verbose:
