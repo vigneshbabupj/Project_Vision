@@ -1245,10 +1245,12 @@ def compute_rpn_bbox_loss(target_bbox, rpn_match, rpn_bbox):
     rpn_bbox: [batch, anchors, (dy, dx, log(dh), log(dw))]
     """
 
-    ## Squeeze last dim to simplify
-    rpn_match = rpn_match.squeeze(2)
+    print('rpn_match',rpn_match.shape)
 
     rpn_match = rpn_match.cpu() #vignesh
+
+    ## Squeeze last dim to simplify
+    rpn_match = rpn_match.squeeze(2)
 
     ## Positive anchors contribute to the loss, but negative and
     ## neutral anchors (match value of 0 or -1) don't.
