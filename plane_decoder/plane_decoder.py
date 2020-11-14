@@ -1245,10 +1245,6 @@ def compute_rpn_bbox_loss(target_bbox, rpn_match, rpn_bbox):
     rpn_bbox: [batch, anchors, (dy, dx, log(dh), log(dw))]
     """
 
-    print('rpn_match',rpn_match.shape)
-
-    rpn_match = rpn_match.cpu() #vignesh
-
     ## Squeeze last dim to simplify
     rpn_match = rpn_match.squeeze(2)
 
