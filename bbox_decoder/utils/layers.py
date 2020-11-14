@@ -32,7 +32,6 @@ class FeatureConcat(nn.Module):
         self.multiple = len(layers) > 1  # multiple layers flag
 
     def forward(self, x, outputs):
-        print('8'*44, self.multiple,self.layers, type(outputs[self.layers[0]]) )
         return torch.cat([outputs[i] for i in self.layers], 1) if self.multiple else outputs[self.layers[0]]
 
 

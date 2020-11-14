@@ -285,13 +285,12 @@ class Darknet(nn.Module):
             ##Vignesh : Add block to run the model only for the concate layers
             if i == 36:
                 x =  Yolo_36
-                out.append(x if self.routs[i] else [])
             elif i == 61:
                 x = Yolo_61
-                out.append(x if self.routs[i] else [])
+                
             elif i == 74:
                 x = Yolo_75
-                out.append(x if self.routs[i] else [])
+                
             if i > 74: ##Vignesh : Add block to run the model only for the layers post darknet
                 print('i',i,'name :',name,' shape:',x.shape)
                 if name in ['WeightedFeatureFusion', 'FeatureConcat']:  # sum, concat
@@ -313,7 +312,7 @@ class Darknet(nn.Module):
                         print('padding',module.padding)
                         print('groups',module.groups)
                         print('bias',module.bias)
-                    out.append(x if self.routs[i] else [])
+            out.append(x if self.routs[i] else [])
             
             if not isinstance(x,list):
                 print(' x shape',x.shape)
