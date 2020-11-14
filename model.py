@@ -55,7 +55,7 @@ class VisionNet(nn.Module):
 
 		Yolo_75 = self.conv1(layer_4)
 		Yolo_61 = self.conv2(layer_3)
-		Yolo_36 = self.conv2(layer_2)
+		Yolo_36 = self.conv3(layer_2)
 
 		
 
