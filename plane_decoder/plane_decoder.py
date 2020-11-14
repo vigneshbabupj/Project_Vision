@@ -1248,6 +1248,8 @@ def compute_rpn_bbox_loss(target_bbox, rpn_match, rpn_bbox):
     ## Squeeze last dim to simplify
     rpn_match = rpn_match.squeeze(2)
 
+    rpn_match = rpn_match.cpu() #vignesh
+
     ## Positive anchors contribute to the loss, but negative and
     ## neutral anchors (match value of 0 or -1) don't.
     indices = torch.nonzero(rpn_match==1)
