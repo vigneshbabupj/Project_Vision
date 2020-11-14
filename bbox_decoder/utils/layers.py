@@ -31,7 +31,7 @@ class FeatureConcat(nn.Module):
         self.layers = layers  # layer indices
         self.multiple = len(layers) > 1  # multiple layers flag
 
-    def forward(self, x,Yolo_61,Yolo_36, outputs):
+    def forward(self, x, outputs):
         
         return torch.cat([outputs[i] for i in self.layers], 1) if self.multiple else outputs[self.layers[0]]
 
