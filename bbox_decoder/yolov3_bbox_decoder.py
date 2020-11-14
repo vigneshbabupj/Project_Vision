@@ -314,8 +314,9 @@ class Darknet(nn.Module):
                         print('groups',module.groups)
                         print('bias',module.bias)
                     out.append(x if self.routs[i] else [])
-
-            print(' x shape',x.shape)
+            
+            if not isinstance(x,list):
+                print(' x shape',x.shape)
 
             if verbose:
                 print('%g/%g %s -' % (i, len(self.module_list), name), list(x.shape), str)
