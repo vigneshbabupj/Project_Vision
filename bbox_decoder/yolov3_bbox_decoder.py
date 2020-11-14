@@ -289,9 +289,7 @@ class Darknet(nn.Module):
                 x = Yolo_61
                 out.append(x if self.routs[i] else [])
             elif i == 74:
-                print('i',i,'name :',name,' x shape:',x.shape)
-                print('i',i,'name :',name,' Yolo_75 shape:',Yolo_75.shape)
-                x == Yolo_75
+                x = Yolo_75
                 out.append(x if self.routs[i] else [])
             if i > 74: ##Vignesh : Add block to run the model only for the layers post darknet
                 print('i',i,'name :',name,' shape:',x.shape)
