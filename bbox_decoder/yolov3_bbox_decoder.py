@@ -231,10 +231,11 @@ class Darknet(nn.Module):
         self.info(verbose) if not ONNX_EXPORT else None  # print model description
 
     def forward(self,Yolo_75,Yolo_61,Yolo_36 , augment=False, verbose=False):
-        x= Yolo_75
+        
         if not augment:
-            return self.forward_once(x,Yolo_61,Yolo_36)
+            return self.forward_once(Yolo_75,Yolo_61,Yolo_36)
         else:  # Augment images (inference and test only) https://github.com/ultralytics/yolov3/issues/931
+            x = Yolo_75
             img_size = x.shape[-2:]  # height, width
             s = [0.83, 0.67]  # scales
             y = []
@@ -261,6 +262,7 @@ class Darknet(nn.Module):
             return y, None
 
     def forward_once(self, x,Yolo_61,Yolo_36, augment=False, verbose=False):
+        Yolo_75 = x.copy()
         img_size = x.shape[-2:]  # height, width
         yolo_out, out = [], []
         if verbose:
@@ -280,11 +282,14 @@ class Darknet(nn.Module):
             name = module.__class__.__name__
 
             ##Vignesh : Add block to run the model only for the concate layers
-            if i == 61:
+            if i == 36:
+                x =  Yolo_36
+                out.append(x if self.routs[i] else [])
+            elif i == 61:
                 x = Yolo_61
                 out.append(x if self.routs[i] else [])
-            elif i == 36:
-                x = Yolo_36
+            elif i == 74:
+                x == Yolo_75
                 out.append(x if self.routs[i] else [])
             if i > 74: ##Vignesh : Add block to run the model only for the layers post darknet
                 print('i',i,'name :',name,' shape:',x.shape)
