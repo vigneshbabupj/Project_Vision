@@ -40,7 +40,8 @@ class VisionNet(nn.Module):
 		self.bbox_decoder =  Darknet(self.yolo_params)
 
 		self.conv1 = nn.Conv2d(in_channels=2048, out_channels=3, kernel_size=(1, 1), padding=0, bias=False)
-
+		self.conv2 = nn.Conv2d(in_channels=1024, out_channels=512, kernel_size=(1, 1), padding=0, bias=False)
+		self.conv3 = nn.Conv2d(in_channels=512, out_channels=256, kernel_size=(1, 1), padding=0, bias=False)
 
 	def forward(self,yolo_ip,midas_ip,plane_ip):
 
@@ -52,7 +53,10 @@ class VisionNet(nn.Module):
 		layer_3 = self.encoder.layer3(layer_2)
 		layer_4 = self.encoder.layer4(layer_3)
 
-		layer_5 = self.conv1(layer_4)
+		Yolo_75 = self.conv1(layer_4)
+		Yolo_61 = self.conv2(layer_3)
+		Yolo_36 = self.conv2(layer_2)
+
 		
 
 		# MiDaS depth decoder
@@ -61,13 +65,12 @@ class VisionNet(nn.Module):
 		# PlaneRCNN decoder
 		plane_out = self.plane_decoder.forward(plane_ip,[layer_1, layer_2, layer_3, layer_4])
 
-		print('en layer 1',layer_1.shape)
-		print('en layer 2',layer_2.shape)
-		print('en layer 3',layer_3.shape)
-		print('en layer 4',layer_4.shape)
-		print('en layer 5',layer_5.shape)
+		print('en Yolo_75 :',Yolo_75.shape)
+		print('en Yolo_61 :',Yolo_61.shape)
+		print('en Yolo_36 :',Yolo_36.shape)
+
 
 		#YOLOv3 bbox decoder
-		bbox_out = self.bbox_decoder(layer_5)
+		bbox_out = self.bbox_decoder(Yolo_75,Yolo_61,Yolo_36)
 
 		return bbox_out, depth_out, plane_out

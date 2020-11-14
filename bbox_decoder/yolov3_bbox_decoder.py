@@ -15,6 +15,8 @@ def create_modules(module_defs, img_size):
     routs = []  # list of layers which rout to deeper layers
     yolo_index = -1
 
+    module_list.append()
+
     for i, mdef in enumerate(module_defs):
         modules = nn.Sequential()
 
@@ -230,10 +232,10 @@ class Darknet(nn.Module):
         self.seen = np.array([0], dtype=np.int64)  # (int64) number of images seen during training
         self.info(verbose) if not ONNX_EXPORT else None  # print model description
 
-    def forward(self, x, augment=False, verbose=False):
-
+    def forward(self,Yolo_75,Yolo_61,Yolo_36 , augment=False, verbose=False):
+        x= Yolo_75
         if not augment:
-            return self.forward_once(x)
+            return self.forward_once(x,Yolo_61,Yolo_36)
         else:  # Augment images (inference and test only) https://github.com/ultralytics/yolov3/issues/931
             img_size = x.shape[-2:]  # height, width
             s = [0.83, 0.67]  # scales
@@ -243,7 +245,7 @@ class Darknet(nn.Module):
                                     torch_utils.scale_img(x, s[1], same_shape=False),  # scale
                                     )):
                 # cv2.imwrite('img%g.jpg' % i, 255 * xi[0].numpy().transpose((1, 2, 0))[:, :, ::-1])
-                y.append(self.forward_once(xi)[0])
+                y.append(self.forward_once(xi,Yolo_61,Yolo_36)[0])
 
             y[1][..., :4] /= s[0]  # scale
             y[1][..., 0] = img_size[1] - y[1][..., 0]  # flip lr
@@ -260,7 +262,7 @@ class Darknet(nn.Module):
             y = torch.cat(y, 1)
             return y, None
 
-    def forward_once(self, x, augment=False, verbose=False):
+    def forward_once(self, x,Yolo_61,Yolo_36, augment=False, verbose=False):
         img_size = x.shape[-2:]  # height, width
         yolo_out, out = [], []
         if verbose:
@@ -279,19 +281,28 @@ class Darknet(nn.Module):
         for i, module in enumerate(self.module_list):
             name = module.__class__.__name__
 
-            print('i',i,'name :',name,' shape:',x.shape)
-            if name in ['WeightedFeatureFusion', 'FeatureConcat']:  # sum, concat
-                if verbose:
-                    l = [i - 1] + module.layers  # layers
-                    sh = [list(x.shape)] + [list(out[i].shape) for i in module.layers]  # shapes
-                    str = ' >> ' + ' + '.join(['layer %g %s' % x for x in zip(l, sh)])
-                x = module(x, out)  # WeightedFeatureFusion(), FeatureConcat()
-            elif name == 'YOLOLayer':
-                yolo_out.append(module(x, out))
-            else:  # run module directly, i.e. mtype = 'convolutional', 'upsample', 'maxpool', 'batchnorm2d' etc.
-                x = module(x)
+            ##Vignesh : Add block to run the model only for the concate layers
+            if i == 61:
+                x = Yolo_61
+                out.append(x if self.routs[i] else [])
+            elif i == 36:
+                x = Yolo_36
+                out.append(x if self.routs[i] else [])
+            if i > 74: ##Vignesh : Add block to run the model only for the layers post darknet
+                print('i',i,'name :',name,' shape:',x.shape)
+                if name in ['WeightedFeatureFusion', 'FeatureConcat']:  # sum, concat
+                    if verbose:
+                        l = [i - 1] + module.layers  # layers
+                        sh = [list(x.shape)] + [list(out[i].shape) for i in module.layers]  # shapes
+                        str = ' >> ' + ' + '.join(['layer %g %s' % x for x in zip(l, sh)])
+                    x = module(x, out)  # WeightedFeatureFusion(), FeatureConcat()
 
-            out.append(x if self.routs[i] else [])
+                elif name == 'YOLOLayer':
+                    yolo_out.append(module(x, out))
+                else:  # run module directly, i.e. mtype = 'convolutional', 'upsample', 'maxpool', 'batchnorm2d' etc.
+                    x = module(x)
+
+                out.append(x if self.routs[i] else [])
             if verbose:
                 print('%g/%g %s -' % (i, len(self.module_list), name), list(x.shape), str)
                 str = ''
