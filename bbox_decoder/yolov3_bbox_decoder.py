@@ -262,7 +262,7 @@ class Darknet(nn.Module):
             return y, None
 
     def forward_once(self, x,Yolo_61,Yolo_36, augment=False, verbose=False):
-        Yolo_75 = x
+        Yolo_75 = x.clone()
         img_size = x.shape[-2:]  # height, width
         yolo_out, out = [], []
         if verbose:
@@ -289,6 +289,8 @@ class Darknet(nn.Module):
                 x = Yolo_61
                 out.append(x if self.routs[i] else [])
             elif i == 74:
+                print('i',i,'name :',name,' x shape:',x.shape)
+                print('i',i,'name :',name,' Yolo_75 shape:',Yolo_75.shape)
                 x == Yolo_75
                 out.append(x if self.routs[i] else [])
             if i > 74: ##Vignesh : Add block to run the model only for the layers post darknet
