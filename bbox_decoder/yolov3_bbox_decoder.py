@@ -300,7 +300,7 @@ class Darknet(nn.Module):
                         sh = [list(x.shape)] + [list(out[i].shape) for i in module.layers]  # shapes
                         str = ' >> ' + ' + '.join(['layer %g %s' % x for x in zip(l, sh)])
                     x = module(x, out)  # WeightedFeatureFusion(), FeatureConcat()
-
+                    print('type',type(x))
                 elif name == 'YOLOLayer':
                     yolo_out.append(module(x, out))
                 else:  # run module directly, i.e. mtype = 'convolutional', 'upsample', 'maxpool', 'batchnorm2d' etc.
