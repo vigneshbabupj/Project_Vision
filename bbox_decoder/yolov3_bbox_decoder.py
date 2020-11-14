@@ -291,7 +291,7 @@ class Darknet(nn.Module):
                 x = Yolo_75
                 
             if i > 74: ##Vignesh : Add block to run the model only for the layers post darknet
-                print('i',i,'name :',name,' shape:',x.shape)
+                #print('i',i,'name :',name,' shape:',x.shape)
                 if name in ['WeightedFeatureFusion', 'FeatureConcat']:  # sum, concat
                     if verbose:
                         l = [i - 1] + module.layers  # layers
