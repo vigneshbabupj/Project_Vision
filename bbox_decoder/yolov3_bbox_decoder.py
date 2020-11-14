@@ -305,17 +305,17 @@ class Darknet(nn.Module):
                 else:  # run module directly, i.e. mtype = 'convolutional', 'upsample', 'maxpool', 'batchnorm2d' etc.
                     x = module(x)
                     if i ==88:
-                        print('in_channels',module.in_channels)
-                        print('out_channels',module.out_channels)
-                        print('kernel_size',module.kernel_size)
-                        print('stride',module.stride)
-                        print('padding',module.padding)
-                        print('groups',module.groups)
-                        print('bias',module.bias)
+                        print(module)
+                        # print('in_channels',module.in_channels)
+                        # print('out_channels',module.out_channels)
+                        # print('kernel_size',module.kernel_size)
+                        # print('stride',module.stride)
+                        # print('padding',module.padding)
+                        # print('groups',module.groups)
+                        # print('bias',module.bias)
             out.append(x if self.routs[i] else [])
             
-            if not isinstance(x,list):
-                print(' x shape',x.shape)
+            print(' x shape',x.shape)
 
             if verbose:
                 print('%g/%g %s -' % (i, len(self.module_list), name), list(x.shape), str)
