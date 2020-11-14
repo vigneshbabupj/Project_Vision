@@ -149,6 +149,7 @@ class YOLOLayer(nn.Module):
 
         # build xy offsets
         if not self.training:
+
             yv, xv = torch.meshgrid([torch.arange(self.ny, device=device), torch.arange(self.nx, device=device)])
             self.grid = torch.stack((xv, yv), 2).view((1, 1, self.ny, self.nx, 2)).float()
 
@@ -304,8 +305,18 @@ class Darknet(nn.Module):
                     yolo_out.append(module(x, out))
                 else:  # run module directly, i.e. mtype = 'convolutional', 'upsample', 'maxpool', 'batchnorm2d' etc.
                     x = module(x)
+                    if i ==88:
+                        print('in_channels',module.in_channels)
+                        print('out_channels',module.out_channels)
+                        print('kernel_size',module.kernel_size)
+                        print('stride',module.stride)
+                        print('padding',module.padding)
+                        print('groups',module.groups)
+                        print('bias',module.bias)
+                    out.append(x if self.routs[i] else [])
 
-                out.append(x if self.routs[i] else [])
+            print(' x shape',x.shape)
+
             if verbose:
                 print('%g/%g %s -' % (i, len(self.module_list), name), list(x.shape), str)
                 str = ''
