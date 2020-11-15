@@ -506,17 +506,17 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             ## Midas start
 
 
-            dp_prediction = (
-                            torch.nn.functional.interpolate(
-                                dp_prediction.unsqueeze(1),
-                                size=dp_sample.shape[:2],
-                                mode="bicubic",
-                                align_corners=False,
-                            )
-                            .squeeze()
-                            #.cpu()
-                            #.numpy()
-                            )
+            # dp_prediction = (
+            #                 torch.nn.functional.interpolate(
+            #                     dp_prediction.unsqueeze(1),
+            #                     size=dp_sample.shape[:2],
+            #                     mode="bicubic",
+            #                     align_corners=False,
+            #                 )
+            #                 .squeeze()
+            #                 #.cpu()
+            #                 #.numpy()
+            #                 )
             # bits=2
 
             # depth_min = dp_prediction.min()
