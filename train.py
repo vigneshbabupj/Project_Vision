@@ -511,8 +511,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                                 align_corners=False,
                             )
                             .squeeze()
-                            .cpu()
-                            .numpy()
+                            #.cpu()
+                            #.numpy()
                             )
             bits=2
 
