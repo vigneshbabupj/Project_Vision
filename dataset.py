@@ -518,8 +518,10 @@ class create_data(Dataset):
         img_input = self.transform({"image": img_ip})["image"]
 
 
-
+        print('depth_name',depth_name)
         depth_img = cv2.imread(depth_name)
+        
+        print('depth_img',depth_img.shape)
 
         data = [img_input,depth_img]
 
