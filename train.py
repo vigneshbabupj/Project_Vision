@@ -529,6 +529,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # else:
             #     depth_pred = 0
             dp_prediction = dp_prediction.unsqueeze(0)
+            depth_target = torch.from_numpy(np.asarray(depth_target)).to(device)
+            
 
             print('depth_target',depth_target.shape)
 
