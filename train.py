@@ -321,7 +321,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             print('i:',i)
             print('plane :',len(plane_data))
             print('yolo :',len(yolo_data))
-            print('depth :',len(depth_data))
+            print('depth :',len(depth_data),depth_data.size)
 
             #yolov3 init start
             imgs, targets, paths, _ = yolo_data
@@ -529,7 +529,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # else:
             #     depth_pred = 0
             dp_prediction = dp_prediction.unsqueeze(0)
-            
+
             print('depth_target',depth_target.shape)
 
             depth_pred = Variable( dp_prediction,  requires_grad=True)
