@@ -93,6 +93,9 @@ from plane_decoder.plane_decoder import *
 
 import pytorch_ssim
 
+from torch.autograd import Variable
+
+
 def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas_loss):
 
     #Plane config
@@ -522,14 +525,18 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             max_val = (2**(8*bits))-1
 
             if depth_max - depth_min > np.finfo("float").eps:
-                depth = max_val * (dp_prediction - depth_min) / (depth_max - depth_min)
+                depth_pred = max_val * (dp_prediction - depth_min) / (depth_max - depth_min)
             else:
-                depth = 0
+                depth_pred = 0
+
+            depth_pred = Variable( depth_pred,  requires_grad=True)
+            depth_target = Variable( depth_target, requires_grad = False)
 
             ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
-            ssim_out = -ssim_loss(depth,depth_target)
+            ssim_out = -ssim_loss(depth_pred,depth_target)
 
 
+            print('Depth loss :', ssim_out)
             ## Midas End
 
             #Yolov3 Start
