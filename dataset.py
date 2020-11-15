@@ -259,7 +259,7 @@ class create_data(Dataset):
         # midas params : inp_path,depth_path
         # midas dataset start
 
-        self.depth_names = [x.replace('images', 'depths') for x in self.img_files]
+        self.depth_names = [x.replace('images', 'depth_images') for x in self.img_files]
         #self.img_path = inp_path
         #self.depth_path = depth_path
         self.transform = Compose(
@@ -516,6 +516,8 @@ class create_data(Dataset):
 
         img_ip = utils.read_image(img_name)
         img_input = self.transform({"image": img_ip})["image"]
+
+
 
         depth_img = cv2.imread(depth_name)
 
