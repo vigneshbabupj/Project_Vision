@@ -528,6 +528,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #     depth_pred = max_val * (dp_prediction - depth_min) / (depth_max - depth_min)
             # else:
             #     depth_pred = 0
+            print('dp_prediction',dp_prediction.shape)
 
             depth_pred = Variable( dp_prediction,  requires_grad=True)
             depth_target = Variable( depth_target, requires_grad = False)
