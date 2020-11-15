@@ -318,10 +318,10 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
         for i,(plane_data,yolo_data,depth_data) in pbar:
 
-            print('i:',i)
-            print('plane :',len(plane_data))
-            print('yolo :',len(yolo_data))
-            print('depth :',len(depth_data),depth_data.size)
+            # print('i:',i)
+            # print('plane :',len(plane_data))
+            # print('yolo :',len(yolo_data))
+            # print('depth :',len(depth_data))
 
             #yolov3 init start
             imgs, targets, paths, _ = yolo_data
