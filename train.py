@@ -517,19 +517,19 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                             #.cpu()
                             #.numpy()
                             )
-            bits=2
+            # bits=2
 
-            depth_min = dp_prediction.min()
-            depth_max = dp_prediction.max()
+            # depth_min = dp_prediction.min()
+            # depth_max = dp_prediction.max()
 
-            max_val = (2**(8*bits))-1
+            # max_val = (2**(8*bits))-1
 
-            if depth_max - depth_min > np.finfo("float").eps:
-                depth_pred = max_val * (dp_prediction - depth_min) / (depth_max - depth_min)
-            else:
-                depth_pred = 0
+            # if depth_max - depth_min > np.finfo("float").eps:
+            #     depth_pred = max_val * (dp_prediction - depth_min) / (depth_max - depth_min)
+            # else:
+            #     depth_pred = 0
 
-            depth_pred = Variable( depth_pred,  requires_grad=True)
+            depth_pred = Variable( dp_prediction,  requires_grad=True)
             depth_target = Variable( depth_target, requires_grad = False)
 
             ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
