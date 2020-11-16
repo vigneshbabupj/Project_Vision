@@ -259,7 +259,14 @@ class create_data(Dataset):
         # midas params : inp_path,depth_path
         # midas dataset start
 
-        self.depth_names = [x.replace('images', 'depth_images').replace(os.path.splitext(x)[-1], '.png') for x in self.img_files]
+        for im in self.img_files:
+            im = im.split(os.sep)
+            im[3]= 'depth_images'
+            im = im.replace(os.path.splitext(x)[-1], '.png')
+            im = os.sep.join(im)
+            self.depth_names.append(im)
+
+        #self.depth_names = [x.replace('images', 'depth_images').replace(os.path.splitext(x)[-1], '.png') for x in self.img_files]
         #self.img_path = inp_path
         #self.depth_path = depth_path
         self.transform = Compose(
