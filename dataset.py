@@ -262,7 +262,7 @@ class create_data(Dataset):
         for im in self.img_files:
             im = im.split(os.sep)
             im[3]= 'depth_images'
-            im = im.replace(os.path.splitext(x)[-1], '.png')
+            im[4] = im[4].replace(os.path.splitext(im[4])[-1], '.png')
             im = os.sep.join(im)
             self.depth_names.append(im)
 
