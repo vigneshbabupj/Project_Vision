@@ -530,6 +530,18 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #     depth_pred = 0
             #dp_prediction = dp_prediction.unsqueeze(0)
             depth_target = torch.from_numpy(np.asarray(depth_target)).to(device).unsqueeze(0).unsqueeze(0).float()
+            
+            depth_target = (
+                            torch.nn.functional.interpolate(
+                                depth_target.unsqueeze(1),
+                                size=dp_img_size[:2],
+                                mode="bicubic",
+                                align_corners=False,
+                            )
+                            #.unsqueeze(0)
+                            #.cpu()
+                            #.numpy()
+                            )
 
             # print('dp_prediction',dp_prediction.shape)
             # print('depth_target',depth_target.shape)
@@ -566,6 +578,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             print('yolo_loss : ', yolo_loss)
             print('ssim_out : ', ssim_out)
+            print('all_loss :',all_loss)
 
             # Compute gradient
             if mixed_precision:
