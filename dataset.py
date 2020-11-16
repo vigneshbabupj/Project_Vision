@@ -515,13 +515,17 @@ class create_data(Dataset):
         depth_name = self.depth_names[index]
 
         img_ip = utils.read_image(img_name)
+        print('img_ip',img_ip.shape)
         img_input = self.transform({"image": img_ip})["image"]
+        print('img_input',img_input.shape)
+
 
 
         #print('depth_name',depth_name)
         depth_img = cv2.imread(depth_name)
         depth_img = cv2.cvtColor(depth_img, cv2.COLOR_BGR2GRAY)
         
+        print('depth_img',depth_img.shape)
         #print('depth_img',depth_img.shape)
 
         data = [img_input,depth_img]
