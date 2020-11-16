@@ -1230,6 +1230,7 @@ def compute_rpn_class_loss(rpn_match, rpn_class_logits):
     rpn_class_logits = rpn_class_logits[indices.data[:,0],indices.data[:,1],:]
     anchor_class = anchor_class[indices.data[:,0],indices.data[:,1]]
 
+    print('anchor_class :',anchor_class.shape)
     ## Crossentropy loss
     loss = F.cross_entropy(rpn_class_logits, anchor_class)
 
