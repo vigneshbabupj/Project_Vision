@@ -561,8 +561,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             yolo_loss *= batch_size / 64
 
 
-            all_loss = (add_plane_loss * plane_loss) + (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
-
+            #all_loss = (add_plane_loss * plane_loss) + (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
+            all_loss = (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
 
             # Compute gradient
             if mixed_precision:
