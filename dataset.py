@@ -131,8 +131,16 @@ class create_data(Dataset):
         self.mosaic = False #self.augment and not self.rect  # load 4 images at a time into a mosaic (only during training)
 
         # Define labels
-        self.label_files = [x.replace('images', 'labels').replace(os.path.splitext(x)[-1], '.txt')
-                            for x in self.img_files]
+        self.label_files=[]
+        for x in self.img_files:
+            x = x.split(os.sep)
+            x[3]= 'labels'
+            x[4] = x[4].replace(os.path.splitext(x[4])[-1], '.txt')
+            x = os.sep.join(x)
+            self.label_files.append(x)
+
+        #self.label_files = [x.replace('images', 'labels').replace(os.path.splitext(x)[-1], '.txt')
+        #                    for x in self.img_files]
 
         # Rectangular Training  https://github.com/ultralytics/yolov3/issues/232
         if self.rect:

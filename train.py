@@ -309,7 +309,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
     ## END yolo train setup 
 
         model.train()
-
+        
+        print(('\n' + '%10s' * 8) % ('Epoch', 'gpu_mem', 'GIoU', 'obj', 'cls', 'total', 'targets', 'img_size'))
         pbar = tqdm(enumerate(trainloader))
 
         #optimizer.zero_grad()
@@ -530,7 +531,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #     depth_pred = 0
             #dp_prediction = dp_prediction.unsqueeze(0)
             depth_target = torch.from_numpy(np.asarray(depth_target)).to(device).unsqueeze(0).unsqueeze(0).float()
-            
+
             depth_target = (
                             torch.nn.functional.interpolate(
                                 depth_target.unsqueeze(1),
@@ -576,9 +577,9 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #all_loss = (add_plane_loss * plane_loss) + (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
             all_loss = (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
 
-            print('yolo_loss : ', yolo_loss)
-            print('ssim_out : ', ssim_out)
-            print('all_loss :',all_loss)
+            print('yolo_loss : ', yolo_loss.item())
+            print('ssim_out : ', ssim_out.item())
+            print('all_loss :',all_loss.item())
 
             # Compute gradient
             if mixed_precision:
