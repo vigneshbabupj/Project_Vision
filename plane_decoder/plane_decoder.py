@@ -1245,7 +1245,7 @@ def compute_rpn_bbox_loss(target_bbox, rpn_match, rpn_bbox):
                -1=negative, 0=neutral anchor.
     rpn_bbox: [batch, anchors, (dy, dx, log(dh), log(dw))]
     """
-
+    print('#'*5,rpn_match)
     ## Squeeze last dim to simplify
     rpn_match = rpn_match.squeeze(2)
 
