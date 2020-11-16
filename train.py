@@ -420,7 +420,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             # All model prediction End
 
-            ''' Vignesh : block planercnn
+            #Vignesh : block planercnn
             #Planercnn start
             rpn_class_loss, rpn_bbox_loss, mrcnn_class_loss, mrcnn_bbox_loss, mrcnn_mask_loss, mrcnn_parameter_loss = compute_losses(config, rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox, target_class_ids, mrcnn_class_logits, target_deltas, mrcnn_bbox, target_mask, mrcnn_mask, target_parameters, mrcnn_parameters)
 
@@ -502,7 +502,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # yolo_loss.backward()
 
             #planercnn END
-            Vignesh : block planercnn '''
+            #Vignesh : block planercnn
 
             ## Midas start
 
@@ -532,7 +532,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #dp_prediction = dp_prediction.unsqueeze(0)
             
             depth_target = torch.from_numpy(np.asarray(depth_target)).to(device).type(torch.cuda.FloatTensor).unsqueeze(0)
-            print('depth_target',depth_target.size())
+            #print('depth_target',depth_target.size())
             depth_target = (
                             torch.nn.functional.interpolate(
                                 depth_target.unsqueeze(1),
