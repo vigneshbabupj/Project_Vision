@@ -1230,7 +1230,7 @@ def compute_rpn_class_loss(rpn_match, rpn_class_logits):
     rpn_class_logits = rpn_class_logits[indices.data[:,0],indices.data[:,1],:]
     anchor_class = anchor_class[indices.data[:,0],indices.data[:,1]]
 
-    print('anchor_class :',anchor_class.shape)
+
     ## Crossentropy loss
     loss = F.cross_entropy(rpn_class_logits, anchor_class)
 
@@ -1251,6 +1251,7 @@ def compute_rpn_bbox_loss(target_bbox, rpn_match, rpn_bbox):
 
     ## Positive anchors contribute to the loss, but negative and
     ## neutral anchors (match value of 0 or -1) don't.
+    print(rpn_match)
     indices = torch.nonzero(rpn_match==1)
     ## Pick bbox deltas that contribute to the loss
     rpn_bbox = rpn_bbox[indices.data[:,0],indices.data[:,1]]
