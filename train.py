@@ -513,7 +513,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                                 mode="bicubic",
                                 align_corners=False,
                             )
-                            .unsqueeze(0)
+                            #.unsqueeze(0)
                             #.cpu()
                             #.numpy()
                             )
