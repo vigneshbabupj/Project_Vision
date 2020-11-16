@@ -546,7 +546,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             ssim_out = -ssim_loss(depth_pred,depth_target)
 
 
-            print('Depth loss :', ssim_out)
+            #print('Depth loss :', ssim_out)
             ## Midas End
 
             #Yolov3 Start
@@ -564,6 +564,9 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #all_loss = (add_plane_loss * plane_loss) + (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
             all_loss = (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
 
+            print('yolo_loss : ', yolo_loss)
+            print('ssim_out : ', ssim_out)
+
             # Compute gradient
             if mixed_precision:
                 with amp.scale_loss(all_loss, optimizer) as scaled_loss:
@@ -580,7 +583,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # Print batch results
             mloss = (mloss * i + yolo_loss_items) / (i + 1)  # update mean losses
             mem = '%.3gG' % (torch.cuda.memory_cached() / 1E9 if torch.cuda.is_available() else 0)  # (GB)
-            s = ('%10s' * 2 + '%10.3g' * 6) % ('%g/%g' % (epoch, epochs - 1), mem, *mloss, len(targets), img_size)
+            s = ('%10s' * 2 + '%10.3g' * 6) % ('%g/%g' % (epoch, epochs - 1), mem, *set(mloss), len(targets), img_size)
             pbar.set_description(s)
 
             # end batch ------------------------------------------------------------------------------------------------
