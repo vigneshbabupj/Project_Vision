@@ -532,7 +532,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #dp_prediction = dp_prediction.unsqueeze(0)
             print('depth_target',depth_target.size)
             depth_target = torch.from_numpy(np.asarray(depth_target)).to(device).type(torch.cuda.FloatTensor)
-            print('depth_target',depth_target.size)
+            print('depth_target',depth_target.size())
             depth_target = (
                             torch.nn.functional.interpolate(
                                 depth_target.unsqueeze(1),
