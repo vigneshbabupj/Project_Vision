@@ -359,7 +359,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
 
             #depth init start
-            img_size,depth_img,depth_target = depth_data #######
+            dp_img_size,depth_img,depth_target = depth_data #######
 
             #print('depth:',type(depth_img),len(depth_img))
             #print('np size:',np.asarray(depth_img).shape)
@@ -509,7 +509,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             dp_prediction = (
                             torch.nn.functional.interpolate(
                                 dp_prediction.unsqueeze(1),
-                                size=img_size[:2],
+                                size=dp_img_size[:2],
                                 mode="bicubic",
                                 align_corners=False,
                             )
@@ -583,7 +583,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # Print batch results
             mloss = (mloss * i + yolo_loss_items) / (i + 1)  # update mean losses
             mem = '%.3gG' % (torch.cuda.memory_cached() / 1E9 if torch.cuda.is_available() else 0)  # (GB)
-            s = ('%10s' * 2 + '%10.3g' * 6) % ('%g/%g' % (epoch, epochs - 1), mem, *set(mloss), len(targets), img_size)
+            s = ('%10s' * 2 + '%10.3g' * 6) % ('%g/%g' % (epoch, epochs - 1), mem, *mloss, len(targets), img_size)
             pbar.set_description(s)
 
             # end batch ------------------------------------------------------------------------------------------------
