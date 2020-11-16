@@ -359,7 +359,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
 
             #depth init start
-            depth_img,depth_target = depth_data #######
+            img_size,depth_img,depth_target = depth_data #######
 
             #print('depth:',type(depth_img),len(depth_img))
             #print('np size:',np.asarray(depth_img).shape)
@@ -506,17 +506,17 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             ## Midas start
 
 
-            # dp_prediction = (
-            #                 torch.nn.functional.interpolate(
-            #                     dp_prediction.unsqueeze(1),
-            #                     size=dp_sample.shape[:2],
-            #                     mode="bicubic",
-            #                     align_corners=False,
-            #                 )
-            #                 .squeeze()
-            #                 #.cpu()
-            #                 #.numpy()
-            #                 )
+            dp_prediction = (
+                            torch.nn.functional.interpolate(
+                                dp_prediction.unsqueeze(1),
+                                size=img_size[:2],
+                                mode="bicubic",
+                                align_corners=False,
+                            )
+                            .squeeze()
+                            #.cpu()
+                            #.numpy()
+                            )
             # bits=2
 
             # depth_min = dp_prediction.min()
@@ -528,7 +528,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #     depth_pred = max_val * (dp_prediction - depth_min) / (depth_max - depth_min)
             # else:
             #     depth_pred = 0
-            dp_prediction = dp_prediction.unsqueeze(0)
+            #dp_prediction = dp_prediction.unsqueeze(0)
             depth_target = torch.from_numpy(np.asarray(depth_target)).to(device).unsqueeze(0).unsqueeze(0).float()
 
             print('dp_prediction',dp_prediction.shape)

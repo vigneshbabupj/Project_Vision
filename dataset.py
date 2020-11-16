@@ -515,27 +515,26 @@ class create_data(Dataset):
         depth_name = self.depth_names[index]
 
         img_ip = utils.read_image(img_name)
-        print('img_ip',img_ip.shape)
+        #print('img_ip',img_ip.shape)
         img_input = self.transform({"image": img_ip})["image"]
-        print('img_input',img_input.shape)
+        #print('img_input',img_input.shape)
 
 
 
         #print('depth_name',depth_name)
         depth_img = cv2.imread(depth_name)
         depth_img = cv2.cvtColor(depth_img, cv2.COLOR_BGR2GRAY)
-        
-        print('depth_img',depth_img.shape)
+
         #print('depth_img',depth_img.shape)
 
-        data = [img_input,depth_img]
+        dp_data = [img_ip.shape,img_input,depth_img]
 
         # midas dataset end
         #print('plane:',len(data_pair))
         #print('yolo:',len(yolo_item))
         #print('depth:',len(data))
 
-        return data_pair,yolo_item,data
+        return data_pair,yolo_item,dp_data
 
     @staticmethod
     def collate_fn(batch):
