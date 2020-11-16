@@ -1245,13 +1245,12 @@ def compute_rpn_bbox_loss(target_bbox, rpn_match, rpn_bbox):
                -1=negative, 0=neutral anchor.
     rpn_bbox: [batch, anchors, (dy, dx, log(dh), log(dw))]
     """
-    print('#'*5,rpn_match)
+    #print('#'*5,rpn_match)
     ## Squeeze last dim to simplify
     rpn_match = rpn_match.squeeze(2)
 
     ## Positive anchors contribute to the loss, but negative and
     ## neutral anchors (match value of 0 or -1) don't.
-    print(rpn_match)
     indices = torch.nonzero(rpn_match==1)
     ## Pick bbox deltas that contribute to the loss
     rpn_bbox = rpn_bbox[indices.data[:,0],indices.data[:,1]]
@@ -1400,7 +1399,7 @@ def compute_losses(config, rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox,
     print('rpn_match',rpn_match.shape)
     print('rpn_class_logits',rpn_class_logits.shape)
     rpn_class_loss = compute_rpn_class_loss(rpn_match, rpn_class_logits)
-    rpn_bbox_loss = compute_rpn_bbox_loss(rpn_bbox, rpn_match, rpn_pred_bbox)
+    #rpn_bbox_loss = compute_rpn_bbox_loss(rpn_bbox, rpn_match, rpn_pred_bbox)
     mrcnn_class_loss = compute_mrcnn_class_loss(target_class_ids, mrcnn_class_logits)
     mrcnn_bbox_loss = compute_mrcnn_bbox_loss(target_deltas, target_class_ids, mrcnn_bbox)
     mrcnn_mask_loss = compute_mrcnn_mask_loss(config, target_mask, target_class_ids, target_parameters, mrcnn_mask)
