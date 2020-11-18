@@ -1860,6 +1860,8 @@ class MaskRCNN(nn.Module):
             rois, target_class_ids, target_deltas, target_mask, target_parameters = \
                 detection_target_layer(rpn_rois, gt_class_ids, gt_boxes, gt_masks, gt_parameters, self.config)
 
+            print('decoder target_class_ids',len(target_class_ids))
+
             if len(rois) == 0:
                 mrcnn_class_logits = Variable(torch.FloatTensor())
                 mrcnn_class = Variable(torch.IntTensor())
@@ -1891,6 +1893,7 @@ class MaskRCNN(nn.Module):
                 ## Add back batch dimension
                 ## Create masks for detections
                 detections, indices, _ = detection_layer(self.config, rpn_rois, mrcnn_class_final, mrcnn_bbox_final, mrcnn_parameters_final, image_metas, return_indices=True, use_nms=use_nms)
+                
                 if len(detections) > 0:                
                     detection_boxes = detections[:, :4] / scale                
                     detection_boxes = detection_boxes.unsqueeze(0)
@@ -1910,6 +1913,8 @@ class MaskRCNN(nn.Module):
                     roi_features = roi_features[indices]                    
                     pass
                 pass
+            
+            print('decoder detections',len(detections))
 
             valid = False                
             if len(detections) > 0:
