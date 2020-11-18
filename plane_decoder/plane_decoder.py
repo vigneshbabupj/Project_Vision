@@ -1694,19 +1694,19 @@ class MaskRCNN(nn.Module):
         molded_images = input[0]
         image_metas = input[1]
 
-        if mode == 'inference':
-            print('inf'*30)
-            self.eval()
-        elif 'training' in mode:
-            print('train'*30)
-            self.train()
-            ## Set batchnorm always in eval mode during training
-            def set_bn_eval(m):
-                classname = m.__class__.__name__
-                if classname.find('BatchNorm') != -1:
-                    m.eval()
+        #if mode == 'inference':
+        #    print('inf'*30)
+        #    self.eval()
+        #elif 'training' in mode:
+        print('train'*30)
+        self.train()
+        ## Set batchnorm always in eval mode during training
+        def set_bn_eval(m):
+            classname = m.__class__.__name__
+            if classname.find('BatchNorm') != -1:
+                m.eval()
 
-            self.apply(set_bn_eval)
+        self.apply(set_bn_eval)
 
         ## Feature extraction
         [p2_out, p3_out, p4_out, p5_out, p6_out] = self.fpn(molded_images,resnet_out)
