@@ -1695,8 +1695,10 @@ class MaskRCNN(nn.Module):
         image_metas = input[1]
 
         if mode == 'inference':
+            print('inf'*30)
             self.eval()
         elif 'training' in mode:
+            print('train'*30)
             self.train()
             ## Set batchnorm always in eval mode during training
             def set_bn_eval(m):
