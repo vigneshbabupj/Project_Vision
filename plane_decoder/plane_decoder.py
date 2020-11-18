@@ -1396,8 +1396,23 @@ def compute_mrcnn_parameter_loss(target_parameters, target_class_ids, pred_param
 
 def compute_losses(config, rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox, target_class_ids, mrcnn_class_logits, target_deltas, mrcnn_bbox, target_mask, mrcnn_mask, target_parameters, mrcnn_parameters):
 
-    print('rpn_match',rpn_match.shape)
-    print('rpn_class_logits',rpn_class_logits.shape)
+    #print('rpn_match',rpn_match.shape)
+    #print('rpn_class_logits',rpn_class_logits.shape)
+    print('#'*66)
+    print('rpn_match',len(rpn_match))
+    print('rpn_bbox',len(rpn_bbox))
+    print('rpn_class_logits',len(rpn_class_logits))
+    print('rpn_pred_bbox',len(rpn_pred_bbox))
+    print('target_class_ids',len(target_class_ids))
+    print('mrcnn_class_logits',len(mrcnn_class_logits))
+    print('target_deltas',len(target_deltas))
+    print('mrcnn_bbox',len(mrcnn_bbox))
+    print('target_mask',len(target_mask))
+    print('mrcnn_mask',len(mrcnn_mask))
+    print('target_parameters',len(target_parameters))
+    print('mrcnn_parameters',len(mrcnn_parameters))
+
+
     rpn_class_loss = compute_rpn_class_loss(rpn_match, rpn_class_logits)
     #rpn_bbox_loss = compute_rpn_bbox_loss(rpn_bbox, rpn_match, rpn_pred_bbox)
     mrcnn_class_loss = compute_mrcnn_class_loss(target_class_ids, mrcnn_class_logits)
