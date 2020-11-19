@@ -479,7 +479,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
 
             input_pair.append({'image': images, 'depth': gt_depth, 'mask': gt_masks, 'bbox': gt_boxes, 'extrinsics': extrinsics, 'segmentation': gt_segmentation, 'parameters': detection_gt_parameters, 'plane': planes, 'camera': camera})
-            detection_pair.append({'XYZ': XYZ_pred, 'depth': XYZ_pred[1:2], 'mask': detection_mask, 'detection': detections, 'masks': detection_masks, 'feature_map': feature_map[0], 'plane_XYZ': plane_XYZ, 'depth_np': depth_np_pred})
+            detection_pair.append({'XYZ': XYZ_pred, 'depth': XYZ_pred[1:2], 'mask': detection_mask, 'detection': detections, 'masks': detection_masks, 'plane_XYZ': plane_XYZ, 'depth_np': depth_np_pred})
 
             if 'depth' in options.suffix:
                 ## Apply supervision on reconstructed depthmap (not used currently)
@@ -598,9 +598,9 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             yolo_loss *= batch_size / 64
 
 
-            #all_loss = (add_plane_loss * plane_loss) + (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
-            all_loss = (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
-
+            all_loss = (add_plane_loss * plane_loss) + (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
+            #all_loss = (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
+            print('plane_loss : ', plane_loss.item())
             print('yolo_loss : ', yolo_loss.item())
             print('ssim_out : ', ssim_out.item())
             print('all_loss :',all_loss.item())
