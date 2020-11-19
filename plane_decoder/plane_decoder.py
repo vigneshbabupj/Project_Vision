@@ -134,7 +134,7 @@ class FPN(nn.Module):
         c3_out = resnet_out[1] #x
         #x = self.C4(x)
         c4_out = resnet_out[2] #x
-        #x = resnet_out[3]#x
+        x = resnet_out[3]#x
         p5_out = self.P5_conv1(x)
         
         if self.bilinear_upsampling:
