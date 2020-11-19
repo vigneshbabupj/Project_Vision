@@ -141,7 +141,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
     # Initialize model
     #model = Darknet(cfg).to(device)
-    model = VisionNet(cfg,None,config).to(device)
+    model = VisionNet(yolo_cfg=cfg,midas_cfg=None,planercnn_cfg=config).to(device)
 
     # Optimizer
     pg0, pg1, pg2 = [], [], []  # optimizer parameter groups
