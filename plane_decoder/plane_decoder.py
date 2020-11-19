@@ -99,11 +99,11 @@ class FPN(nn.Module):
         super(FPN, self).__init__()
         self.out_channels = out_channels
         self.bilinear_upsampling = bilinear_upsampling
-        #self.C1 = C1
-        #self.C2 = C2
-        #self.C3 = C3
-        #self.C4 = C4
-        #self.C5 = C5
+        self.C1 = C1
+        self.C2 = C2
+        self.C3 = C3
+        self.C4 = C4
+        self.C5 = C5
         self.P6 = nn.MaxPool2d(kernel_size=1, stride=2)
         self.P5_conv1 = nn.Conv2d(2048, self.out_channels, kernel_size=1, stride=1)
         self.P5_conv2 = nn.Sequential(
@@ -127,14 +127,14 @@ class FPN(nn.Module):
         )
 
     def forward(self, x,resnet_out):
-        #x = self.C1(x)
-        #x = self.C2(x)
-        c2_out = resnet_out[0]
-        #x = self.C3(x)
-        c3_out = resnet_out[1]
-        #x = self.C4(x)
-        c4_out = resnet_out[2]
-        x = resnet_out[3]#self.C5(x)
+        x = self.C1(x)
+        x = self.C2(x)
+        c2_out = x #resnet_out[0]
+        x = self.C3(x)
+        c3_out = x #resnet_out[1]
+        x = self.C4(x)
+        c4_out = x #resnet_out[2]
+        x = self.C5(x)#resnet_out[3]#
         p5_out = self.P5_conv1(x)
         
         if self.bilinear_upsampling:
@@ -203,7 +203,7 @@ class Bottleneck(nn.Module):
         return out
 
 # Vignesh Start: replace Resnet encoder
-'''
+
 class ResNet(nn.Module):
 
     def __init__(self, architecture, stage5=False, numInputChannels=3):
@@ -257,7 +257,7 @@ class ResNet(nn.Module):
             layers.append(block(self.inplanes, planes))
 
         return nn.Sequential(*layers)
-'''
+
 # Vignesh END: replace Resnet encoder
 
 ############################################################
@@ -1460,11 +1460,11 @@ class MaskRCNN(nn.Module):
         ## Bottom-up Layers
         ## Returns a list of the last layers of each stage, 5 in total.
         ## Don't create the thead (stage 5), so we pick the 4th item in the list.
-        #resnet = ResNet("resnet101", stage5=True, numInputChannels=config.NUM_INPUT_CHANNELS)
-        #C1, C2, C3, C4, C5 = resnet.stages()
+        resnet = ResNet("resnet101", stage5=True, numInputChannels=config.NUM_INPUT_CHANNELS)
+        C1, C2, C3, C4, C5 = resnet.stages()
 
         #Vignesh Replace resnet encoder
-        C1, C2, C3, C4, C5 = [ResNet_encoder.layer1,ResNet_encoder.layer2,ResNet_encoder.layer3,ResNet_encoder.layer4,None]
+        #C1, C2, C3, C4, C5 = [ResNet_encoder.layer1,ResNet_encoder.layer2,ResNet_encoder.layer3,ResNet_encoder.layer4,None]
 
         ## Top-down Layers
         ## TODO: add assert to varify feature map sizes match what's in config
