@@ -404,20 +404,9 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             masks = (gt_segmentation == torch.arange(gt_segmentation.max() + 1).cuda().view(-1, 1, 1)).float()
             input_pair.append({'image': images, 'depth': gt_depth, 'bbox': gt_boxes, 'extrinsics': extrinsics, 'segmentation': gt_segmentation, 'camera': camera, 'plane': planes[0], 'masks': masks, 'mask': gt_masks})
             
-            plane_inp = dict(input = [images, image_metas, gt_class_ids, gt_boxes, gt_masks, gt_parameters, camera], mode='inference_detection', use_nms=2, use_refinement=False, return_feature_map=False)
-            print('gt_boxes',len(gt_boxes))
-            print('images',len(images))
-            print('image_metas',image_metas)
-            print('rpn_match',len(rpn_match))
-            print('rpn_bbox',len(rpn_bbox))
-            print('gt_class_ids',len(gt_class_ids))
-            print('gt_masks',len(gt_masks))
-            print('gt_parameters',len(gt_parameters))
-            print('gt_depth',len(gt_depth))
-            print('extrinsics',len(extrinsics))
-            print('planes',len(planes))
-            print('gt_segmentation',len(gt_segmentation))
-            
+            plane_inp = dict(input = [images, image_metas, gt_class_ids, gt_boxes, gt_masks, gt_parameters, camera], mode='inference_detection', use_nms=2, use_refinement=True, return_feature_map=False)
+
+
             #planercnn init end
 
             # All model prediction start
