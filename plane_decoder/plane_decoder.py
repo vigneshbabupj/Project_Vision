@@ -453,7 +453,7 @@ def pyramid_roi_align(inputs, pool_size, image_shape):
         if level_boxes.is_cuda:
             ind = ind.cuda()
         feature_maps[i] = feature_maps[i].unsqueeze(0)  #CropAndResizeFunction needs batch dimension
-        pooled_features = CropAndResizeFunction(pool_size, pool_size, 0)(feature_maps[i], level_boxes, ind)
+        pooled_features = CropAndResizeFunction.apply((feature_maps[i], level_boxes, ind),(pool_size, pool_size, 0))
         pooled.append(pooled_features)
 
     ## Pack pooled features into one tensor
