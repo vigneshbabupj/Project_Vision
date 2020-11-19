@@ -605,7 +605,7 @@ def detection_target_layer(proposals, gt_class_ids, gt_boxes, gt_masks, gt_param
 
     ## 1. Positive ROIs are those with >= 0.5 IoU with a GT box
     positive_roi_bool = roi_iou_max >= 0.5
-    #print('positive count', positive_roi_bool.sum())
+    print('positive count', positive_roi_bool.sum())
 
     ## Subsample ROIs. Aim for 33% positive
     ## Positive ROIs
