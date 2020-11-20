@@ -425,7 +425,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #Vignesh : block planercnn
             #Planercnn start
             print('detections   :',len(detections))
-            print('rpn_class_logits',len(rpn_class_logits))
+            print('rpn_class_logits',len(rpn_class_logits),rpn_class_logits.shape)
             print('rpn_pred_bbox',len(rpn_pred_bbox))
             print('target_class_ids',len(target_class_ids))
             print('mrcnn_class_logits',len(mrcnn_class_logits))
