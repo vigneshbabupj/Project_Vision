@@ -263,6 +263,7 @@ class Darknet(nn.Module):
 
     def forward_once(self, x,Yolo_61,Yolo_36, augment=False, verbose=False):
         Yolo_75 = x.clone()
+        print('*'*66,'Yolo_75',Yolo_75)
         img_size = x.shape[-2:]  # height, width
         yolo_out, out = [], []
         if verbose:
