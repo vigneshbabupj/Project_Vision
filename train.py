@@ -31,7 +31,7 @@ hyp = {'giou': 1.54,#3.54,  # giou loss gain
        'obj': 64.3,  # obj loss gain (*=img_size/320 if img_size != 320)
        'obj_pw': 1.0,  # obj BCELoss positive_weight
        'iou_t': 0.225,  # iou training threshold
-       'lr0': 0.01,  # initial learning rate (SGD=5E-3, Adam=5E-4)
+       'lr0': 0.001,  # initial learning rate (SGD=5E-3, Adam=5E-4)
        'lrf': 0.0005,  # final learning rate (with cos scheduler)
        'momentum': 0.937,  # SGD momentum
        'weight_decay': 0.000484,  # optimizer weight decay
@@ -518,8 +518,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             plane_loss = sum(plane_losses)
             plane_losses = [l.data.item() for l in plane_losses] #train_planercnn.py 331
 
-            print('plane_loss : ',plane_loss)
-            print('plane_losses : ',plane_losses)
+            #print('plane_loss : ',plane_loss)
+            #print('plane_losses : ',plane_losses)
 
             # epoch_losses.append(losses)
             # status = str(epoch + 1) + ' yolo_loss: '
