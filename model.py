@@ -49,7 +49,8 @@ class VisionNet(nn.Module):
 	def forward(self,yolo_ip,midas_ip,plane_ip):
 
 		x = yolo_ip
-		#print('yolo_ip',yolo_ip[0][0])
+		print('yolo_ip',yolo_ip.shape,yolo_ip[0][0])
+		print('midas_ip',midas_ip.shape,midas_ip[0][0])
 
 		# Encoder blocks
 		layer_1 = self.encoder.layer1(x)
