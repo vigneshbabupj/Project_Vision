@@ -27,9 +27,9 @@ results_file = 'results.txt'
 
 hyp = {'giou': 3.54,  # giou loss gain
        'cls': 37.4,  # cls loss gain
-       'cls_pw': 0.5,#1.0,  # cls BCELoss positive_weight
+       'cls_pw': 1.0,  # cls BCELoss positive_weight
        'obj': 64.3,  # obj loss gain (*=img_size/320 if img_size != 320)
-       'obj_pw': 0.5,#1.0,  # obj BCELoss positive_weight
+       'obj_pw': 1.0,  # obj BCELoss positive_weight
        'iou_t': 0.225,  # iou training threshold
        'lr0': 0.01,  # initial learning rate (SGD=5E-3, Adam=5E-4)
        'lrf': 0.0005,  # final learning rate (with cos scheduler)
@@ -586,7 +586,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             depth_pred = Variable( dp_prediction,  requires_grad=True)
             depth_target = Variable( depth_target, requires_grad = False)
 
-            print('depth',[x.size() for x in [depth_pred,depth_target]])
+            print('depth',[[len(x),x.size()]  for x in [depth_pred,depth_target]])
 
             ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
             ssim_out = -ssim_loss(depth_pred,depth_target)
@@ -596,7 +596,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             ## Midas End
 
             #Yolov3 Start
-
+            print('YOLO',[[len(x),x.size()] for x in [pred, targets]])
             # Compute yolo_loss
             yolo_loss, yolo_loss_items = compute_loss(pred, targets, model)
             print('yolo_loss : ', yolo_loss.item())
