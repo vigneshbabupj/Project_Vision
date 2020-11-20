@@ -145,7 +145,7 @@ def resize_image(image, min_dim=None, max_dim=None, padding=False, interp='bilin
             scale = max_dim / image_max
     ## Resize image and mask
     if scale != 1:
-        image = cv2.resize(image, (image.shape[1] * scale, image.shape[0] * scale))
+        image = cv2.resize(image, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
     ## Need padding?
     if padding:
         ## Get new height and width
