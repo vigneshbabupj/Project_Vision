@@ -609,7 +609,7 @@ def detection_target_layer(proposals, gt_class_ids, gt_boxes, gt_masks, gt_param
 
     ## 1. Positive ROIs are those with >= 0.5 IoU with a GT box
     positive_roi_bool = roi_iou_max >= 0.5
-    print('positive count', positive_roi_bool.sum())
+   #print('positive count', positive_roi_bool.sum())
 
     ## Subsample ROIs. Aim for 33% positive
     ## Positive ROIs
@@ -1871,7 +1871,7 @@ class MaskRCNN(nn.Module):
             rois, target_class_ids, target_deltas, target_mask, target_parameters = \
                 detection_target_layer(rpn_rois, gt_class_ids, gt_boxes, gt_masks, gt_parameters, self.config)
 
-            print('decoder target_class_ids',len(target_class_ids))
+            #print('decoder target_class_ids',len(target_class_ids))
 
             if len(rois) == 0:
                 mrcnn_class_logits = Variable(torch.FloatTensor())
@@ -1925,7 +1925,7 @@ class MaskRCNN(nn.Module):
                     pass
                 pass
             
-            print('decoder detections',len(detections))
+            #print('decoder detections',len(detections))
 
             valid = False                
             if len(detections) > 0:
