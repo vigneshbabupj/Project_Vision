@@ -396,7 +396,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # print('gt_class_ids',gt_class_ids.size())
             # print('gt_masks',gt_masks.size())
             # print('gt_parameters',gt_parameters.size())
-            # print('gt_depth',gt_depth.size())
+            print('gt_depth',gt_depth.size())
             # print('extrinsics',extrinsics.size())
             # print('planes',planes.size())
             # print('gt_segmentation',gt_segmentation.size())
