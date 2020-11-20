@@ -328,6 +328,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             #yolov3 init start
             imgs, targets, paths, _ = yolo_data
+            print('1 img::::::::::::;;',imgs)
 
             ni = i + nb * epoch  # number integrated batches (since train start)
             imgs = imgs.to(device).float() / 255.0  # uint8 to float32, 0 - 255 to 0.0 - 1.0
@@ -355,6 +356,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                     imgs = F.interpolate(imgs, size=ns, mode='bilinear', align_corners=False)
 
             yolo_inp = imgs
+            print('2 img::::::::::::;;',imgs)
             # Run model
             #pred = model(imgs)
 
@@ -592,7 +594,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             #ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
             #ssim_loss = msssim() #https://github.com/jorge-pessoa/pytorch-msssim
-            ssim_out = -msssim(depth_pred,depth_target,normalize='relu')
+            ssim_out = 1-msssim(depth_pred,depth_target,normalize='relu').item()
 
 
             #print('Depth loss :', ssim_out)
