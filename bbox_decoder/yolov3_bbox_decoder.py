@@ -299,13 +299,14 @@ class Darknet(nn.Module):
                         str = ' >> ' + ' + '.join(['layer %g %s' % x for x in zip(l, sh)])
                     x = module(x, out)  # WeightedFeatureFusion(), FeatureConcat()
                 elif name == 'YOLOLayer':
-                    #vig
-                    if not torch.isfinite(x).all():
-                        print('x',x) 
+
                     yolo_out.append(module(x, out))
 
                 else:  # run module directly, i.e. mtype = 'convolutional', 'upsample', 'maxpool', 'batchnorm2d' etc.
                     x = module(x)
+                    
+            if not torch.isfinite(x).all():
+                print('i:',i,'name:',name)
 
             out.append(x if self.routs[i] else [])
             

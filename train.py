@@ -591,7 +591,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             print('depth',[[len(x),x.size()]  for x in [depth_pred,depth_target]])
 
             #ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
-            ssim_loss = pytorch_msssim.MSSSIM() #https://github.com/jorge-pessoa/pytorch-msssim
+            ssim_loss = pytorch_msssim.MSSSIM(normalize='relu') #https://github.com/jorge-pessoa/pytorch-msssim
             ssim_out = -ssim_loss(depth_pred,depth_target)
 
 
@@ -608,7 +608,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             if not torch.isfinite(yolo_loss):
                 print('path:',paths)
                 print('YOLO',[len(x) for x in [pred, targets]])
-                print('pred',pred)
+                #print('pred',pred)
                 print('target',targets)
                 print('WARNING: non-finite yolo_loss, ending training ', yolo_loss_items)
                 return results
