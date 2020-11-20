@@ -130,16 +130,16 @@ class FPN(nn.Module):
         #x = self.C1(x)
         #x = self.C2(x)
         c2_out = resnet_out[0] #x
-        print('c2_out',c2_out.shape)
+        # print('c2_out',c2_out.shape)
         #x = self.C3(x)
         c3_out = resnet_out[1] #x
-        print('c3_out',c3_out.shape)
+        # print('c3_out',c3_out.shape)
         #x = self.C4(x)
         c4_out = resnet_out[2] #x
-        print('c4_out',c4_out.shape)
+        # print('c4_out',c4_out.shape)
         x = resnet_out[3]#x
         p5_out = self.P5_conv1(x)
-        print('p5_out',p5_out.shape)
+        # print('p5_out',p5_out.shape)
         
         if self.bilinear_upsampling:
             p4_out = self.P4_conv1(c4_out) + F.upsample(p5_out, scale_factor=2, mode='bilinear')
@@ -1404,19 +1404,19 @@ def compute_losses(config, rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox,
 
     #print('rpn_match',rpn_match.shape)
     #print('rpn_class_logits',rpn_class_logits.shape)
-    print('#'*66,' compute_losses')
-    print('rpn_match',len(rpn_match),rpn_match.shape, rpn_class_logits.shape)
-    print('rpn_bbox',len(rpn_bbox))
-    print('rpn_class_logits',len(rpn_class_logits))
-    print('rpn_pred_bbox',len(rpn_pred_bbox))
-    print('target_class_ids',len(target_class_ids))
-    print('mrcnn_class_logits',len(mrcnn_class_logits))
-    print('target_deltas',len(target_deltas))
-    print('mrcnn_bbox',len(mrcnn_bbox))
-    print('target_mask',len(target_mask))
-    print('mrcnn_mask',len(mrcnn_mask))
-    print('target_parameters',len(target_parameters))
-    print('mrcnn_parameters',len(mrcnn_parameters))
+    # print('#'*66,' compute_losses')
+    # print('rpn_match',len(rpn_match),rpn_match.shape, rpn_class_logits.shape)
+    # print('rpn_bbox',len(rpn_bbox))
+    # print('rpn_class_logits',len(rpn_class_logits))
+    # print('rpn_pred_bbox',len(rpn_pred_bbox))
+    # print('target_class_ids',len(target_class_ids))
+    # print('mrcnn_class_logits',len(mrcnn_class_logits))
+    # print('target_deltas',len(target_deltas))
+    # print('mrcnn_bbox',len(mrcnn_bbox))
+    # print('target_mask',len(target_mask))
+    # print('mrcnn_mask',len(mrcnn_mask))
+    # print('target_parameters',len(target_parameters))
+    # print('mrcnn_parameters',len(mrcnn_parameters))
 
 
     rpn_class_loss =0# compute_rpn_class_loss(rpn_match, rpn_class_logits)
@@ -1713,7 +1713,7 @@ class MaskRCNN(nn.Module):
 
         self.apply(set_bn_eval)
 
-        print('$$$$$$$$molded_images',molded_images.shape)
+        #print('$$$$$$$$molded_images',molded_images.shape)
 
         ## Feature extraction
         [p2_out, p3_out, p4_out, p5_out, p6_out] = self.fpn(molded_images,resnet_out)
@@ -1723,7 +1723,7 @@ class MaskRCNN(nn.Module):
         rpn_feature_maps = [p2_out, p3_out, p4_out, p5_out, p6_out]
         mrcnn_feature_maps = [p2_out, p3_out, p4_out, p5_out]
 
-        print('FPN shapes:',[x.shape for x in rpn_feature_maps])
+        #print('FPN shapes:',[x.shape for x in rpn_feature_maps])
 
         feature_maps = [feature_map for index, feature_map in enumerate(rpn_feature_maps[::-1])]
         if self.config.PREDICT_DEPTH:

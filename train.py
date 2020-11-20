@@ -396,7 +396,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # print('gt_class_ids',gt_class_ids.size())
             # print('gt_masks',gt_masks.size())
             # print('gt_parameters',gt_parameters.size())
-            print('gt_depth',gt_depth.size())
+            # print('gt_depth',gt_depth.size())
             # print('extrinsics',extrinsics.size())
             # print('planes',planes.size())
             # print('gt_segmentation',gt_segmentation.size())
@@ -424,26 +424,25 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             #Vignesh : block planercnn
             #Planercnn start
-            print('detections   :',len(detections))
-            print('rpn_class_logits',len(rpn_class_logits),rpn_class_logits.shape)
-            print('rpn_pred_bbox',len(rpn_pred_bbox))
-            print('target_class_ids',len(target_class_ids))
-            print('mrcnn_class_logits',len(mrcnn_class_logits))
-            print('target_deltas',len(target_deltas))
-            print('mrcnn_bbox',len(mrcnn_bbox))
-            print('target_mask',len(target_mask))
-            print('mrcnn_mask',len(mrcnn_mask))
-            print('target_parameters',len(target_parameters))
-            print('mrcnn_parameters',len(mrcnn_parameters))
-            print('detections',len(detections))
-            print('detection_masks',len(detection_masks))
-            print('detection_gt_parameters',len(detection_gt_parameters))
-            print('detection_gt_masks',len(detection_gt_masks))
-            print('rpn_rois',len(rpn_rois))
-            print('roi_features',len(roi_features))
-            print('roi_indices',len(roi_indices))
-            #print('feature_map',len(feature_map))
-            print('depth_np_pred',len(depth_np_pred),depth_np_pred.size())
+            # print('detections   :',len(detections))
+            # print('rpn_class_logits',len(rpn_class_logits),rpn_class_logits.shape)
+            # print('rpn_pred_bbox',len(rpn_pred_bbox))
+            # print('target_class_ids',len(target_class_ids))
+            # print('mrcnn_class_logits',len(mrcnn_class_logits))
+            # print('target_deltas',len(target_deltas))
+            # print('mrcnn_bbox',len(mrcnn_bbox))
+            # print('target_mask',len(target_mask))
+            # print('mrcnn_mask',len(mrcnn_mask))
+            # print('target_parameters',len(target_parameters))
+            # print('mrcnn_parameters',len(mrcnn_parameters))
+            # print('detections',len(detections))
+            # print('detection_masks',len(detection_masks))
+            # print('detection_gt_parameters',len(detection_gt_parameters))
+            # print('detection_gt_masks',len(detection_gt_masks))
+            # print('rpn_rois',len(rpn_rois))
+            # print('roi_features',len(roi_features))
+            # print('roi_indices',len(roi_indices))
+            # print('depth_np_pred',len(depth_np_pred),depth_np_pred.size())
 
             rpn_class_loss, rpn_bbox_loss, mrcnn_class_loss, mrcnn_bbox_loss, mrcnn_mask_loss, mrcnn_parameter_loss = compute_losses(config, rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox, target_class_ids, mrcnn_class_logits, target_deltas, mrcnn_bbox, target_mask, mrcnn_mask, target_parameters, mrcnn_parameters)
 
@@ -517,6 +516,9 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             plane_loss = sum(plane_losses)
             plane_losses = [l.data.item() for l in plane_losses] #train_planercnn.py 331
+
+            print('plane_loss : ',plane_loss)
+            print('plane_losses : ',plane_losses)
 
             # epoch_losses.append(losses)
             # status = str(epoch + 1) + ' yolo_loss: '
