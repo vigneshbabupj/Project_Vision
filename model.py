@@ -46,12 +46,15 @@ class VisionNet(nn.Module):
 	def forward(self,yolo_ip,midas_ip,plane_ip):
 
 		x = yolo_ip
+		print('yolo_ip',yolo_ip[0][0])
 
 		# Encoder blocks
 		layer_1 = self.encoder.layer1(x)
 		layer_2 = self.encoder.layer2(layer_1)
 		layer_3 = self.encoder.layer3(layer_2)
 		layer_4 = self.encoder.layer4(layer_3)
+
+		print('%'*66,'layer_4',layer_4[0][0])
 
 		Yolo_75 = self.conv1(layer_4)
 		Yolo_61 = self.conv2(layer_3)
@@ -69,7 +72,7 @@ class VisionNet(nn.Module):
 		#print('en Yolo_61 :',Yolo_61.shape)
 		#print('en Yolo_36 :',Yolo_36.shape)
 
-		print('^'*66,'Yolo_75',Yolo_75)
+		print('^'*66,'Yolo_75',Yolo_75[0][0])
 		#YOLOv3 bbox decoder
 		bbox_out = self.bbox_decoder(Yolo_75,Yolo_61,Yolo_36)
 

@@ -263,7 +263,6 @@ class Darknet(nn.Module):
 
     def forward_once(self, x,Yolo_61,Yolo_36, augment=False, verbose=False):
         Yolo_75 = x.clone()
-        print('*'*66,'Yolo_75',Yolo_75)
         img_size = x.shape[-2:]  # height, width
         yolo_out, out = [], []
         if verbose:
@@ -307,8 +306,8 @@ class Darknet(nn.Module):
                 else:  # run module directly, i.e. mtype = 'convolutional', 'upsample', 'maxpool', 'batchnorm2d' etc.
                     x = module(x)
 
-            if not torch.isfinite(x).all():
-                print('i:',i,'name:',name,'x',x[0][0][0])
+            #if not torch.isfinite(x).all():
+            #    print('i:',i,'name:',name,'x',x[0][0][0])
 
             out.append(x if self.routs[i] else [])
             
