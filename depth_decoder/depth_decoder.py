@@ -40,9 +40,9 @@ class MidasNet_decoder(nn.Module):
         )
 
         #Vignesh
-        if path:
+        #if path:
             #self.load(path)
-            self.load_state_dict(torch.load(path),strict=False)
+            #self.load_state_dict(torch.load(path),strict=False)
 
     def forward(self, *xs):
         """Forward pass.
