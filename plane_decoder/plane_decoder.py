@@ -1709,6 +1709,8 @@ class MaskRCNN(nn.Module):
 
         self.apply(set_bn_eval)
 
+        print('$$$$$$$$molded_images',molded_images.shape)
+
         ## Feature extraction
         [p2_out, p3_out, p4_out, p5_out, p6_out] = self.fpn(molded_images,resnet_out)
 
