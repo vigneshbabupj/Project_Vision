@@ -1240,6 +1240,8 @@ def compute_rpn_class_loss(rpn_match, rpn_class_logits):
     ## Crossentropy loss
     loss = F.cross_entropy(rpn_class_logits, anchor_class)
 
+    print('compute_rpn_class_loss', loss)
+
     return loss
 
 def compute_rpn_bbox_loss(target_bbox, rpn_match, rpn_bbox):
