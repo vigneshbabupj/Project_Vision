@@ -74,7 +74,7 @@ class Config(object):
 
     # Non-max suppression threshold to filter RPN proposals.
     # You can reduce this during training to generate more propsals.
-    RPN_NMS_THRESHOLD = 0.3
+    RPN_NMS_THRESHOLD = 0.5
 
     # How many anchors per image to use for RPN training
     RPN_TRAIN_ANCHORS_PER_IMAGE = 256
@@ -159,7 +159,7 @@ class Config(object):
 
     METADATA = np.array([571.87, 571.87, 320, 240, 640, 480, 0, 0, 0, 0])
 
-    IMAGE_MAX_DIM = 640#640
+    IMAGE_MAX_DIM = 512#640
     IMAGE_MIN_DIM = 64 #480
 
     GLOBAL_MASK = False
