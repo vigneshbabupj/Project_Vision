@@ -321,7 +321,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
         for i,(plane_data,yolo_data,depth_data) in pbar:
 
-            # print('i:',i)
+            print('i:',i)
             # print('plane :',len(plane_data))
             # print('yolo :',len(yolo_data))
             # print('depth :',len(depth_data))
@@ -330,7 +330,6 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             imgs, targets, paths, _ = yolo_data
 
             if paths[0] not in ['./data/customdata/images/Mimg_077.jpg','./data/customdata/images/Himage_102.jpg']:
-                print(i)
                 continue
             
 
