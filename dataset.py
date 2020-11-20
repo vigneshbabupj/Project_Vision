@@ -425,8 +425,8 @@ class create_data(Dataset):
         rpn_match = rpn_match[:, np.newaxis]
         image = mold_image(image.astype(np.float32), self.config)
 
-        depth = np.concatenate([np.zeros((512, 512)), depth, np.zeros((512, 512))], axis=0).astype(np.float32)
-        segmentation = np.concatenate([np.full((512, 512), fill_value=-1), segmentation, np.full((512, 512), fill_value=-1)], axis=0).astype(np.float32)
+        depth = np.concatenate([np.zeros((80, 512)), depth, np.zeros((80, 512))], axis=0).astype(np.float32)
+        segmentation = np.concatenate([np.full((80, 512), fill_value=-1), segmentation, np.full((80, 512), fill_value=-1)], axis=0).astype(np.float32)
 
         data_pair = [image.transpose((2, 0, 1)).astype(np.float32), image_metas, rpn_match.astype(np.int32), rpn_bbox.astype(np.float32), gt_class_ids.astype(np.int32), gt_boxes.astype(np.float32), gt_masks.transpose((2, 0, 1)).astype(np.float32), gt_parameters[:, :-1].astype(np.float32), depth.astype(np.float32), extrinsics.astype(np.float32), planes.astype(np.float32), segmentation.astype(np.int64), gt_parameters[:, -1].astype(np.int32)]
         data_pair = data_pair + data_pair
