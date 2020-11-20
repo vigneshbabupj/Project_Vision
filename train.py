@@ -449,6 +449,10 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             plane_losses += [rpn_class_loss + rpn_bbox_loss + mrcnn_class_loss + mrcnn_bbox_loss + mrcnn_mask_loss + mrcnn_parameter_loss]
 
+            if depth_np_pred.shape != gt_depth.shape:
+                depth_np_pred = torch.nn.functional.interpolate(depth_np_pred.unsqueeze(1), size=(512, 512), mode='bilinear').squeeze(1)
+                pass
+
             if config.PREDICT_NORMAL_NP:
                 normal_np_pred = depth_np_pred[0, 1:]                    
                 depth_np_pred = depth_np_pred[:, 0]
