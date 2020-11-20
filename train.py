@@ -522,7 +522,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #         #break
             #     #continue            
 
-            plane_loss = sum(plane_losses)
+            #plane_loss = sum(plane_losses)
+            plane_loss = mean(plane_losses)
             plane_losses = [l.data.item() for l in plane_losses] #train_planercnn.py 331
 
             #print('plane_loss : ',plane_loss)
