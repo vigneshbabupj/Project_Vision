@@ -300,9 +300,9 @@ class Darknet(nn.Module):
                     x = module(x, out)  # WeightedFeatureFusion(), FeatureConcat()
                 elif name == 'YOLOLayer':
                     #vig
-                    if not torch.isfinite(x):
+                    if not torch.isfinite(x).all():
                         print('x',x) 
-                    if not torch.isfinite(out):
+                    if not torch.isfinite(out).all():
                         print('out',out)
 
                     yolo_out.append(module(x, out))
