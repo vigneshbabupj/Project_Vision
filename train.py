@@ -329,8 +329,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #yolov3 init start
             imgs, targets, paths, _ = yolo_data
 
-            if paths[0] not in ['./data/customdata/images/Mimg_077.jpg','./data/customdata/images/Himage_102.jpg']:
-                continue
+            #if paths[0] not in ['./data/customdata/images/Mimg_077.jpg','./data/customdata/images/Himage_102.jpg']:
+            #    continue
             
 
             ni = i + nb * epoch  # number integrated batches (since train start)
