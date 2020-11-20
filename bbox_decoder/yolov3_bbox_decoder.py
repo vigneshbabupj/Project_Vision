@@ -302,10 +302,12 @@ class Darknet(nn.Module):
                     #vig
                     if not torch.isfinite(x).all():
                         print('x',x) 
-                    if not torch.isfinite(out).all():
-                        print('out',out)
-
                     yolo_out.append(module(x, out))
+
+                    if not torch.isfinite(module(x, out)).all():
+                        print('module(x, out)',module(x, out))
+
+
                 else:  # run module directly, i.e. mtype = 'convolutional', 'upsample', 'maxpool', 'batchnorm2d' etc.
                     x = module(x)
 
