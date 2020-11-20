@@ -284,6 +284,7 @@ class Darknet(nn.Module):
             ##Vignesh : Add block to run the model only for the concate layers
             if i == 36:
                 x =  Yolo_36
+
             elif i == 61:
                 x = Yolo_61
                 
@@ -304,9 +305,9 @@ class Darknet(nn.Module):
 
                 else:  # run module directly, i.e. mtype = 'convolutional', 'upsample', 'maxpool', 'batchnorm2d' etc.
                     x = module(x)
-                    
+
             if not torch.isfinite(x).all():
-                print('i:',i,'name:',name)
+                print('i:',i,'name:',name,'x',x[0][0][0])
 
             out.append(x if self.routs[i] else [])
             
