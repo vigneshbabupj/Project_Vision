@@ -1402,8 +1402,8 @@ def compute_mrcnn_parameter_loss(target_parameters, target_class_ids, pred_param
 
 def compute_losses(config, rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox, target_class_ids, mrcnn_class_logits, target_deltas, mrcnn_bbox, target_mask, mrcnn_mask, target_parameters, mrcnn_parameters):
 
-     print('rpn_match',rpn_match.shape)
-     print('rpn_class_logits',rpn_class_logits.shape)
+    print('rpn_match',rpn_match.shape)
+    print('rpn_class_logits',rpn_class_logits.shape)
     # print('#'*66,' compute_losses')
     # print('rpn_match',len(rpn_match),rpn_match.shape, rpn_class_logits.shape)
     # print('rpn_bbox',len(rpn_bbox))
