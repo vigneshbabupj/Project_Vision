@@ -1240,7 +1240,7 @@ def compute_rpn_class_loss(rpn_match, rpn_class_logits):
     ## Crossentropy loss
     loss = F.cross_entropy(rpn_class_logits, anchor_class)
 
-    print('compute_rpn_class_loss', loss)
+    #print('compute_rpn_class_loss', loss)
 
     return loss
 
@@ -1404,8 +1404,8 @@ def compute_mrcnn_parameter_loss(target_parameters, target_class_ids, pred_param
 
 def compute_losses(config, rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox, target_class_ids, mrcnn_class_logits, target_deltas, mrcnn_bbox, target_mask, mrcnn_mask, target_parameters, mrcnn_parameters):
 
-    print('rpn_match',rpn_match.shape)
-    print('rpn_class_logits',rpn_class_logits.shape)
+    #print('rpn_match',rpn_match.shape)
+    #print('rpn_class_logits',rpn_class_logits.shape)
     # print('#'*66,' compute_losses')
     # print('rpn_match',len(rpn_match),rpn_match.shape, rpn_class_logits.shape)
     # print('rpn_bbox',len(rpn_bbox))
@@ -1421,8 +1421,8 @@ def compute_losses(config, rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox,
     # print('mrcnn_parameters',len(mrcnn_parameters))
 
 
-    rpn_class_loss = compute_rpn_class_loss(rpn_match, rpn_class_logits)
-    rpn_bbox_loss = compute_rpn_bbox_loss(rpn_bbox, rpn_match, rpn_pred_bbox)
+    rpn_class_loss = torch.clamp(compute_rpn_class_loss(rpn_match, rpn_class_logits),max=10)
+    rpn_bbox_loss = torch.clamp(compute_rpn_bbox_loss(rpn_bbox, rpn_match, rpn_pred_bbox),max=10)
     mrcnn_class_loss = compute_mrcnn_class_loss(target_class_ids, mrcnn_class_logits)
     mrcnn_bbox_loss = compute_mrcnn_bbox_loss(target_deltas, target_class_ids, mrcnn_bbox)
     mrcnn_mask_loss = compute_mrcnn_mask_loss(config, target_mask, target_class_ids, target_parameters, mrcnn_mask)
