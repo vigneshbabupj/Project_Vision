@@ -1179,7 +1179,7 @@ class Depth(nn.Module):
         
         self.depth_pred = nn.Conv2d(64, num_output_channels, kernel_size=3, stride=1, padding=1)
 
-        self.crop = False#True#Vig
+        self.crop = True#Vig
         return
     
     def forward(self, feature_maps):
@@ -1199,11 +1199,11 @@ class Depth(nn.Module):
         x = self.depth_pred(x)
         
         if self.crop:
-            x = torch.nn.functional.interpolate(x, size=(480, 640), mode='bilinear')
-            zeros = torch.zeros((len(x), self.num_output_channels, 80, 640)).cuda()
+            x = torch.nn.functional.interpolate(x, size=(64, 512), mode='bilinear')
+            zeros = torch.zeros((len(x), self.num_output_channels, 64, 512)).cuda()
             x = torch.cat([zeros, x, zeros], dim=2)
         else:
-            x = torch.nn.functional.interpolate(x, size=(640, 640), mode='bilinear')
+            x = torch.nn.functional.interpolate(x, size=(512, 512), mode='bilinear')
             pass
         return x
 
