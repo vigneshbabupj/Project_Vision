@@ -130,12 +130,16 @@ class FPN(nn.Module):
         #x = self.C1(x)
         #x = self.C2(x)
         c2_out = resnet_out[0] #x
+        print('c2_out',c2_out.shape)
         #x = self.C3(x)
         c3_out = resnet_out[1] #x
+        print('c3_out',c3_out.shape)
         #x = self.C4(x)
         c4_out = resnet_out[2] #x
+        print('c4_out',c4_out.shape)
         x = resnet_out[3]#x
         p5_out = self.P5_conv1(x)
+        print('p5_out',p5_out.shape)
         
         if self.bilinear_upsampling:
             p4_out = self.P4_conv1(c4_out) + F.upsample(p5_out, scale_factor=2, mode='bilinear')
@@ -1857,12 +1861,8 @@ class MaskRCNN(nn.Module):
 
 
             print('detection_target_layer',[len(x) for x in [rpn_rois, gt_class_ids, gt_boxes, gt_masks, gt_parameters]])
-            print('detection_target_layer',[x.size() for x in [rpn_rois, gt_class_ids, gt_boxes, gt_masks, gt_parameters]])
-            print('gt_class_ids',gt_class_ids)
-            print('rpn_rois',rpn_rois)
-            print('gt_boxes',gt_boxes)
-            print('gt_masks',gt_masks)
-            print('gt_parameters',gt_parameters)
+            #print('detection_target_layer',[x.size() for x in [rpn_rois, gt_class_ids, gt_boxes, gt_masks, gt_parameters]])
+
             ## Generate detection targets
             ## Subsamples proposals and generates target outputs for training
             ## Note that proposal class IDs, gt_boxes, and gt_masks are zero
