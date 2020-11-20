@@ -25,13 +25,13 @@ results_file = 'results.txt'
 
 # Hyperparameters https://github.com/ultralytics/yolov3/issues/310
 
-hyp = {'giou': 1.0,#3.54,  # giou loss gain
+hyp = {'giou': 3.54,  # giou loss gain
        'cls': 37.4,  # cls loss gain
-       'cls_pw': 1.0,  # cls BCELoss positive_weight
+       'cls_pw': 0.5,#1.0,  # cls BCELoss positive_weight
        'obj': 64.3,  # obj loss gain (*=img_size/320 if img_size != 320)
-       'obj_pw': 1.0,  # obj BCELoss positive_weight
+       'obj_pw': 0.5,#1.0,  # obj BCELoss positive_weight
        'iou_t': 0.225,  # iou training threshold
-       'lr0': 0.001,  # initial learning rate (SGD=5E-3, Adam=5E-4)
+       'lr0': 0.01,  # initial learning rate (SGD=5E-3, Adam=5E-4)
        'lrf': 0.0005,  # final learning rate (with cos scheduler)
        'momentum': 0.937,  # SGD momentum
        'weight_decay': 0.000484,  # optimizer weight decay
