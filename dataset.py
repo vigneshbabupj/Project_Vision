@@ -335,9 +335,9 @@ class create_data(Dataset):
             assert(False)
             pass
 
-        image = cv2.resize(image, (640, 480), interpolation=cv2.INTER_LINEAR)
-        camera[[0, 2, 4]] *= 640.0 / camera[4]        
-        camera[[1, 3, 5]] *= 480.0 / camera[5]
+        image = cv2.resize(image, (512, 64), interpolation=cv2.INTER_LINEAR)
+        camera[[0, 2, 4]] *= 512.0 / camera[4]        
+        camera[[1, 3, 5]] *= 64.0 / camera[5]
 
         ## The below codes just fill in dummy values for all other data entries which are not used for inference. You can ignore everything except some preprocessing operations on "image".
         depth = np.zeros((self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), dtype=np.float32)
@@ -425,8 +425,8 @@ class create_data(Dataset):
         rpn_match = rpn_match[:, np.newaxis]
         image = mold_image(image.astype(np.float32), self.config)
 
-        depth = np.concatenate([np.zeros((80, 640)), depth, np.zeros((80, 640))], axis=0).astype(np.float32)
-        segmentation = np.concatenate([np.full((80, 640), fill_value=-1), segmentation, np.full((80, 640), fill_value=-1)], axis=0).astype(np.float32)
+        depth = np.concatenate([np.zeros((64, 512)), depth, np.zeros((64, 512))], axis=0).astype(np.float32)
+        segmentation = np.concatenate([np.full((64, 512), fill_value=-1), segmentation, np.full((64, 512), fill_value=-1)], axis=0).astype(np.float32)
 
         data_pair = [image.transpose((2, 0, 1)).astype(np.float32), image_metas, rpn_match.astype(np.int32), rpn_bbox.astype(np.float32), gt_class_ids.astype(np.int32), gt_boxes.astype(np.float32), gt_masks.transpose((2, 0, 1)).astype(np.float32), gt_parameters[:, :-1].astype(np.float32), depth.astype(np.float32), extrinsics.astype(np.float32), planes.astype(np.float32), segmentation.astype(np.int64), gt_parameters[:, -1].astype(np.int32)]
         data_pair = data_pair + data_pair
