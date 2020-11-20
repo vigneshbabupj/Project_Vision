@@ -596,15 +596,17 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             ## Midas End
 
             #Yolov3 Start
-            print('path:',paths)
-            print('YOLO',[len(x) for x in [pred, targets]])
-            print('target',targets)
+
             
             
             # Compute yolo_loss
             yolo_loss, yolo_loss_items = compute_loss(pred, targets, model)
             print('yolo_loss : ', yolo_loss.item())
             if not torch.isfinite(yolo_loss):
+                print('path:',paths)
+                print('YOLO',[len(x) for x in [pred, targets]])
+                print('pred',pred)
+                print('target',targets)
                 print('WARNING: non-finite yolo_loss, ending training ', yolo_loss_items)
                 return results
 
