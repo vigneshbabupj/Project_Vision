@@ -629,6 +629,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             print('ssim_out : ', ssim_out)
             print('all_loss :',all_loss.item())
 
+            print('mixed_precision :',mixed_precision)
+
             # Compute gradient
             if mixed_precision:
                 with amp.scale_loss(all_loss, optimizer) as scaled_loss:
@@ -637,10 +639,10 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                 all_loss.backward()
 
             # Optimize accumulated gradient
-            if ni % accumulate == 0:
-                optimizer.step()
-                optimizer.zero_grad()
-                ema.update(model)
+            #if ni % accumulate == 0:
+            optimizer.step()
+            optimizer.zero_grad()
+            ema.update(model)
 
             # Print batch results
             mloss = (mloss * i + yolo_loss_items) / (i + 1)  # update mean losses
