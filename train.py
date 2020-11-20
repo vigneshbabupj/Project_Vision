@@ -452,19 +452,18 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             if depth_np_pred.shape != gt_depth.shape:
                 depth_np_pred = torch.nn.functional.interpolate(depth_np_pred.unsqueeze(1), size=(512, 512), mode='bilinear').squeeze(1)
                 pass
-            print('depth_np_pred',len(depth_np_pred),depth_np_pred.size())
 
             if config.PREDICT_NORMAL_NP:
                 normal_np_pred = depth_np_pred[0, 1:]                    
                 depth_np_pred = depth_np_pred[:, 0]
                 gt_normal = gt_depth[0, 1:]                    
                 gt_depth = gt_depth[:, 0]
-                depth_np_loss = l1LossMask(depth_np_pred[:, 80:560], gt_depth[:, 80:560], (gt_depth[:, 80:560] > 1e-4).float())
-                normal_np_loss = l2LossMask(normal_np_pred[:, 80:560], gt_normal[:, 80:560], (torch.norm(gt_normal[:, 80:560], dim=0) > 1e-4).float())
+                depth_np_loss = l1LossMask(depth_np_pred[:, 80:560], gt_depth[:, 128:560], (gt_depth[:, 128:560] > 1e-4).float())
+                normal_np_loss = l2LossMask(normal_np_pred[:, 80:560], gt_normal[:, 128:560], (torch.norm(gt_normal[:, 128:560], dim=0) > 1e-4).float())
                 plane_losses.append(depth_np_loss)
                 plane_losses.append(normal_np_loss)
             else:
-                depth_np_loss = l1LossMask(depth_np_pred[:, 80:560], gt_depth[:, 80:560], (gt_depth[:, 80:560] > 1e-4).float())
+                depth_np_loss = l1LossMask(depth_np_pred[:, 80:560], gt_depth[:, 128:560], (gt_depth[:, 128:560] > 1e-4).float())
                 plane_losses.append(depth_np_loss)
                 normal_np_pred = None
                 pass
