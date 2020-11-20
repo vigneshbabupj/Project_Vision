@@ -320,6 +320,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
         mloss = torch.zeros(4).to(device)  # mean losses
 
         for i,(plane_data,yolo_data,depth_data) in pbar:
+            
+            optimizer.zero_grad()
 
             print('i:',i)
             # print('plane :',len(plane_data))
@@ -643,7 +645,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # Optimize accumulated gradient
             #if ni % accumulate == 0:
             optimizer.step()
-            optimizer.zero_grad()
+            
             ema.update(model)
 
             # Print batch results
