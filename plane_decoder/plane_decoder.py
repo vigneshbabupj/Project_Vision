@@ -1711,10 +1711,13 @@ class MaskRCNN(nn.Module):
 
         ## Feature extraction
         [p2_out, p3_out, p4_out, p5_out, p6_out] = self.fpn(molded_images,resnet_out)
+
         ## Note that P6 is used in RPN, but not in the classifier heads.
 
         rpn_feature_maps = [p2_out, p3_out, p4_out, p5_out, p6_out]
         mrcnn_feature_maps = [p2_out, p3_out, p4_out, p5_out]
+
+        print('FPN shapes:',[x.shape for x in rpn_feature_maps])
 
         feature_maps = [feature_map for index, feature_map in enumerate(rpn_feature_maps[::-1])]
         if self.config.PREDICT_DEPTH:
