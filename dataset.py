@@ -520,6 +520,8 @@ class create_data(Dataset):
         img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
         img = np.ascontiguousarray(img)
 
+        labels_out[labels_out>1]=1
+
         yolo_item=[torch.from_numpy(img), labels_out, self.img_files[index], shapes]
 
         ## Yolo LoadImagesAndLabels END

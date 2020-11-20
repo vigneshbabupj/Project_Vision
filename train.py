@@ -600,9 +600,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             print('YOLO',[len(x) for x in [pred, targets]])
             print('target',targets)
             
-            targets[targets>1]=1
-
-
+            
             # Compute yolo_loss
             yolo_loss, yolo_loss_items = compute_loss(pred, targets, model)
             print('yolo_loss : ', yolo_loss.item())
