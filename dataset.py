@@ -534,7 +534,7 @@ class create_data(Dataset):
         img_ip = utils.read_image(img_name)
         #print('img_ip',img_ip.shape)
         img_input = self.transform({"image": img_ip})["image"]
-        #print('img_input',img_input.shape)
+        print('img_input',img_input)
 
 
 
