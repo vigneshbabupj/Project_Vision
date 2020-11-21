@@ -586,18 +586,18 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                             #.numpy()
                             )
 
-            # print('dp_prediction',dp_prediction.shape)
-            # print('depth_target',depth_target.shape)
-            # import matplotlib.pyplot as plt
-            # plt.imshow(dp_prediction.squeeze().cpu().detach().numpy())
-            # plt.show()
-            # plt.imshow(depth_target.squeeze().cpu().detach().numpy())
-            # plt.show()
+            print('dp_prediction',dp_prediction.shape)
+            print('depth_target',depth_target.shape)
+            import matplotlib.pyplot as plt
+            plt.imshow(dp_prediction.squeeze().cpu().detach().numpy())
+            plt.show()
+            plt.imshow(depth_target.squeeze().cpu().detach().numpy())
+            plt.show()
 
             depth_pred = Variable( dp_prediction,  requires_grad=True)
             depth_target = Variable( depth_target, requires_grad = False)
 
-            print('depth',[[len(x),x.size()]  for x in [depth_pred,depth_target]])
+            #print('depth',[[len(x),x.size()]  for x in [depth_pred,depth_target]])
 
             #ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
             #ssim_loss = msssim() #https://github.com/jorge-pessoa/pytorch-msssim
