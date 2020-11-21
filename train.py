@@ -377,6 +377,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #print('np size:',np.asarray(depth_img).shape)
 
             dp_sample = torch.from_numpy(np.asarray(depth_img)).to(device).unsqueeze(0) ######
+            print('dp_sample',dp_sample)
 
             midas_inp = dp_sample ####
             #dp_prediction = model.forward()
