@@ -582,6 +582,18 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             
             depth_target = torch.from_numpy(np.asarray(depth_target)).to(device).type(torch.cuda.FloatTensor).unsqueeze(0)
             #print('depth_target',depth_target.size())
+
+            print('dp_prediction',dp_prediction.shape)
+            print('depth_target',depth_target.shape)
+            import matplotlib.pyplot as plt
+            plt.imshow(dp_prediction.squeeze().cpu().detach().numpy())
+            plt.show()
+            plt.imshow(depth_target.squeeze().cpu().detach().numpy())
+            plt.show()
+
+
+
+
             depth_target = (
                             torch.nn.functional.interpolate(
                                 depth_target.unsqueeze(1),
@@ -594,13 +606,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                             #.numpy()
                             )
 
-            print('dp_prediction',dp_prediction.shape)
-            print('depth_target',depth_target.shape)
-            import matplotlib.pyplot as plt
-            plt.imshow(dp_prediction.squeeze().cpu().detach().numpy())
-            plt.show()
-            plt.imshow(depth_target.squeeze().cpu().detach().numpy())
-            plt.show()
+
 
             depth_pred = Variable( dp_prediction,  requires_grad=True)
             depth_target = Variable( depth_target, requires_grad = False)
