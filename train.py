@@ -557,7 +557,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             ## Midas start
             print('dp_prediction',dp_prediction.shape)
             print('dp_img_size',dp_img_size[:2])
-            print('dp_prediction',dp_prediction)
+            print('dp_prediction',dp_prediction.cpu())
 
 
 
