@@ -554,6 +554,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             ## Midas start
 
+            print('dp_prediction',dp_prediction.shape)
 
             dp_prediction = (
                             torch.nn.functional.interpolate(
