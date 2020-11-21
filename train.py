@@ -555,8 +555,11 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #Vignesh : block planercnn
 
             ## Midas start
-            print('dp_prediction',dp_prediction.unsqueeze(1).shape)
+            print('dp_prediction',dp_prediction.shape)
             print('dp_img_size',dp_img_size[:2])
+            print('dp_prediction',dp_prediction)
+
+
 
             #dp_prediction = F.interpolate(dp_prediction.unsqueeze(1),size=dp_img_size[:2])
 
