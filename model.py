@@ -48,7 +48,8 @@ class VisionNet(nn.Module):
 
 	def forward(self,yolo_ip,midas_ip,plane_ip):
 
-		x = yolo_ip
+		#x = yolo_ip
+		x = midas_ip
 		#print('yolo_ip',yolo_ip.shape,yolo_ip[0][0][0][0])
 		#print('midas_ip',midas_ip.shape,midas_ip[0][0][0][0])
 
