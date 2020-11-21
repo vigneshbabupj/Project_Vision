@@ -559,7 +559,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             dp_prediction = (
                             torch.nn.functional.interpolate(
-                                dp_prediction.squeeze(),
+                                dp_prediction,
                                 size=dp_img_size[:2],
                                 mode="bicubic",
                                 align_corners=False,
