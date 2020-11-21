@@ -553,18 +553,15 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #Vignesh : block planercnn
 
             ## Midas start
-
             print('dp_prediction',dp_prediction.shape)
-            import matplotlib.pyplot as plt
-            plt.imshow(dp_prediction.squeeze().cpu().detach().numpy())
-            plt.show()
+            print('dp_img_size',dp_img_size)
 
             dp_prediction = (
                             torch.nn.functional.interpolate(
                                 dp_prediction.unsqueeze(1),
                                 size=dp_img_size[:2],
                                 mode="bicubic",
-                                align_corners=True,
+                                align_corners=False,
                             )
                             #.unsqueeze(0)
                             #.cpu()
@@ -602,7 +599,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                                 depth_target.unsqueeze(1),
                                 size=dp_img_size[:2],
                                 mode="bicubic",
-                                align_corners=True,
+                                align_corners=False,
                             )
                             #.unsqueeze(0)
                             #.cpu()
