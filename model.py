@@ -80,4 +80,6 @@ class VisionNet(nn.Module):
 		#YOLOv3 bbox decoder
 		bbox_out = self.bbox_decoder(Yolo_75,Yolo_61,Yolo_36)
 
+		print('depth_out',depth_out)
+
 		return bbox_out, depth_out, plane_out
