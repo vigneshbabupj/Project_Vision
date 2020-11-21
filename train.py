@@ -555,6 +555,9 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             ## Midas start
 
             print('dp_prediction',dp_prediction.shape)
+            import matplotlib.pyplot as plt
+            plt.imshow(dp_prediction.squeeze().cpu().detach().numpy())
+            plt.show()
 
             dp_prediction = (
                             torch.nn.functional.interpolate(
