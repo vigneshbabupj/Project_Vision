@@ -460,72 +460,73 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                 plane_losses = [ (rpn_class_loss + rpn_bbox_loss + mrcnn_class_loss + mrcnn_bbox_loss + mrcnn_mask_loss + mrcnn_parameter_loss)/6]
 
 
-            if depth_np_pred.shape != gt_depth.shape:
-                depth_np_pred = torch.nn.functional.interpolate(depth_np_pred.unsqueeze(1), size=(512, 512), mode='bilinear').squeeze(1)
-                pass
-
-            if config.PREDICT_NORMAL_NP:
-                normal_np_pred = depth_np_pred[0, 1:]                    
-                depth_np_pred = depth_np_pred[:, 0]
-                gt_normal = gt_depth[0, 1:]                    
-                gt_depth = gt_depth[:, 0]
-                depth_np_loss = l1LossMask(depth_np_pred[:, 80:560], gt_depth[:, 128:560], (gt_depth[:, 128:560] > 1e-4).float())
-                normal_np_loss = l2LossMask(normal_np_pred[:, 80:560], gt_normal[:, 128:560], (torch.norm(gt_normal[:, 128:560], dim=0) > 1e-4).float())
-                plane_losses.append(depth_np_loss)
-                plane_losses.append(normal_np_loss)
-            else:
-                depth_np_loss = l1LossMask(depth_np_pred[:, 80:560], gt_depth[:, 128:560], (gt_depth[:, 128:560] > 1e-4).float())
-                plane_losses.append(depth_np_loss)
-                normal_np_pred = None
-                pass
-
-            if len(detections) > 0:
-                detections, detection_masks = unmoldDetections(config, camera, detections, detection_masks, depth_np_pred, normal_np_pred, debug=False)
-                if 'refine_only' in options.suffix:
-                    detections, detection_masks = detections.detach(), detection_masks.detach()
+                if depth_np_pred.shape != gt_depth.shape:
+                    depth_np_pred = torch.nn.functional.interpolate(depth_np_pred.unsqueeze(1), size=(512, 512), mode='bilinear').squeeze(1)
                     pass
-                XYZ_pred, detection_mask, plane_XYZ = calcXYZModule(config, camera, detections, detection_masks, depth_np_pred, return_individual=True)
-                detection_mask = detection_mask.unsqueeze(0)                        
-            else:
-                XYZ_pred = torch.zeros((3, config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM)).cuda()
-                detection_mask = torch.zeros((1, config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM)).cuda()
-                plane_XYZ = torch.zeros((1, 3, config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM)).cuda()                        
-                pass
+
+                if config.PREDICT_NORMAL_NP:
+                    normal_np_pred = depth_np_pred[0, 1:]                    
+                    depth_np_pred = depth_np_pred[:, 0]
+                    gt_normal = gt_depth[0, 1:]                    
+                    gt_depth = gt_depth[:, 0]
+                    depth_np_loss = l1LossMask(depth_np_pred[:, 80:560], gt_depth[:, 128:560], (gt_depth[:, 128:560] > 1e-4).float())
+                    normal_np_loss = l2LossMask(normal_np_pred[:, 80:560], gt_normal[:, 128:560], (torch.norm(gt_normal[:, 128:560], dim=0) > 1e-4).float())
+                    plane_losses.append(depth_np_loss)
+                    plane_losses.append(normal_np_loss)
+                else:
+                    depth_np_loss = l1LossMask(depth_np_pred[:, 80:560], gt_depth[:, 128:560], (gt_depth[:, 128:560] > 1e-4).float())
+                    plane_losses.append(depth_np_loss)
+                    normal_np_pred = None
+                    pass
+
+                if len(detections) > 0:
+                    detections, detection_masks = unmoldDetections(config, camera, detections, detection_masks, depth_np_pred, normal_np_pred, debug=False)
+                    if 'refine_only' in options.suffix:
+                        detections, detection_masks = detections.detach(), detection_masks.detach()
+                        pass
+                    XYZ_pred, detection_mask, plane_XYZ = calcXYZModule(config, camera, detections, detection_masks, depth_np_pred, return_individual=True)
+                    detection_mask = detection_mask.unsqueeze(0)                        
+                else:
+                    XYZ_pred = torch.zeros((3, config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM)).cuda()
+                    detection_mask = torch.zeros((1, config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM)).cuda()
+                    plane_XYZ = torch.zeros((1, 3, config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM)).cuda()                        
+                    pass
 
 
-            input_pair.append({'image': images, 'depth': gt_depth, 'mask': gt_masks, 'bbox': gt_boxes, 'extrinsics': extrinsics, 'segmentation': gt_segmentation, 'parameters': detection_gt_parameters, 'plane': planes, 'camera': camera})
-            detection_pair.append({'XYZ': XYZ_pred, 'depth': XYZ_pred[1:2], 'mask': detection_mask, 'detection': detections, 'masks': detection_masks, 'plane_XYZ': plane_XYZ, 'depth_np': depth_np_pred})
+                input_pair.append({'image': images, 'depth': gt_depth, 'mask': gt_masks, 'bbox': gt_boxes, 'extrinsics': extrinsics, 'segmentation': gt_segmentation, 'parameters': detection_gt_parameters, 'plane': planes, 'camera': camera})
+                detection_pair.append({'XYZ': XYZ_pred, 'depth': XYZ_pred[1:2], 'mask': detection_mask, 'detection': detections, 'masks': detection_masks, 'plane_XYZ': plane_XYZ, 'depth_np': depth_np_pred})
 
-            # if 'depth' in options.suffix:
-            #     ## Apply supervision on reconstructed depthmap (not used currently)
-            #     if len(detections) > 0:
-            #         background_mask = torch.clamp(1 - detection_masks.sum(0, keepdim=True), min=0)
-            #         all_masks = torch.cat([background_mask, detection_masks], dim=0)
+                # if 'depth' in options.suffix:
+                #     ## Apply supervision on reconstructed depthmap (not used currently)
+                #     if len(detections) > 0:
+                #         background_mask = torch.clamp(1 - detection_masks.sum(0, keepdim=True), min=0)
+                #         all_masks = torch.cat([background_mask, detection_masks], dim=0)
 
-            #         all_masks = all_masks / all_masks.sum(0, keepdim=True)
-            #         all_depths = torch.cat([depth_np_pred, plane_XYZ[:, 1]], dim=0)
+                #         all_masks = all_masks / all_masks.sum(0, keepdim=True)
+                #         all_depths = torch.cat([depth_np_pred, plane_XYZ[:, 1]], dim=0)
 
-            #         depth_loss = l1LossMask(torch.sum(torch.abs(all_depths[:, 80:560] - gt_depth[:, 80:560]) * all_masks[:, 80:560], dim=0), torch.zeros(config.IMAGE_MIN_DIM, config.IMAGE_MAX_DIM).cuda(), (gt_depth[0, 80:560] > 1e-4).float())
-            #     else:
-            #         depth_loss = l1LossMask(depth_np_pred[:, 80:560], gt_depth[:, 80:560], (gt_depth[:, 80:560] > 1e-4).float())
-            #         pass
-            #     plane_losses.append(depth_loss)                                                
-            #     pass                    
-            #continue
+                #         depth_loss = l1LossMask(torch.sum(torch.abs(all_depths[:, 80:560] - gt_depth[:, 80:560]) * all_masks[:, 80:560], dim=0), torch.zeros(config.IMAGE_MIN_DIM, config.IMAGE_MAX_DIM).cuda(), (gt_depth[0, 80:560] > 1e-4).float())
+                #     else:
+                #         depth_loss = l1LossMask(depth_np_pred[:, 80:560], gt_depth[:, 80:560], (gt_depth[:, 80:560] > 1e-4).float())
+                #         pass
+                #     plane_losses.append(depth_loss)                                                
+                #     pass                    
+                #continue
 
-            # if (len(detection_pair[0]['detection']) > 0 and len(detection_pair[0]['detection']) < 30) and 'refine' in options.suffix:
-            #     #use refinement network
-            #     pass
-            # else:
-            #     plane_losses += [torch.zeros(1).cuda()]
-            #     pass
+                # if (len(detection_pair[0]['detection']) > 0 and len(detection_pair[0]['detection']) < 30) and 'refine' in options.suffix:
+                #     #use refinement network
+                #     pass
+                # else:
+                #     plane_losses += [torch.zeros(1).cuda()]
+                #     pass
 
-            ## The warping yolo_loss
-            # for c in range(1, 2):
-            #     if 'warping' not in options.suffix:
-            #         pass
-            #         #break
-            #     #continue            
+                ## The warping yolo_loss
+                # for c in range(1, 2):
+                #     if 'warping' not in options.suffix:
+                #         pass
+                #         #break
+                #     #continue
+                  
             except:
                 plane_losses = [0]
 
