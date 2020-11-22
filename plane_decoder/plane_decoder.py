@@ -142,9 +142,9 @@ class FPN(nn.Module):
         # print('p5_out',p5_out.shape)
         
         if self.bilinear_upsampling:
-            p4_out = self.P4_conv1(c4_out) + F.interpolate(p5_out, scale_factor=2, mode='bilinear')
-            p3_out = self.P3_conv1(c3_out) + F.interpolate(p4_out, scale_factor=2, mode='bilinear')
-            p2_out = self.P2_conv1(c2_out) + F.interpolate(p3_out, scale_factor=2, mode='bilinear')
+            p4_out = self.P4_conv1(c4_out) + F.interpolate(p5_out, scale_factor=2, mode='bilinear', align_corners=False)
+            p3_out = self.P3_conv1(c3_out) + F.interpolate(p4_out, scale_factor=2, mode='bilinear', align_corners=False)
+            p2_out = self.P2_conv1(c2_out) + F.interpolate(p3_out, scale_factor=2, mode='bilinear', align_corners=False)
         else:
             p4_out = self.P4_conv1(c4_out) + F.interpolate(p5_out, scale_factor=2)
             p3_out = self.P3_conv1(c3_out) + F.interpolate(p4_out, scale_factor=2)
@@ -1199,11 +1199,11 @@ class Depth(nn.Module):
         x = self.depth_pred(x)
         
         if self.crop:
-            x = torch.nn.functional.interpolate(x, size=(64, 512), mode='bilinear')
+            x = torch.nn.functional.interpolate(x, size=(64, 512), mode='bilinear',align_corners=False)
             zeros = torch.zeros((len(x), self.num_output_channels, 64, 512)).cuda()
             x = torch.cat([zeros, x, zeros], dim=2)
         else:
-            x = torch.nn.functional.interpolate(x, size=(512, 512), mode='bilinear')
+            x = torch.nn.functional.interpolate(x, size=(512, 512), mode='bilinear',align_corners=False)
             pass
         return x
 
@@ -1745,7 +1745,7 @@ class MaskRCNN(nn.Module):
         ranges = self.config.getRanges(input[-1]).transpose(1, 2).transpose(0, 1)
         zeros = torch.zeros(3, (self.config.IMAGE_MAX_DIM - self.config.IMAGE_MIN_DIM) // 2, self.config.IMAGE_MAX_DIM).cuda()
         ranges = torch.cat([zeros, ranges, zeros], dim=1)
-        ranges = torch.nn.functional.interpolate(ranges.unsqueeze(0), size=(160, 160), mode='bilinear')
+        ranges = torch.nn.functional.interpolate(ranges.unsqueeze(0), size=(160, 160), mode='bilinear',align_corners=False)
         ranges = self.coordinates(ranges * 10)
         
         
