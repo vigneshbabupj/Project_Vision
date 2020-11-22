@@ -70,8 +70,13 @@ class VisionNet(nn.Module):
 		# MiDaS depth decoder
 		depth_out = self.depth_decoder([layer_1, layer_2, layer_3, layer_4])
 
-		# PlaneRCNN decoder
-		plane_out = self.plane_decoder.forward(plane_ip,[layer_1, layer_2, layer_3, layer_4])
+		try:
+
+			# PlaneRCNN decoder
+			plane_out = self.plane_decoder.forward(plane_ip,[layer_1, layer_2, layer_3, layer_4])
+		except:
+			plane_out=[None]
+
 
 		#print('en Yolo_75 :',Yolo_75.shape)
 		#print('en Yolo_61 :',Yolo_61.shape)
