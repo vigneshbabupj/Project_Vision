@@ -72,5 +72,7 @@ class MidasNet_decoder(nn.Module):
         print('out',out.size(),out)
         print('out squeeze',torch.squeeze(out, dim=1).size(),torch.squeeze(out, dim=1))
 
-        return torch.squeeze(out, dim=1)
+        final_out = torch.squeeze(out, dim=1)
+
+        return final_out
 
