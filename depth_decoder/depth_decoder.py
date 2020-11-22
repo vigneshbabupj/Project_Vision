@@ -61,7 +61,7 @@ class MidasNet_decoder(nn.Module):
         layer_2_rn = self.scratch.layer2_rn(layer_2)
         layer_3_rn = self.scratch.layer3_rn(layer_3)
         layer_4_rn = self.scratch.layer4_rn(layer_4)
-        print('layer_4_rn',layer_4_rn)
+        print('layer_4_rn',layer_4_rn[0][0])
 
         path_4 = self.scratch.refinenet4(layer_4_rn)
         path_3 = self.scratch.refinenet3(path_4, layer_3_rn)
@@ -69,7 +69,8 @@ class MidasNet_decoder(nn.Module):
         path_1 = self.scratch.refinenet1(path_2, layer_1_rn)
 
         out = self.scratch.output_conv(path_1)
-        print('out',out)
+        print('out',out.size(),out)
+        print('out squeeze',torch.squeeze(out, dim=1).size(),torch.squeeze(out, dim=1))
 
         return torch.squeeze(out, dim=1)
 

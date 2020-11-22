@@ -60,7 +60,7 @@ class VisionNet(nn.Module):
 		layer_4 = self.encoder.layer4(layer_3)
 
 		#print('%'*30,'layer_1',layer_1[0][0][0][0])
-		print('layer_4',layer_4)
+		print('layer_4',layer_4[0][0])
 
 		Yolo_75 = self.conv1(layer_4)
 		Yolo_61 = self.conv2(layer_3)
