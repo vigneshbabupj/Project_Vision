@@ -280,12 +280,12 @@ class create_data(Dataset):
         self.transform = Compose(
                             [
                                 Resize(
-                                    384,
-                                    384,
+                                    256,
+                                    256,
                                     resize_target=None,
                                     keep_aspect_ratio=True,
                                     ensure_multiple_of=32,
-                                    resize_method="upper_bound",
+                                    resize_method="lower_bound",
                                     image_interpolation_method=cv2.INTER_CUBIC,
                                 ),
                                 NormalizeImage(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
@@ -335,9 +335,9 @@ class create_data(Dataset):
             assert(False)
             pass
 
-        image = cv2.resize(image, (512, 64), interpolation=cv2.INTER_LINEAR)
+        image = cv2.resize(image, (512, 256), interpolation=cv2.INTER_LINEAR)
         camera[[0, 2, 4]] *= 512.0 / camera[4]        
-        camera[[1, 3, 5]] *= 64.0 / camera[5]
+        camera[[1, 3, 5]] *= 256.0 / camera[5]
 
         ## The below codes just fill in dummy values for all other data entries which are not used for inference. You can ignore everything except some preprocessing operations on "image".
         depth = np.zeros((self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), dtype=np.float32)
