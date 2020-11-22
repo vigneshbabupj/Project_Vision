@@ -42,7 +42,7 @@ def unmoldDetections(config, camera, detections, detection_masks, depth_np, unmo
             
         mask = masks[detectionIndex]
         mask = mask.unsqueeze(0).unsqueeze(0)
-        mask = F.upsample(mask, size=(box[2] - box[0], box[3] - box[1]), mode='bilinear')
+        mask = F.interpolate(mask, size=(box[2] - box[0], box[3] - box[1]), mode='bilinear')
         mask = mask.squeeze(0).squeeze(0)
 
         final_mask = torch.zeros(config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM).cuda()
@@ -59,7 +59,7 @@ def unmoldDetections(config, camera, detections, detection_masks, depth_np, unmo
             box = detections[detectionIndex][:4].long()
             if (box[2] - box[0]) * (box[3] - box[1]) <= 0:
                 continue
-            parameters = F.upsample(parameters_array[detectionIndex].unsqueeze(0), size=(box[2] - box[0], box[3] - box[1]), mode='bilinear').squeeze(0)
+            parameters = F.interpolate(parameters_array[detectionIndex].unsqueeze(0), size=(box[2] - box[0], box[3] - box[1]), mode='bilinear').squeeze(0)
             final_parameters = torch.zeros(config.NUM_PARAMETER_CHANNELS, config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM).cuda()
             final_parameters[:, box[0]:box[2], box[1]:box[3]] = parameters
             final_parameters_array.append(final_parameters)
@@ -264,7 +264,7 @@ class ConvBlock(torch.nn.Module):
             self.conv = torch.nn.Conv2d(in_planes, out_planes, kernel_size=kernel_size, stride=stride, padding=padding, bias=not self.use_bn)
         elif mode == 'deconv':
             self.conv = torch.nn.ConvTranspose2d(in_planes, out_planes, kernel_size=kernel_size, stride=stride, padding=padding, output_padding=output_padding, bias=not self.use_bn)
-        elif mode == 'upsample':
+        elif mode == 'interpolate':
             self.conv = torch.nn.Sequential(torch.nn.Upsample(scale_factor=stride, mode='nearest'), torch.nn.Conv2d(in_planes, out_planes, kernel_size=kernel_size, stride=1, padding=padding, bias=not self.use_bn))
         elif mode == 'conv_3d':
             self.conv = torch.nn.Conv3d(in_planes, out_planes, kernel_size=kernel_size, stride=stride, padding=padding, bias=not self.use_bn)
