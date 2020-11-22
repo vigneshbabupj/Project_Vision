@@ -74,17 +74,19 @@ class VisionNet(nn.Module):
 
 			# PlaneRCNN decoder
 			plane_out = self.plane_decoder.forward(plane_ip,[layer_1, layer_2, layer_3, layer_4])
+
+
+
+			#print('en Yolo_75 :',Yolo_75.shape)
+			#print('en Yolo_61 :',Yolo_61.shape)
+			#print('en Yolo_36 :',Yolo_36.shape)
+
+			#print('^'*66,'Yolo_75',Yolo_75[0][0])
+			#YOLOv3 bbox decoder
+			bbox_out = self.bbox_decoder(Yolo_75,Yolo_61,Yolo_36)
 		except:
 			plane_out=[None]
-
-
-		#print('en Yolo_75 :',Yolo_75.shape)
-		#print('en Yolo_61 :',Yolo_61.shape)
-		#print('en Yolo_36 :',Yolo_36.shape)
-
-		#print('^'*66,'Yolo_75',Yolo_75[0][0])
-		#YOLOv3 bbox decoder
-		bbox_out = self.bbox_decoder(Yolo_75,Yolo_61,Yolo_36)
+			bbox_out = None
 
 		print('depth_out',depth_out)
 
