@@ -280,8 +280,8 @@ class create_data(Dataset):
         self.transform = Compose(
                             [
                                 Resize(
-                                    256,
-                                    256,
+                                    512,
+                                    512,
                                     resize_target=None,
                                     keep_aspect_ratio=True,
                                     ensure_multiple_of=32,
