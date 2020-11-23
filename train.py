@@ -660,7 +660,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             # Optimize accumulated gradient
             #if ni % accumulate == 0:
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 0.5)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 0.25)
             optimizer.step()
             
             ema.update(model)
