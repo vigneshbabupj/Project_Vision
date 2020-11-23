@@ -44,7 +44,7 @@ def ssim(img1, img2, window_size=11, window=None, size_average=True, full=False,
     mu1_sq = mu1.pow(2)
     mu2_sq = mu2.pow(2)
     mu1_mu2 = mu1 * mu2
-
+    print('L',L,'window',window,'channel',channel)
     print('img1',img1)
 
     sigma1_sq = F.conv2d(img1 * img1, window, padding=padd, groups=channel) - mu1_sq
@@ -105,8 +105,6 @@ def msssim(img1, img2, window_size=11, size_average=True, val_range=None, normal
 
     pow1 = mcs ** weights
     pow2 = ssims ** weights
-
-    print('ssims :',ssims,'mcs:',mcs)
 
     # From Matlab implementation https://ece.uwaterloo.ca/~z70wang/research/iwssim/
     output = torch.prod(pow1[:-1] * pow2[-1])
