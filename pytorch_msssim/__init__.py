@@ -45,11 +45,12 @@ def ssim(img1, img2, window_size=11, window=None, size_average=True, full=False,
     mu2_sq = mu2.pow(2)
     mu1_mu2 = mu1 * mu2
 
+    print('img1',img1)
+
     sigma1_sq = F.conv2d(img1 * img1, window, padding=padd, groups=channel) - mu1_sq
     sigma2_sq = F.conv2d(img2 * img2, window, padding=padd, groups=channel) - mu2_sq
     sigma12 = F.conv2d(img1 * img2, window, padding=padd, groups=channel) - mu1_mu2
 
-    print('sigma1_sq',sigma1_sq,'sigma2_sq',sigma2_sq,'sigma12',sigma12)
 
     C1 = (0.01 * L) ** 2
     C2 = (0.03 * L) ** 2
