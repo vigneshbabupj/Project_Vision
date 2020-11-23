@@ -48,10 +48,10 @@ class VisionNet(nn.Module):
 
 	def forward(self,yolo_ip,midas_ip,plane_ip):
 
-		#x = yolo_ip
-		x = midas_ip
-		print('yolo_ip',yolo_ip.shape,yolo_ip[0][0][0][0])
-		print('midas_ip',midas_ip.shape,midas_ip[0][0][0][0])
+		x = yolo_ip
+		#x = midas_ip
+		#print('yolo_ip',yolo_ip.shape,yolo_ip[0][0][0][0])
+		#print('midas_ip',midas_ip.shape,midas_ip[0][0][0][0])
 
 		# Encoder blocks
 		layer_1 = self.encoder.layer1(x)
@@ -60,7 +60,7 @@ class VisionNet(nn.Module):
 		layer_4 = self.encoder.layer4(layer_3)
 
 		#print('%'*30,'layer_1',layer_1[0][0][0][0])
-		print('layer_4',layer_4[0][0])
+		#print('layer_4',layer_4[0][0])
 
 		Yolo_75 = self.conv1(layer_4)
 		Yolo_61 = self.conv2(layer_3)
@@ -70,24 +70,21 @@ class VisionNet(nn.Module):
 		# MiDaS depth decoder
 		depth_out = self.depth_decoder([layer_1, layer_2, layer_3, layer_4])
 
-		try:
 
-			# PlaneRCNN decoder
-			plane_out = self.plane_decoder.forward(plane_ip,[layer_1, layer_2, layer_3, layer_4])
-
+		# PlaneRCNN decoder
+		plane_out = self.plane_decoder.forward(plane_ip,[layer_1, layer_2, layer_3, layer_4])
 
 
-			#print('en Yolo_75 :',Yolo_75.shape)
-			#print('en Yolo_61 :',Yolo_61.shape)
-			#print('en Yolo_36 :',Yolo_36.shape)
 
-			#print('^'*66,'Yolo_75',Yolo_75[0][0])
-			#YOLOv3 bbox decoder
-			bbox_out = self.bbox_decoder(Yolo_75,Yolo_61,Yolo_36)
-		except:
-			plane_out=[None]
-			bbox_out = None
+		#print('en Yolo_75 :',Yolo_75.shape)
+		#print('en Yolo_61 :',Yolo_61.shape)
+		#print('en Yolo_36 :',Yolo_36.shape)
 
-		print('depth_out',depth_out)
+		#print('^'*66,'Yolo_75',Yolo_75[0][0])
+		#YOLOv3 bbox decoder
+		bbox_out = self.bbox_decoder(Yolo_75,Yolo_61,Yolo_36)
+
+
+		#print('depth_out',depth_out)
 
 		return bbox_out, depth_out, plane_out
