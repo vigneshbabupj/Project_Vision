@@ -333,8 +333,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             print('path',paths,'shape',_)
 
-            if paths[0] in ['./data/customdata/images/Mimg_077.jpg','./data/customdata/images/Himage_102.jpg','./data/customdata/images/majdoor_23.jpg']:
-                continue
+            #if paths[0] in ['./data/customdata/images/Mimg_077.jpg','./data/customdata/images/Himage_102.jpg','./data/customdata/images/majdoor_23.jpg']:
+            #    continue
             
 
             ni = i + nb * epoch  # number integrated batches (since train start)
@@ -377,7 +377,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #print('np size:',np.asarray(depth_img).shape)
 
             dp_sample = torch.from_numpy(depth_img).to(device).unsqueeze(0) ######
-            print('dp_sample',dp_sample)
+            #print('dp_sample',dp_sample)
 
             midas_inp = dp_sample ####
             #dp_prediction = model.forward()
@@ -554,11 +554,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #Vignesh : block planercnn
 
             ## Midas start
-            print('dp_prediction',dp_prediction.shape)
-            print('dp_img_size',dp_img_size[:2])
-            print('dp_prediction',dp_prediction.cpu())
-
-
+            
 
             #dp_prediction = F.interpolate(dp_prediction.unsqueeze(1),size=dp_img_size[:2])
 
@@ -591,16 +587,6 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             depth_target = torch.from_numpy(np.asarray(depth_target)).to(device).type(torch.cuda.FloatTensor).unsqueeze(0)
             #print('depth_target',depth_target.size())
 
-            print('dp_prediction',dp_prediction.shape)
-            print('depth_target',depth_target.shape)
-            import matplotlib.pyplot as plt
-            plt.imshow(dp_prediction.squeeze().cpu().detach().numpy())
-            plt.show()
-            plt.imshow(depth_target.squeeze().cpu().detach().numpy())
-            plt.show()
-
-
-
 
             depth_target = (
                             torch.nn.functional.interpolate(
@@ -618,6 +604,14 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             depth_pred = Variable( dp_prediction,  requires_grad=True)
             depth_target = Variable( depth_target, requires_grad = False)
+
+            print('dp_prediction',dp_prediction.shape)
+            print('depth_target',depth_target.shape)
+            import matplotlib.pyplot as plt
+            plt.imshow(dp_prediction.squeeze().cpu().detach().numpy())
+            plt.show()
+            plt.imshow(depth_target.squeeze().cpu().detach().numpy())
+            plt.show()
 
             #print('depth',[[len(x),x.size()]  for x in [depth_pred,depth_target]])
 
