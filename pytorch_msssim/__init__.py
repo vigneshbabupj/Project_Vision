@@ -58,6 +58,9 @@ def ssim(img1, img2, window_size=11, window=None, size_average=True, full=False,
 
     ssim_map = ((2 * mu1_mu2 + C1) * v1) / ((mu1_sq + mu2_sq + C1) * v2)
 
+    print('L',L, 'mu1_mu2',mu1_mu2)
+    print('ssim_map',ssim_map)
+
     if size_average:
         ret = ssim_map.mean()
     else:
