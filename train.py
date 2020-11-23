@@ -617,7 +617,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             #ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
             #ssim_loss = msssim() #https://github.com/jorge-pessoa/pytorch-msssim
-            ssim_out = torch.clamp(1-msssim(depth_pred,depth_target,normalize='relu').item(),min=0,max=1)
+            ssim_out = torch.clamp(1-msssim(depth_pred,depth_target,normalize='relu'),min=0,max=1)
 
 
             #print('Depth loss :', ssim_out)
