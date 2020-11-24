@@ -618,7 +618,9 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             #ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
             #ssim_loss = msssim() #https://github.com/jorge-pessoa/pytorch-msssim
-            ssim_out = torch.clamp(1-msssim(depth_pred,depth_target,normalize='relu'),min=0,max=1)
+            #ssim_out = torch.clamp(1-msssim(depth_pred,depth_target,normalize='relu'),min=0,max=1)
+            loss_fn = nn.MSELoss()
+            RMSE_loss = torch.sqrt(loss_fn(depth_pred, depth_target))
 
 
             #print('Depth loss :', ssim_out)
@@ -643,7 +645,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             yolo_loss *= batch_size / 64
 
 
-            all_loss = (add_plane_loss * plane_loss) + (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
+            all_loss = (add_plane_loss * plane_loss) + (add_yolo_loss * yolo_loss) + (add_midas_loss * RMSE_loss)
             #all_loss = (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
             print('plane_loss : ', plane_loss.item())
             print('yolo_loss : ', yolo_loss.item())
