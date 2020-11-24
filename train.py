@@ -649,7 +649,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #all_loss = (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
             print('plane_loss : ', plane_loss.item())
             print('yolo_loss : ', yolo_loss.item())
-            print('ssim_out : ', ssim_out)
+            print('ssim_out : ', RMSE_loss)
             print('all_loss :',all_loss.item())
 
             print('mixed_precision :',mixed_precision)
