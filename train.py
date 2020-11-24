@@ -654,6 +654,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             print('mixed_precision :',mixed_precision)
 
+            optimizer.zero_grad()
+
             # Compute gradient
             if mixed_precision:
                 with amp.scale_loss(all_loss, optimizer) as scaled_loss:
