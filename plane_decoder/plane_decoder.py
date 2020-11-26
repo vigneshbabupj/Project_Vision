@@ -127,6 +127,7 @@ class FPN(nn.Module):
         )
 
     def forward(self, x,resnet_out):
+        '''debug1
         #x = self.C1(x)
         #x = self.C2(x)
         c2_out = resnet_out[0] #x
@@ -140,6 +141,19 @@ class FPN(nn.Module):
         x = resnet_out[3]#x
         p5_out = self.P5_conv1(x)
         # print('p5_out',p5_out.shape)
+        debug1'''
+
+        x = self.C1(x)
+        x = self.C2(x)
+        c2_out = x
+        x = self.C3(x)
+        c3_out = x
+        x = self.C4(x)
+        c4_out = x
+        x = self.C5(x)
+        p5_out = self.P5_conv1(x)
+
+        print('FPN c5',x[0])
         
         if self.bilinear_upsampling:
             p4_out = self.P4_conv1(c4_out) + F.interpolate(p5_out, scale_factor=2, mode='bilinear', align_corners=False)
