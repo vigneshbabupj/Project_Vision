@@ -1472,11 +1472,15 @@ class MaskRCNN(nn.Module):
         ## Bottom-up Layers
         ## Returns a list of the last layers of each stage, 5 in total.
         ## Don't create the thead (stage 5), so we pick the 4th item in the list.
-        # resnet = ResNet("resnet101", stage5=True, numInputChannels=config.NUM_INPUT_CHANNELS)
-        # C1, C2, C3, C4, C5 = resnet.stages()
+        resnet = ResNet("resnet101", stage5=True, numInputChannels=config.NUM_INPUT_CHANNELS)
+        C1, C2, C3, C4, C5 = resnet.stages()
+
+        print('resnet stages',[x for x in [C1, C2, C3, C4, C5]])
 
         #Vignesh Replace resnet encoder
         C1, C2, C3, C4, C5 = [None,ResNet_encoder.layer1,ResNet_encoder.layer2,ResNet_encoder.layer3,ResNet_encoder.layer4]
+
+        print('encoder stages',[x for x in [C1, C2, C3, C4, C5]])
 
         ## Top-down Layers
         ## TODO: add assert to varify feature map sizes match what's in config
