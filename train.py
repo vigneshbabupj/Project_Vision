@@ -686,7 +686,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                 with amp.scale_loss(all_loss, optimizer) as scaled_loss:
                     scaled_loss.backward()
             else:
-                #all_loss.backward()
+                all_loss.backward()
                 pass
 
             # Optimize accumulated gradient
