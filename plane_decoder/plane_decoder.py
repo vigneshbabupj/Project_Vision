@@ -145,6 +145,7 @@ class FPN(nn.Module):
 
         x = self.C1(x)
         x = self.C2(x)
+        x = resnet_out[0]
         c2_out = x
         x = self.C3(x)
         c3_out = x
@@ -153,7 +154,7 @@ class FPN(nn.Module):
         x = self.C5(x)
         p5_out = self.P5_conv1(x)
 
-        print('FPN c5',x[0])
+        #print('FPN c5',x[0])
         
         if self.bilinear_upsampling:
             p4_out = self.P4_conv1(c4_out) + F.interpolate(p5_out, scale_factor=2, mode='bilinear', align_corners=False)
