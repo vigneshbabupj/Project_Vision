@@ -430,6 +430,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             
             plane_inp = dict(input = [images, image_metas, gt_class_ids, gt_boxes, gt_masks, gt_parameters, camera], mode='inference_detection', use_nms=2, use_refinement=True, return_feature_map=False)
 
+            print('plane images',images[0])
             for i,params in enumerate(plane_inp['input']):
                 val = params.size() if torch.is_tensor(params) else params
                 print(i,val)
