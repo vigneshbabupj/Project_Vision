@@ -148,6 +148,7 @@ class FPN(nn.Module):
         x = resnet_out[0]
         c2_out = x
         x = self.C3(x)
+        x = resnet_out[1]
         c3_out = x
         x = self.C4(x)
         c4_out = x
