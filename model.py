@@ -71,7 +71,7 @@ class VisionNet(nn.Module):
 		Yolo_61 = self.conv2(layer_3)
 		Yolo_36 = self.conv3(layer_2)
 
-		plane_ip['input'] = yolo_ip
+		plane_ip['input'][0] = yolo_ip
 
 		
 		# PlaneRCNN decoder
