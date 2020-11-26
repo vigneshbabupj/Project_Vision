@@ -307,15 +307,15 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
     print('Using %g dataloader workers' % nw)
     print('Starting training for %g epochs...' % epochs)
 
-    # Print model's state_dict
-    print("Model's state_dict:")
-    for param_tensor in model.state_dict():
-        print(param_tensor, "\t", model.state_dict()[param_tensor].size())
+    # # Print model's state_dict
+    # print("Model's state_dict:")
+    # for param_tensor in model.state_dict():
+    #     print(param_tensor, "\t", model.state_dict()[param_tensor].size())
 
-    # Print optimizer's state_dict
-    print("Optimizer's state_dict:")
-    for var_name in optimizer.state_dict():
-        print(var_name, "\t", optimizer.state_dict()[var_name])
+    # # Print optimizer's state_dict
+    # print("Optimizer's state_dict:")
+    # for var_name in optimizer.state_dict():
+    #     print(var_name, "\t", optimizer.state_dict()[var_name])
 
 
     for epoch in range(start_epoch, epochs):  # epoch ------------------------------------------------------------------
