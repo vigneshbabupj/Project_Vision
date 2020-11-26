@@ -622,13 +622,13 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             depth_pred = Variable( dp_prediction,  requires_grad=True)
             depth_target = Variable( depth_target, requires_grad = False)
 
-            print('dp_prediction',dp_prediction.shape)
-            print('depth_target',depth_target.shape)
-            import matplotlib.pyplot as plt
-            plt.imshow(dp_prediction.squeeze().cpu().detach().numpy())
-            plt.show()
-            plt.imshow(depth_target.squeeze().cpu().detach().numpy())
-            plt.show()
+            # print('dp_prediction',dp_prediction.shape)
+            # print('depth_target',depth_target.shape)
+            # import matplotlib.pyplot as plt
+            # plt.imshow(dp_prediction.squeeze().cpu().detach().numpy())
+            # plt.show()
+            # plt.imshow(depth_target.squeeze().cpu().detach().numpy())
+            # plt.show()
 
             #print('depth',[[len(x),x.size()]  for x in [depth_pred,depth_target]])
 
