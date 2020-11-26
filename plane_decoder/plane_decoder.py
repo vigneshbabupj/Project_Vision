@@ -1476,7 +1476,7 @@ class MaskRCNN(nn.Module):
         # C1, C2, C3, C4, C5 = resnet.stages()
 
         #Vignesh Replace resnet encoder
-        C1, C2, C3, C4, C5 = [ResNet_encoder.layer1,ResNet_encoder.layer2,ResNet_encoder.layer3,ResNet_encoder.layer4,None]
+        C1, C2, C3, C4, C5 = [None,ResNet_encoder.layer1,ResNet_encoder.layer2,ResNet_encoder.layer3,ResNet_encoder.layer4]
 
         ## Top-down Layers
         ## TODO: add assert to varify feature map sizes match what's in config
