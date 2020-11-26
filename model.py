@@ -44,11 +44,12 @@ class VisionNet(nn.Module):
 		
 
 		self.depth_decoder = MidasNet_decoder(path)
+		debug1'''
 
 		self.conv1 = nn.Conv2d(in_channels=2048, out_channels=1024, kernel_size=(1, 1), padding=0, bias=False)
 		self.conv2 = nn.Conv2d(in_channels=1024, out_channels=512, kernel_size=(1, 1), padding=0, bias=False)
 		self.conv3 = nn.Conv2d(in_channels=512, out_channels=256, kernel_size=(1, 1), padding=0, bias=False)
-		debug1'''
+		
 
 	def forward(self,yolo_ip,midas_ip,plane_ip):
 
