@@ -436,20 +436,13 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             #planercnn init end
 
-            '''debug1
 
             # All model prediction start
 
-            yolo_out,midas_out,plane_out = model.forward(yolo_inp,midas_inp,plane_inp)
+            plane_out,yolo_out,midas_out, = model.forward(yolo_inp,midas_inp,plane_inp)
+
             pred = yolo_out
-            dp_prediction = midas_out
-            debug1 '''
-
-            plane_out = model.forward(yolo_inp,midas_inp,plane_inp) #debug1
-            yolo_out =None #debug1
-            midas_out = None #debug1
-
-            
+            dp_prediction = midas_out           
             
 
             
@@ -578,7 +571,6 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             #planercnn END
             #Vignesh : block planercnn
-            '''debug1
 
             
 
@@ -673,10 +665,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # Scale yolo_loss by nominal batch_size of 64
             yolo_loss *= batch_size / 64
 
-            debug1'''
 
-            RMSE_loss=0 ##debug1
-            yolo_loss = 0 #debug1
+
             all_loss = (add_plane_loss * plane_loss) + (add_yolo_loss * yolo_loss) + (add_midas_loss * RMSE_loss)
             #all_loss = (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
             print('plane_loss : ', plane_loss)
@@ -703,14 +693,12 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             
             ema.update(model)
 
-            '''debug1
 
             # Print batch results
             mloss = (mloss * i + yolo_loss_items) / (i + 1)  # update mean losses
             mem = '%.3gG' % (torch.cuda.memory_cached() / 1E9 if torch.cuda.is_available() else 0)  # (GB)
             s = ('%10s' * 2 + '%10.3g' * 6) % ('%g/%g' % (epoch, epochs - 1), mem, *mloss, len(targets), img_size)
             pbar.set_description(s)
-            debug1'''
 
             # end batch ------------------------------------------------------------------------------------------------
 
