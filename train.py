@@ -307,6 +307,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
     print('Using %g dataloader workers' % nw)
     print('Starting training for %g epochs...' % epochs)
 
+    print('model state dict',model.state_dict())
+
     for epoch in range(start_epoch, epochs):  # epoch ------------------------------------------------------------------
         #model.train()
     ## END yolo train setup 
