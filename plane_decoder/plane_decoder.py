@@ -127,7 +127,7 @@ class FPN(nn.Module):
         )
 
     def forward(self, x,resnet_out):
-        '''debug1
+        
         #x = self.C1(x)
         #x = self.C2(x)
         c2_out = resnet_out[0] #x
@@ -141,21 +141,21 @@ class FPN(nn.Module):
         x = resnet_out[3]#x
         p5_out = self.P5_conv1(x)
         # print('p5_out',p5_out.shape)
-        debug1'''
+        
 
-        x = self.C1(x)
-        x = self.C2(x)
-        x = resnet_out[0]
-        c2_out = x
-        x = self.C3(x)
-        x = resnet_out[1]
-        c3_out = x
-        x = self.C4(x)
-        x = resnet_out[2]
-        c4_out = x
-        x = self.C5(x)
-        x = resnet_out[3]
-        p5_out = self.P5_conv1(x)
+        # x = self.C1(x)
+        # x = self.C2(x)
+        # x = resnet_out[0]
+        # c2_out = x
+        # x = self.C3(x)
+        # x = resnet_out[1]
+        # c3_out = x
+        # x = self.C4(x)
+        # x = resnet_out[2]
+        # c4_out = x
+        # x = self.C5(x)
+        # x = resnet_out[3]
+        # p5_out = self.P5_conv1(x)
 
         #print('FPN c5',x[0])
         
