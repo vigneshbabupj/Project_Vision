@@ -696,11 +696,14 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             
             ema.update(model)
 
+            '''debug1
+
             # Print batch results
             mloss = (mloss * i + yolo_loss_items) / (i + 1)  # update mean losses
             mem = '%.3gG' % (torch.cuda.memory_cached() / 1E9 if torch.cuda.is_available() else 0)  # (GB)
             s = ('%10s' * 2 + '%10.3g' * 6) % ('%g/%g' % (epoch, epochs - 1), mem, *mloss, len(targets), img_size)
             pbar.set_description(s)
+            debug1'''
 
             # end batch ------------------------------------------------------------------------------------------------
 
