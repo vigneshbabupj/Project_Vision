@@ -151,8 +151,10 @@ class FPN(nn.Module):
         x = resnet_out[1]
         c3_out = x
         x = self.C4(x)
+        x = resnet_out[2]
         c4_out = x
         x = self.C5(x)
+        x = resnet_out[3]
         p5_out = self.P5_conv1(x)
 
         #print('FPN c5',x[0])
