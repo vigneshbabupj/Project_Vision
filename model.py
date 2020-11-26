@@ -35,11 +35,12 @@ class VisionNet(nn.Module):
 		
 		self.encoder = _make_resnet_encoder(use_pretrained)
 
-		self.depth_decoder = MidasNet_decoder(path)
+		self.plane_decoder = MaskRCNN(self.planercnn_params,self.encoder) #options, config, modelType='final'
 
 		''' debug1
+		self.depth_decoder = MidasNet_decoder(path)
 
-		self.plane_decoder = MaskRCNN(self.planercnn_params,self.encoder) #options, config, modelType='final'
+		
 
 		self.bbox_decoder =  Darknet(self.yolo_params)
 		
@@ -71,16 +72,13 @@ class VisionNet(nn.Module):
 		Yolo_36 = self.conv3(layer_2)
 
 		
-		
-
-		# MiDaS depth decoder
-		depth_out = self.depth_decoder([layer_1, layer_2, layer_3, layer_4])
-
-		''' debug1
-
 
 		# PlaneRCNN decoder
 		plane_out = self.plane_decoder.forward(plane_ip,[layer_1, layer_2, layer_3, layer_4])
+
+		''' debug1
+		# MiDaS depth decoder
+		depth_out = self.depth_decoder([layer_1, layer_2, layer_3, layer_4])
 
 
 
@@ -99,4 +97,4 @@ class VisionNet(nn.Module):
 
 		#print('depth_out',depth_out)
 
-		return depth_out  #, bbox_out, plane_out
+		return  plane_out   #, bbox_out, depth_out
