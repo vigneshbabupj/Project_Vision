@@ -142,23 +142,7 @@ class FPN(nn.Module):
         p5_out = self.P5_conv1(x)
         # print('p5_out',p5_out.shape)
         
-
-        # x = self.C1(x)
-        # x = self.C2(x)
-        # x = resnet_out[0]
-        # c2_out = x
-        # x = self.C3(x)
-        # x = resnet_out[1]
-        # c3_out = x
-        # x = self.C4(x)
-        # x = resnet_out[2]
-        # c4_out = x
-        # x = self.C5(x)
-        # x = resnet_out[3]
-        # p5_out = self.P5_conv1(x)
-
-        #print('FPN c5',x[0])
-        
+       
         if self.bilinear_upsampling:
             p4_out = self.P4_conv1(c4_out) + F.interpolate(p5_out, scale_factor=2, mode='bilinear', align_corners=False)
             p3_out = self.P3_conv1(c3_out) + F.interpolate(p4_out, scale_factor=2, mode='bilinear', align_corners=False)
@@ -1488,11 +1472,11 @@ class MaskRCNN(nn.Module):
         ## Bottom-up Layers
         ## Returns a list of the last layers of each stage, 5 in total.
         ## Don't create the thead (stage 5), so we pick the 4th item in the list.
-        resnet = ResNet("resnet101", stage5=True, numInputChannels=config.NUM_INPUT_CHANNELS)
-        C1, C2, C3, C4, C5 = resnet.stages()
+        # resnet = ResNet("resnet101", stage5=True, numInputChannels=config.NUM_INPUT_CHANNELS)
+        # C1, C2, C3, C4, C5 = resnet.stages()
 
         #Vignesh Replace resnet encoder
-        #C1, C2, C3, C4, C5 = [ResNet_encoder.layer1,ResNet_encoder.layer2,ResNet_encoder.layer3,ResNet_encoder.layer4,None]
+        C1, C2, C3, C4, C5 = [ResNet_encoder.layer1,ResNet_encoder.layer2,ResNet_encoder.layer3,ResNet_encoder.layer4,None]
 
         ## Top-down Layers
         ## TODO: add assert to varify feature map sizes match what's in config
