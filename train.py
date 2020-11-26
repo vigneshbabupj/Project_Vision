@@ -639,7 +639,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             RMSE_loss = torch.sqrt(loss_fn(depth_pred, depth_target))
 
 
-            depth_loss = (0.1*RMSE_loss) + ssim_out
+            depth_loss = (0.01*RMSE_loss) + ssim_out
 
 
             print('Depth loss :', 'ssim',ssim_out,'RMSE', RMSE_loss)

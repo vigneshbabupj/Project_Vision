@@ -31,7 +31,7 @@ def ssim(img1, img2, window_size=11, window=None, size_average=True, full=False,
         L = max_val - min_val
     else:
         L = val_range
-    print('#'*55,'val_range',val_range,torch.max(img1),torch.min(img1))
+    #print('#'*55,'val_range',val_range,torch.max(img1),torch.min(img1))
 
     padd = 0
     (_, channel, height, width) = img1.size()
@@ -45,8 +45,8 @@ def ssim(img1, img2, window_size=11, window=None, size_average=True, full=False,
     mu1_sq = mu1.pow(2)
     mu2_sq = mu2.pow(2)
     mu1_mu2 = mu1 * mu2
-    print('L',L,'window',window.size(),'channel',channel)
-    print('img1',img1.size())
+    #print('L',L,'window',window.size(),'channel',channel)
+    #print('img1',img1.size())
 
     sigma1_sq = F.conv2d(img1 * img1, window, padding=padd, groups=channel) - mu1_sq
     sigma2_sq = F.conv2d(img2 * img2, window, padding=padd, groups=channel) - mu2_sq
