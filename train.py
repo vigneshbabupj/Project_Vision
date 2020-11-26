@@ -440,15 +440,15 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             yolo_out,midas_out,plane_out = model.forward(yolo_inp,midas_inp,plane_inp)
             debug1 '''
 
-            yolo_out = model.forward(yolo_inp,midas_inp,plane_inp) #debug1
-            midas_out =None #debug1
+            midas_out = model.forward(yolo_inp,midas_inp,plane_inp) #debug1
+            yolo_out =None #debug1
             plane_out = None #debug1
 
-            pred = yolo_out
+            
+            dp_prediction = midas_out
 
             '''debug1
-
-            dp_prediction = midas_out
+            pred = yolo_out
 
             rpn_class_logits, rpn_pred_bbox, target_class_ids, mrcnn_class_logits, target_deltas, mrcnn_bbox, target_mask, mrcnn_mask, target_parameters, mrcnn_parameters, detections, detection_masks, detection_gt_parameters, detection_gt_masks, rpn_rois, roi_features, roi_indices, depth_np_pred = plane_out
 
@@ -573,6 +573,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             #planercnn END
             #Vignesh : block planercnn
+            debug1'''
 
             ## Midas start
             
@@ -646,11 +647,10 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #print('Depth loss :', ssim_out)
             ## Midas End
 
-            debug1'''
+            
+            '''debug1
 
             #Yolov3 Start
-
-            
             
             # Compute yolo_loss
             yolo_loss, yolo_loss_items = compute_loss(pred, targets, model)
@@ -666,14 +666,16 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # Scale yolo_loss by nominal batch_size of 64
             yolo_loss *= batch_size / 64
 
+            debug1'''
+
             plane_loss=0 ##debug1
-            RMSE_loss = 0 #debug1
+            yolo_loss = 0 #debug1
             all_loss = (add_plane_loss * plane_loss) + (add_yolo_loss * yolo_loss) + (add_midas_loss * RMSE_loss)
             #all_loss = (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
             print('plane_loss : ', plane_loss)
-            print('yolo_loss : ', yolo_loss.item())
+            print('yolo_loss : ', yolo_loss)
             print('ssim_out : ', RMSE_loss)
-            print('all_loss :',all_loss.item())
+            print('all_loss :',all_loss)
 
             print('mixed_precision :',mixed_precision)
 
