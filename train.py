@@ -324,7 +324,9 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
         model.train()
 
-        print(('\n' + '%10s' * 8) % ('Epoch', 'gpu_mem', 'GIoU', 'obj', 'cls', 'total', 'targets', 'img_size'))
+        #print(('\n' + '%10s' * 8) % ('Epoch', 'gpu_mem', 'GIoU', 'obj', 'cls', 'total', 'targets', 'img_size'))
+        print(('\n' + '%10s' * 8) % ('Epoch', 'Dp_SSIM', 'Dp_Rmse', 'Dp_loss', 'bbx_loss', 'plnrn_loss', 'All_loss', 'img_size'))
+
         pbar = tqdm(enumerate(trainloader))
 
         #optimizer.zero_grad()
@@ -628,9 +630,9 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #print('depth',[[len(x),x.size()]  for x in [depth_pred,depth_target]])
 
             ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
-            print('ssim_loss :',ssim_loss(depth_pred,depth_target))
-            print('msssim :',msssim(depth_pred,depth_target))
-            ssim_out = torch.clamp(1-msssim(depth_pred,depth_target,normalize='relu'),min=0,max=1) #https://github.com/jorge-pessoa/pytorch-msssim
+            #print('ssim_loss :',ssim_loss(depth_pred,depth_target))
+            #print('msssim :',msssim(depth_pred,depth_target))
+            ssim_out = torch.clamp(1-ssim_loss(depth_pred,depth_target),min=0,max=1) #https://github.com/jorge-pessoa/pytorch-msssim
             loss_fn = nn.MSELoss()
             RMSE_loss = torch.sqrt(loss_fn(depth_pred, depth_target))
 
@@ -638,7 +640,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             depth_loss = (0.01*RMSE_loss) + ssim_out    
 
 
-            print('Depth loss :', 'ssim',ssim_out,'RMSE', RMSE_loss)
+            #print('Depth loss :', 'ssim',ssim_out,'RMSE', RMSE_loss)
             ## Midas End
 
             
@@ -664,10 +666,10 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             all_loss = (add_plane_loss * plane_loss) + (add_yolo_loss * yolo_loss) + (add_midas_loss * depth_loss)
             #all_loss = (add_yolo_loss * yolo_loss) + (add_midas_loss * ssim_out)
-            print('plane_loss : ', plane_loss)
-            print('yolo_loss : ', yolo_loss)
-            print('ssim_out : ', depth_loss)
-            print('all_loss :',all_loss)
+            # print('plane_loss : ', plane_loss)
+            # print('yolo_loss : ', yolo_loss)
+            # print('ssim_out : ', depth_loss)
+            # print('all_loss :',all_loss)
 
             #optimizer.zero_grad()
 
@@ -690,7 +692,10 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # Print batch results
             mloss = (mloss * i + yolo_loss_items) / (i + 1)  # update mean losses
             mem = '%.3gG' % (torch.cuda.memory_cached() / 1E9 if torch.cuda.is_available() else 0)  # (GB)
-            s = ('%10s' * 2 + '%10.3g' * 6) % ('%g/%g' % (epoch, epochs - 1), mem, *mloss, len(targets), img_size)
+
+            #s = ('%10s' * 2 + '%10.3g' * 6) % ('%g/%g' % (epoch, epochs - 1), mem, *mloss, len(targets), img_size)
+            s = ('%10s' * 2 + '%10.3g' * 6) % ('%g/%g' % (epoch, epochs - 1), ssim_out.item(), RMSE_loss.item(), depth_loss.item(), yolo_loss.item(), plane_loss.item(), all_loss.item(), img_size)
+            #print(('\n' + '%10s' * 8) % ('Epoch', 'Dp_SSIM', 'Dp_Rmse', 'Dp_loss', 'bbx_loss', 'plnrn_loss', 'All_loss', 'img_size'))
             pbar.set_description(s)
 
             # end batch ------------------------------------------------------------------------------------------------

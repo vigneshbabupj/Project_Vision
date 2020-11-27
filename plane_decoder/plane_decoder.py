@@ -1430,7 +1430,7 @@ def compute_losses(config, rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox,
     mrcnn_mask_loss = compute_mrcnn_mask_loss(config, target_mask, target_class_ids, target_parameters, mrcnn_mask)
     mrcnn_parameter_loss = compute_mrcnn_parameter_loss(target_parameters, target_class_ids, mrcnn_parameters)
 
-    print('plane losses :', [x.item() for x in [rpn_class_loss, rpn_bbox_loss, mrcnn_class_loss, mrcnn_bbox_loss, mrcnn_mask_loss, mrcnn_parameter_loss]])
+    #print('plane losses :', [x.item() for x in [rpn_class_loss, rpn_bbox_loss, mrcnn_class_loss, mrcnn_bbox_loss, mrcnn_mask_loss, mrcnn_parameter_loss]])
     return [rpn_class_loss, rpn_bbox_loss, mrcnn_class_loss, mrcnn_bbox_loss, mrcnn_mask_loss, mrcnn_parameter_loss]
 
 
