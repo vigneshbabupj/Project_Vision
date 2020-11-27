@@ -77,7 +77,7 @@ def test(cfg,
     loss = torch.zeros(3, device=device)
     jdict, stats, ap, ap_class = [], [], [], []
     for i,(plane_data,yolo_data,depth_data) in enumerate(tqdm(dataloader, desc=s)):
-        
+        batch_i = i
         imgs, targets, paths, _ = yolo_data
 
         imgs = imgs.to(device).float() / 255.0  # uint8 to float32, 0 - 255 to 0.0 - 1.0
