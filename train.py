@@ -657,7 +657,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                 return results
 
             # Scale yolo_loss by nominal batch_size of 64
-            yolo_loss *= batch_size / 64
+            #yolo_loss *= batch_size / 64
 
 
 
