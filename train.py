@@ -723,8 +723,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                                       dataloader=testloader)
 
 
-            ##Yolov3 END
-        print('%g epochs completed in %.3f hours.\n' % (epoch - start_epoch + 1, (time.time() - t0) / 3600))
-        dist.destroy_process_group() if torch.cuda.device_count() > 1 else None
-        torch.cuda.empty_cache()
+    ##Yolov3 END
+    print('%g epochs completed in %.3f hours.\n' % (epoch - start_epoch + 1, (time.time() - t0) / 3600))
+    dist.destroy_process_group() if torch.cuda.device_count() > 1 else None
+    torch.cuda.empty_cache()
 
