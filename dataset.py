@@ -116,11 +116,14 @@ class create_data(Dataset):
 
         self.imagePaths = self.img_files
 
-        np.savetxt('img_files.txt', self.img_files, delimiter="\n", fmt="%s")
+        
 
 
         n = len(self.img_files)
         #print('No of images found:',n)
+        if n > 500:
+            np.savetxt('img_files.txt', self.img_files, delimiter="\n", fmt="%s")
+
         assert n > 0, 'No images found in %s. See %s' % (path, help_url)
         bi = np.floor(np.arange(n) / batch_size).astype(np.int)  # batch index
         nb = bi[-1] + 1  # number of batches
