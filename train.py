@@ -439,10 +439,6 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             pred = yolo_out
             dp_prediction = midas_out           
-            
-
-            
-            
 
             rpn_class_logits, rpn_pred_bbox, target_class_ids, mrcnn_class_logits, target_deltas, mrcnn_bbox, target_mask, mrcnn_mask, target_parameters, mrcnn_parameters, detections, detection_masks, detection_gt_parameters, detection_gt_masks, rpn_rois, roi_features, roi_indices, depth_np_pred = plane_out
 
@@ -546,9 +542,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
         
 
-            #plane_loss = sum(plane_losses)
-            print('plane_losses :',plane_losses)
-            plane_loss = (sum(plane_losses) /len(plane_losses)) #vignesh to handle gradient explosion
+            #print('plane_losses :',plane_losses)
+            plane_loss = sum(plane_losses)
             plane_losses = [l.data.item() for l in plane_losses] #train_planercnn.py 331
 
             #print('plane_loss : ',plane_loss)
@@ -633,13 +628,13 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #print('depth',[[len(x),x.size()]  for x in [depth_pred,depth_target]])
 
             #ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
-            #ssim_loss = msssim() #https://github.com/jorge-pessoa/pytorch-msssim
-            ssim_out = torch.clamp(1-msssim(depth_pred,depth_target,normalize='relu'),min=0,max=1)
+
+            ssim_out = torch.clamp(1-msssim(depth_pred,depth_target,normalize='relu'),min=0,max=1) #https://github.com/jorge-pessoa/pytorch-msssim
             loss_fn = nn.MSELoss()
             RMSE_loss = torch.sqrt(loss_fn(depth_pred, depth_target))
 
 
-            depth_loss = (0.01*RMSE_loss) + ssim_out
+            depth_loss = (0.01*RMSE_loss) + ssim_out    
 
 
             print('Depth loss :', 'ssim',ssim_out,'RMSE', RMSE_loss)
@@ -673,8 +668,6 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             print('ssim_out : ', depth_loss)
             print('all_loss :',all_loss)
 
-            print('mixed_precision :',mixed_precision)
-
             #optimizer.zero_grad()
 
             # Compute gradient
@@ -687,7 +680,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             # Optimize accumulated gradient
             #if ni % accumulate == 0:
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 0.25)
+            #torch.nn.utils.clip_grad_norm_(model.parameters(), 0.25)
             optimizer.step()
             
             ema.update(model)

@@ -11,6 +11,8 @@ from plane_decoder.plane_decoder import MaskRCNN
 
 from bbox_decoder.yolov3_bbox_decoder import *
 
+from bbox_decoder.utils import torch_utils
+
 class VisionNet(nn.Module):
 
 	'''
@@ -48,6 +50,7 @@ class VisionNet(nn.Module):
 		self.conv2 = nn.Conv2d(in_channels=1024, out_channels=512, kernel_size=(1, 1), padding=0, bias=False)
 		self.conv3 = nn.Conv2d(in_channels=512, out_channels=256, kernel_size=(1, 1), padding=0, bias=False)
 		
+		self.info(False)
 
 	def forward(self,yolo_ip,midas_ip,plane_ip):
 
@@ -95,3 +98,6 @@ class VisionNet(nn.Module):
 		#print('depth_out',depth_out)
 
 		return  plane_out, bbox_out, depth_out
+
+	def info(self, verbose=False):
+        torch_utils.model_info(self, verbose)

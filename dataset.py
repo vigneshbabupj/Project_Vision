@@ -105,7 +105,7 @@ class create_data(Dataset):
         rect = yolo_params.get('rect',False)
         image_weights = yolo_params.get('image_weights',False)
         cache_labels = yolo_params.get('cache_labels',True)
-        cache_images = yolo_params.get('cache_images',False)
+        cache_images = yolo_params.get('cache_images',True)
         single_cls = yolo_params.get('single_cls',False)
 
         path = str(Path(path))  # os-agnostic
@@ -117,6 +117,7 @@ class create_data(Dataset):
         self.imagePaths = self.img_files
 
         n = len(self.img_files)
+        print('No of images found:',n)
         assert n > 0, 'No images found in %s. See %s' % (path, help_url)
         bi = np.floor(np.arange(n) / batch_size).astype(np.int)  # batch index
         nb = bi[-1] + 1  # number of batches
