@@ -100,4 +100,4 @@ class VisionNet(nn.Module):
 		return  plane_out, bbox_out, depth_out
 
 	def info(self, verbose=False):
-        torch_utils.model_info(self, verbose)
+		torch_utils.model_info(self, verbose)
