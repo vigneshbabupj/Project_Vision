@@ -343,7 +343,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #yolov3 init start
             imgs, targets, paths, _ = yolo_data
 
-            print('path',paths,'shape',_)
+            #print('path',paths,'shape',_)
 
             #if paths[0] in ['./data/customdata/images/Mimg_077.jpg','./data/customdata/images/Himage_102.jpg','./data/customdata/images/majdoor_23.jpg']:
             #    continue
@@ -628,7 +628,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #print('depth',[[len(x),x.size()]  for x in [depth_pred,depth_target]])
 
             #ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
-
+            print('msssim :',msssim(depth_pred,depth_target,normalize='relu'))
             ssim_out = torch.clamp(1-msssim(depth_pred,depth_target,normalize='relu'),min=0,max=1) #https://github.com/jorge-pessoa/pytorch-msssim
             loss_fn = nn.MSELoss()
             RMSE_loss = torch.sqrt(loss_fn(depth_pred, depth_target))
