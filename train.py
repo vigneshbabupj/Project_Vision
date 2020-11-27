@@ -91,7 +91,7 @@ from dataset import *
 
 from plane_decoder.plane_decoder import *
 
-#import pytorch_ssim
+import pytorch_ssim
 from pytorch_msssim import msssim
 
 
@@ -627,7 +627,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             #print('depth',[[len(x),x.size()]  for x in [depth_pred,depth_target]])
 
-            #ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
+            ssim_loss = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
+            print('ssim_loss :',ssim_loss(depth_pred,depth_target))
             print('msssim :',msssim(depth_pred,depth_target))
             ssim_out = torch.clamp(1-msssim(depth_pred,depth_target,normalize='relu'),min=0,max=1) #https://github.com/jorge-pessoa/pytorch-msssim
             loss_fn = nn.MSELoss()
