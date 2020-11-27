@@ -5,7 +5,11 @@ import torch.distributed as dist
 import torch.optim as optim
 import torch.optim.lr_scheduler as lr_scheduler
 
-import test  # import test.py to get mAP after each epoch
+#import test  # import test.py to get mAP after each epoch
+
+from bbox_decoder import bbox_test
+
+
 #from models import *
 #from utils.datasets import *
 from bbox_decoder.utils.utils import *
@@ -96,6 +100,7 @@ from pytorch_msssim import msssim
 
 
 from torch.autograd import Variable
+
 
 
 def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas_loss):
@@ -708,7 +713,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
         final_epoch = epoch + 1 == epochs
         if not opt.notest or final_epoch:  # Calculate mAP
             is_coco = any([x in data for x in ['coco.data', 'coco2014.data', 'coco2017.data']]) and model.nc == 80
-            results, maps = test.test(cfg,
+            results, maps = bbox_test.test(cfg,
                                       data,
                                       batch_size=batch_size,
                                       img_size=imgsz_test,
