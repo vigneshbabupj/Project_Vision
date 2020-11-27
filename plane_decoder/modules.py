@@ -42,7 +42,7 @@ def unmoldDetections(config, camera, detections, detection_masks, depth_np, unmo
             
         mask = masks[detectionIndex]
         mask = mask.unsqueeze(0).unsqueeze(0)
-        mask = F.interpolate(mask, size=(box[2] - box[0], box[3] - box[1]), mode='bilinear')
+        mask = F.interpolate(mask, size=(box[2] - box[0], box[3] - box[1]), mode='bilinear',align_corners=False)
         mask = mask.squeeze(0).squeeze(0)
 
         final_mask = torch.zeros(config.IMAGE_MAX_DIM, config.IMAGE_MAX_DIM).cuda()

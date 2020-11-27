@@ -476,7 +476,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
 
             if depth_np_pred.shape != gt_depth.shape:
-                depth_np_pred = torch.nn.functional.interpolate(depth_np_pred.unsqueeze(1), size=(512, 512), mode='bilinear').squeeze(1)
+                depth_np_pred = torch.nn.functional.interpolate(depth_np_pred.unsqueeze(1), size=(512, 512), mode='bilinear',align_corners=False).squeeze(1)
                 pass
 
             if config.PREDICT_NORMAL_NP:
