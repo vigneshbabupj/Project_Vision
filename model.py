@@ -72,14 +72,14 @@ class VisionNet(nn.Module):
 		Yolo_61 = self.conv2(layer_3)
 		Yolo_36 = self.conv3(layer_2)
 
-		if plane_ip:
+		if plane_ip is not None:
 			plane_ip['input'][0] = yolo_ip
 			# PlaneRCNN decoder
 			plane_out = self.plane_decoder.forward(plane_ip,[layer_1, layer_2, layer_3, layer_4])
 		else:
 			plane_out = None
 
-		if midas_ip:
+		if midas_ip is not None:
 			# MiDaS depth decoder
 			depth_out = self.depth_decoder([layer_1, layer_2, layer_3, layer_4])
 		else:
