@@ -325,7 +325,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
         model.train()
 
         #print(('\n' + '%10s' * 8) % ('Epoch', 'gpu_mem', 'GIoU', 'obj', 'cls', 'total', 'targets', 'img_size'))
-        print(('\n' + '%10s' * 8) % ('Epoch', 'Dp_SSIM', 'Dp_Rmse', 'Dp_loss', 'bbx_loss', 'plnrn_loss', 'All_loss', 'img_size'))
+        print(('\n' + '%10s' * 8) % ('Epoch', 'Dp_SSIM', 'Dp_Rmse', 'Dp_loss', 'bbx_loss', 'pln_loss', 'All_loss', 'img_size'))
 
         pbar = tqdm(enumerate(trainloader))
 
@@ -437,7 +437,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             # All model prediction start
 
-            plane_out,yolo_out,midas_out, = model.forward(yolo_inp,midas_inp,plane_inp)
+            plane_out,yolo_out,midas_out = model.forward(yolo_inp,midas_inp,plane_inp)
 
             pred = yolo_out
             dp_prediction = midas_out           
@@ -702,6 +702,21 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
         # Update scheduler
         scheduler.step()
+
+        # Process epoch results
+        ema.update_attr(model)
+        final_epoch = epoch + 1 == epochs
+        if not opt.notest or final_epoch:  # Calculate mAP
+            is_coco = any([x in data for x in ['coco.data', 'coco2014.data', 'coco2017.data']]) and model.nc == 80
+            results, maps = test.test(cfg,
+                                      data,
+                                      batch_size=batch_size,
+                                      img_size=imgsz_test,
+                                      model=ema.ema,
+                                      save_json=final_epoch and is_coco,
+                                      single_cls=opt.single_cls,
+                                      dataloader=testloader)
+
 
             ##Yolov3 END
         print('%g epochs completed in %.3f hours.\n' % (epoch - start_epoch + 1, (time.time() - t0) / 3600))
