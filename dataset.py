@@ -372,7 +372,8 @@ class create_data(Dataset):
         ## The below codes just fill in dummy values for all other data entries which are not used for inference. You can ignore everything except some preprocessing operations on "image".
         #depth = np.zeros(, dtype=np.float32) depth_img
         # used midas depth for planer depth
-        depth = torch.nn.functional.interpolate(torch.from_numpy(depth_img).unsqueeze(1), size=(self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), mode="bicubic",align_corners=False).numpy()
+        print(depth_img.size())
+        depth = torch.nn.functional.interpolate(torch.from_numpy(depth_img), size=(self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), mode="bicubic",align_corners=False).numpy()
         segmentation = np.zeros((self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), dtype=np.int32)
 
 
