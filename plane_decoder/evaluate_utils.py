@@ -212,7 +212,7 @@ def evaluateBatchDetection(options, config, input_dict, detection_dict, statisti
     depth_gt = depth_gt[:, 80:560]
     depth_pred = depth_pred[:, 80:560]        
 
-    nyu_mask = torch.zeros((1, 640, 640)).cuda()
+    nyu_mask = torch.zeros(valid_mask.size()).cuda()#torch.zeros((1, 640, 640)).cuda()
     nyu_mask[:, 80 + 44:80 + 471, 40:601] = 1
     nyu_mask = nyu_mask > -0.5
     for c, plane_mask in enumerate([nyu_mask]):
