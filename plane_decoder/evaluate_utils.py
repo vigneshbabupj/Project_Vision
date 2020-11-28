@@ -6,8 +6,8 @@ Licensed under the CC BY-NC-SA 4.0 license
 
 import cv2
 import numpy as np
-from utils import *
-from models.modules import *
+from plane_decoder.utils import *
+from plane_decoder.modules import *
 
 
 def evaluateDepths(predDepths, gtDepths, printInfo=False):
