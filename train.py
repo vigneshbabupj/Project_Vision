@@ -79,7 +79,7 @@ from plane_decoder.modules import *
 
 from plane_decoder.utils import *
 #from visualize_utils import *
-#from evaluate_utils import *
+from plane_decoder.evaluate_utils import *
 #from options import parse_args
 from plane_decoder.config import InferenceConfig# PlaneConfig
 
@@ -553,6 +553,12 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             plane_loss = sum(plane_losses)
             plane_losses = [l.data.item() for l in plane_losses] #train_planercnn.py 331
 
+            statistics = [[], [], [], []]
+
+            for c in range(len(input_pair)):
+                evaluateBatchDetection(options, config, input_pair[c], detection_pair[c], statistics=statistics, printInfo=True, evaluate_plane=options.dataset == '')
+                        
+
             #print('plane_loss : ',plane_loss)
             #print('plane_losses : ',plane_losses)
 
@@ -708,6 +714,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
         # Update scheduler
         scheduler.step()
 
+        ## Yolov3 test start
+
         # Process epoch results
         ema.update_attr(model)
         final_epoch = epoch + 1 == epochs
@@ -717,10 +725,38 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                                       data,
                                       batch_size=batch_size,
                                       img_size=imgsz_test,
-                                      model=ema.ema,
+                                      model=model#ema.ema,
                                       save_json=final_epoch and is_coco,
                                       single_cls=opt.single_cls,
                                       dataloader=testloader)
+
+        ## Yolov3 test end
+
+        ## planercnn test start
+        '''
+
+        plane_test fun:
+
+            if 'inference' not in options.dataset:
+                    for c in range(len(input_pair)):
+                        evaluateBatchDetection(options, config, input_pair[c], detection_pair[c], statistics=statistics, printInfo=options.debug, evaluate_plane=options.dataset == '')
+                        continue
+                else:
+                    for c in range(len(detection_pair)):
+                        np.save(options.test_dir + '/' + str(sampleIndex % 500) + '_plane_parameters_' + str(c) + '.npy', detection_pair[c]['detection'][:, 6:9])
+                        np.save(options.test_dir + '/' + str(sampleIndex % 500) + '_plane_masks_' + str(c) + '.npy', detection_pair[c]['masks'][:, 80:560])
+                        continue
+                    pass
+
+        ## planercnn test end
+
+        ## midas start
+
+        midas_test fun:
+        '''    
+
+        ## midas end
+
 
 
     ##Yolov3 END
