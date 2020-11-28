@@ -725,7 +725,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                                       data,
                                       batch_size=batch_size,
                                       img_size=imgsz_test,
-                                      model=model#ema.ema,
+                                      model=model,#ema.ema,
                                       save_json=final_epoch and is_coco,
                                       single_cls=opt.single_cls,
                                       dataloader=testloader)
