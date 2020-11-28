@@ -160,7 +160,7 @@ class Config(object):
     METADATA = np.array([571.87, 571.87, 320, 240, 640, 480, 0, 0, 0, 0])
 
     IMAGE_MAX_DIM = 512
-    IMAGE_MIN_DIM = 512
+    IMAGE_MIN_DIM = 384#512
 
     GLOBAL_MASK = False
     PREDICT_DEPTH = False
