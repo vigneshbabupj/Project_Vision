@@ -105,7 +105,7 @@ from torch.autograd import Variable
 
 
 
-def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas_loss):
+def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas_loss,resume_train=False):
 
     #Plane config
     options = plane_args
@@ -173,8 +173,12 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
     del pg0, pg1, pg2
 
     start_epoch = 0
-    best_fitness = 0.0
+    best_loss = 0.0
     attempt_download(weights)
+
+    #if resume_train:
+
+
     if weights.endswith('.pt'):  # pytorch format
         # possible weights are '*.pt', 'yolov3-spp.pt', 'yolov3-tiny.pt' etc.
         chkpt = torch.load(weights, map_location=device)
@@ -551,7 +555,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
         
 
-            print('plane_losses :',plane_losses)
+            #print('plane_losses :',plane_losses)
             plane_loss = sum(plane_losses)
             plane_losses = [l.data.item() for l in plane_losses] #train_planercnn.py 331
 
@@ -728,7 +732,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                                       data,
                                       batch_size=batch_size,
                                       img_size=imgsz_test,
-                                      model=model,#ema.ema,
+                                      model=ema.ema,
                                       save_json=final_epoch and is_coco,
                                       single_cls=opt.single_cls,
                                       dataloader=testloader)
