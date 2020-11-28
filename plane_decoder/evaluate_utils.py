@@ -16,6 +16,8 @@ def evaluateDepths(predDepths, gtDepths, printInfo=False):
     masks = gtDepths > 1e-4
     
     numPixels = float(masks.sum())
+
+    print('numPixels :',numPixels)
     
     rmse = np.sqrt((pow(predDepths - gtDepths, 2) * masks).sum() / numPixels)
     rmse_log = np.sqrt((pow(np.log(np.maximum(predDepths, 1e-4)) - np.log(np.maximum(gtDepths, 1e-4)), 2) * masks).sum() / numPixels)
