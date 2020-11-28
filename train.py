@@ -103,6 +103,8 @@ from torch.autograd import Variable
 
 
 
+
+
 def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas_loss):
 
     #Plane config
@@ -427,7 +429,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # print('gt_class_ids',gt_class_ids.size())
             # print('gt_masks',gt_masks.size())
             # print('gt_parameters',gt_parameters.size())
-            print('gt_depth',gt_depth.size())
+            # print('gt_depth',gt_depth.size())
             # print('extrinsics',extrinsics.size())
             # print('planes',planes.size())
             # print('gt_segmentation',gt_segmentation.size())
@@ -555,8 +557,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             statistics = [[], [], [], []]
 
-            for c in range(len(input_pair)):
-                evaluateBatchDetection(options, config, input_pair[c], detection_pair[c], statistics=statistics, printInfo=True, evaluate_plane=options.dataset == '')
+            #for c in range(len(input_pair)):
+            #    evaluateBatchDetection(options, config, input_pair[c], detection_pair[c], statistics=statistics, printInfo=True, evaluate_plane=options.dataset == '')
                         
 
             #print('plane_loss : ',plane_loss)
@@ -714,6 +716,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
         # Update scheduler
         scheduler.step()
 
+
         ## Yolov3 test start
 
         # Process epoch results
@@ -731,6 +734,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                                       dataloader=testloader)
 
         ## Yolov3 test end
+
+
 
         ## planercnn test start
         '''
@@ -756,6 +761,27 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
         '''    
 
         ## midas end
+
+        ##Save model start
+
+        visionet_checkpoint = {
+                                'epoch': epoch + 1,
+                                'state_dict': model.state_dict(),
+                                'optimizer': optimizer.state_dict()
+                                }
+
+        is_best = False
+        if all_loss < best_loss:
+            best_loss = all_loss
+            is_best = True
+
+        # Save last checkpoint
+        torch.save(chkpt, 'visionet_checkpoint.pt')
+
+        if is_best:
+            torch.save(chkpt, 'visionet_best.pt')
+
+        ##Save model end
 
 
 
