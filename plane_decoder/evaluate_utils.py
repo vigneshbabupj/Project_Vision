@@ -220,7 +220,7 @@ def evaluateBatchDetection(options, config, input_dict, detection_dict, statisti
         if padding > 0:
             valid_mask_depth = valid_mask_depth[:, 80 + padding:560 - padding, padding:-padding]
         else:
-            valid_mask_depth = valid_mask_depth[:, 32:560]#vignesh 80 --> 32
+            valid_mask_depth = valid_mask_depth[:, 128:560]#vignesh 80 --> 32
             pass
 
         if options.debug:
