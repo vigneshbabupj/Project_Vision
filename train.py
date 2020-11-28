@@ -780,10 +780,10 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             is_best = True
 
         # Save last checkpoint
-        torch.save(chkpt, 'visionet_checkpoint.pt')
+        torch.save(visionet_checkpoint, 'visionet_checkpoint.pt')
 
         if is_best:
-            torch.save(chkpt, 'visionet_best.pt')
+            torch.save(visionet_checkpoint, 'visionet_best.pt')
 
         ##Save model end
 
