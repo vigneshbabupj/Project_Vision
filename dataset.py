@@ -317,6 +317,29 @@ class create_data(Dataset):
             index = index % len(self.imagePaths)
             pass
 
+        # midas dataset start
+
+        img_name = self.img_files[index] #vig
+        depth_name = self.depth_names[index]
+
+        img_ip = utils.read_image(img_name)
+        #print('img_ip',img_ip.shape)
+        img_input = self.transform({"image": img_ip})["image"]
+        #print('img_input',img_input)
+
+
+
+        #print('depth_name',depth_name)
+        depth_img = cv2.imread(depth_name)
+        depth_img = cv2.cvtColor(depth_img, cv2.COLOR_BGR2GRAY)
+
+        #print('depth_img',depth_img.shape)
+
+        dp_data = [img_ip.shape,img_input,depth_img]
+
+        # midas dataset end
+
+
         imagePath = self.imagePaths[index]
         image = cv2.imread(imagePath)
         orig_image = image.copy()
@@ -347,7 +370,9 @@ class create_data(Dataset):
         camera[[1, 3, 5]] *= 256.0 / camera[5]
 
         ## The below codes just fill in dummy values for all other data entries which are not used for inference. You can ignore everything except some preprocessing operations on "image".
-        depth = np.zeros((self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), dtype=np.float32)
+        #depth = np.zeros(, dtype=np.float32) depth_img
+        # used midas depth for planer depth
+        depth = torch.nn.functional.interpolate(depth_img.unsqueeze(1), size=(self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), mode="bicubic",align_corners=False)
         segmentation = np.zeros((self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), dtype=np.int32)
 
 
@@ -533,27 +558,7 @@ class create_data(Dataset):
 
         ## Yolo LoadImagesAndLabels END
 
-        # midas dataset start
-
-        img_name = self.img_files[index] #vig
-        depth_name = self.depth_names[index]
-
-        img_ip = utils.read_image(img_name)
-        #print('img_ip',img_ip.shape)
-        img_input = self.transform({"image": img_ip})["image"]
-        #print('img_input',img_input)
-
-
-
-        #print('depth_name',depth_name)
-        depth_img = cv2.imread(depth_name)
-        depth_img = cv2.cvtColor(depth_img, cv2.COLOR_BGR2GRAY)
-
-        #print('depth_img',depth_img.shape)
-
-        dp_data = [img_ip.shape,img_input,depth_img]
-
-        # midas dataset end
+        
         #print('plane:',len(data_pair))
         #print('yolo:',len(yolo_item))
         #print('depth:',len(data))
