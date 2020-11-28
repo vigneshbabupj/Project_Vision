@@ -374,7 +374,7 @@ class create_data(Dataset):
         # used midas depth for planer depth
         print('depth_img',depth_img.shape)
         #depth = torch.nn.functional.interpolate(torch.from_numpy(depth_img).unsqueeze(0).unsqueeze(1), size=(self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), mode="bicubic",align_corners=False).numpy()
-        depth = cv2.resize(depth_img, dsize=(self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), interpolation=cv2.INTER_CUBIC)
+        depth = cv2.resize(depth_img, dsize=(self.config.IMAGE_MAX_DIM,self.config.IMAGE_MIN_DIM), interpolation=cv2.INTER_CUBIC)
         segmentation = np.zeros((self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), dtype=np.int32)
 
 
