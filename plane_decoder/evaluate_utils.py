@@ -209,7 +209,7 @@ def evaluateBatchDetection(options, config, input_dict, detection_dict, statisti
     plane_mask_pred = detection_mask
 
     padding = 0
-    depth_gt = depth_gt[:, 128:560]
+    depth_gt = depth_gt[:, 80:560]
     depth_pred = depth_pred[:, 80:560]        
 
     nyu_mask = torch.zeros(valid_mask.size()).cuda()#torch.zeros((1, 640, 640)).cuda()
@@ -220,7 +220,7 @@ def evaluateBatchDetection(options, config, input_dict, detection_dict, statisti
         if padding > 0:
             valid_mask_depth = valid_mask_depth[:, 80 + padding:560 - padding, padding:-padding]
         else:
-            valid_mask_depth = valid_mask_depth[:, 128:560]#vignesh 80 --> 32
+            valid_mask_depth = valid_mask_depth[:, 80:560]#vignesh 80 --> 32
             pass
 
         if options.debug:
