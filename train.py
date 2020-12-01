@@ -420,8 +420,9 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #depth init end
 
             #planercnn init start
+            data_pair,plane_img = plane_data
             sampleIndex = i
-            sample = plane_data
+            sample = data_pair
 
             #print('sample',len(sample))
 
@@ -533,6 +534,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #input_pair.append({'image': images, 'depth': gt_depth, 'mask': gt_masks, 'bbox': gt_boxes, 'extrinsics': extrinsics, 'segmentation': gt_segmentation, 'parameters': detection_gt_parameters, 'plane': planes, 'camera': camera})
             detection_pair.append({'XYZ': XYZ_pred, 'depth': XYZ_pred[1:2], 'mask': detection_mask, 'detection': detections, 'masks': detection_masks, 'plane_XYZ': plane_XYZ, 'depth_np': depth_np_pred})
 
+
+
             # if 'depth' in options.suffix:
             #     ## Apply supervision on reconstructed depthmap (not used currently)
             #     if len(detections) > 0:
@@ -570,7 +573,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             plane_loss = sum(plane_losses)
             plane_losses = [l.data.item() for l in plane_losses] #train_planercnn.py 331
 
-            statistics = [[], [], [], []]
+            #statistics = [[], [], [], []]
 
             #for c in range(len(input_pair)):
             #    evaluateBatchDetection(options, config, input_pair[c], detection_pair[c], statistics=statistics, printInfo=True, evaluate_plane=options.dataset == '')
@@ -779,7 +782,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
         ##Save model start
 
-        visionet_checkpoint = {'best_loss':best_loss
+        visionet_checkpoint = {'best_loss':best_loss,
                                 'epoch': epoch + 1,
                                 'state_dict': model.state_dict(),
                                 'optimizer': optimizer.state_dict()
