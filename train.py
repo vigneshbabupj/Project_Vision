@@ -173,55 +173,66 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
     del pg0, pg1, pg2
 
     start_epoch = 0
-    best_loss = 0.0
-    attempt_download(weights)
+    best_loss = 1000
+    
 
-    #if resume_train:
+    if resume_train:
+
+        Vsn_chkpt = torch.load('visionet_checkpoint.pt', map_location=device)
+
+        model.load_state_dict(Vsn_chkpt['state_dict'])
+        optimizer.load_state_dict(Vsn_chkpt['optimizer'])
+        best_loss = Vsn_chkpt['best_loss']
+        start_epoch = Vsn_chkpt['epoch'] + 1
+
+        del Vsn_chkpt
+
+    else:
+        attempt_download(weights)
+
+        if weights.endswith('.pt'):  # pytorch format
+            # possible weights are '*.pt', 'yolov3-spp.pt', 'yolov3-tiny.pt' etc.
+            chkpt = torch.load(weights, map_location=device)
+
+            # load model
+            try:
+                #chkpt['model'] = {k: v for k, v in chkpt['model'].items() if model.state_dict()[k].numel() == v.numel()}
+                model.load_state_dict(chkpt['model'], strict=False)
+            except KeyError as e:
+                s = "%s is not compatible with %s. Specify --weights '' or specify a --cfg compatible with %s. " \
+                    "See https://github.com/ultralytics/yolov3/issues/657" % (opt.weights, opt.cfg, opt.weights)
+                raise KeyError(s) from e
+
+            # load optimizer
+            if chkpt['optimizer'] is not None:
+                print('loading Optimizer')
+                optimizer.load_state_dict(chkpt['optimizer'])
+                best_fitness = chkpt['best_fitness']
+
+            # load results
+            if chkpt.get('training_results') is not None:
+                with open(results_file, 'w') as file:
+                    file.write(chkpt['training_results'])  # write results.txt
+
+            start_epoch = chkpt['epoch'] + 1
+            del chkpt
+
+        elif len(weights) > 0:  # darknet format
+            # possible weights are '*.weights', 'yolov3-tiny.conv.15',  'darknet53.conv.74' etc.
+            load_darknet_weights(model, weights)
 
 
-    if weights.endswith('.pt'):  # pytorch format
-        # possible weights are '*.pt', 'yolov3-spp.pt', 'yolov3-tiny.pt' etc.
-        chkpt = torch.load(weights, map_location=device)
+        #load planercnn weighta
+        model.load_state_dict(torch.load(options.checkpoint_dir + '/checkpoint.pth'),strict=False)
 
-        # load model
-        try:
-            #chkpt['model'] = {k: v for k, v in chkpt['model'].items() if model.state_dict()[k].numel() == v.numel()}
-            model.load_state_dict(chkpt['model'], strict=False)
-        except KeyError as e:
-            s = "%s is not compatible with %s. Specify --weights '' or specify a --cfg compatible with %s. " \
-                "See https://github.com/ultralytics/yolov3/issues/657" % (opt.weights, opt.cfg, opt.weights)
-            raise KeyError(s) from e
+        #load midas pretrained weighta
 
-        # load optimizer
-        if chkpt['optimizer'] is not None:
-            print('loading Optimizer')
-            optimizer.load_state_dict(chkpt['optimizer'])
-            best_fitness = chkpt['best_fitness']
+        midas_parameters = torch.load(midas_args.weights)
 
-        # load results
-        if chkpt.get('training_results') is not None:
-            with open(results_file, 'w') as file:
-                file.write(chkpt['training_results'])  # write results.txt
+        if "optimizer" in midas_parameters:
+            midas_parameters = midas_parameters["model"]
 
-        start_epoch = chkpt['epoch'] + 1
-        del chkpt
-
-    elif len(weights) > 0:  # darknet format
-        # possible weights are '*.weights', 'yolov3-tiny.conv.15',  'darknet53.conv.74' etc.
-        load_darknet_weights(model, weights)
-
-
-    #load planercnn weighta
-    model.load_state_dict(torch.load(options.checkpoint_dir + '/checkpoint.pth'),strict=False)
-
-    #load midas pretrained weighta
-
-    midas_parameters = torch.load(midas_args.weights)
-
-    if "optimizer" in midas_parameters:
-        midas_parameters = midas_parameters["model"]
-
-    model.load_state_dict(midas_parameters,strict=False)
+        model.load_state_dict(midas_parameters,strict=False)
 
 
 
@@ -329,7 +340,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
     #     print(var_name, "\t", optimizer.state_dict()[var_name])
 
 
-    for epoch in range(start_epoch, epochs):  # epoch ------------------------------------------------------------------
+    for epoch in range(start_epoch, start_epoch+epochs):  # epoch ------------------------------------------------------------------
         #model.train()
     ## END yolo train setup 
 
@@ -768,7 +779,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
         ##Save model start
 
-        visionet_checkpoint = {
+        visionet_checkpoint = {'best_loss':best_loss
                                 'epoch': epoch + 1,
                                 'state_dict': model.state_dict(),
                                 'optimizer': optimizer.state_dict()

@@ -302,6 +302,14 @@ class create_data(Dataset):
 
         # midas dataset end
 
+        self.plane_names=[]
+        for im in self.img_files:
+            im = im.split(os.sep)
+            im[3]= 'plane_images'
+            im[4] = im[4].replace(os.path.splitext(im[4])[-1], '.jpg')
+            im = os.sep.join(im)
+            self.plane_names.append(im)
+
 
     def __getitem__(self,index):
 
@@ -370,11 +378,11 @@ class create_data(Dataset):
         camera[[1, 3, 5]] *= 256.0 / camera[5]
 
         ## The below codes just fill in dummy values for all other data entries which are not used for inference. You can ignore everything except some preprocessing operations on "image".
-        #depth = np.zeros(, dtype=np.float32) depth_img
+        depth = np.zeros((self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), dtype=np.float32)
         # used midas depth for planer depth
         #print('depth_img',depth_img.shape)
         #depth = torch.nn.functional.interpolate(torch.from_numpy(depth_img).unsqueeze(0).unsqueeze(1), size=(self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), mode="bicubic",align_corners=False).numpy()
-        depth = cv2.resize(depth_img, dsize=(self.config.IMAGE_MAX_DIM,self.config.IMAGE_MIN_DIM), interpolation=cv2.INTER_CUBIC)
+        #depth = cv2.resize(depth_img, dsize=(self.config.IMAGE_MAX_DIM,self.config.IMAGE_MIN_DIM), interpolation=cv2.INTER_CUBIC)
         segmentation = np.zeros((self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), dtype=np.int32)
 
 
@@ -472,6 +480,15 @@ class create_data(Dataset):
         data_pair.append(np.zeros((len(planes), len(planes))))
         data_pair.append(camera.astype(np.float32))
 
+        plane_name = self.plane_names[index]
+        plane_img = cv2.imread(plane_name)
+        plane_img = cv2.cvtColor(plane_img, cv2.COLOR_BGR2GRAY)
+
+        plane_data = [data_pair,plane_img]
+
+
+
+
         #return data_pair
         ## InferenceDataset END
 
@@ -565,7 +582,7 @@ class create_data(Dataset):
         #print('yolo:',len(yolo_item))
         #print('depth:',len(data))
 
-        return data_pair,yolo_item,dp_data
+        return plane_data,yolo_item,dp_data
 
     @staticmethod
     def collate_fn(batch):
