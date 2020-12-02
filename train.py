@@ -78,7 +78,7 @@ from plane_decoder.modules import *
 #from datasets.plane_stereo_dataset import *
 
 from plane_decoder.utils import *
-#from visualize_utils import *
+from plane_decoder.visualize_utils import *
 from plane_decoder.evaluate_utils import *
 #from options import parse_args
 from plane_decoder.config import InferenceConfig# PlaneConfig
@@ -533,6 +533,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             #input_pair.append({'image': images, 'depth': gt_depth, 'mask': gt_masks, 'bbox': gt_boxes, 'extrinsics': extrinsics, 'segmentation': gt_segmentation, 'parameters': detection_gt_parameters, 'plane': planes, 'camera': camera})
             detection_pair.append({'XYZ': XYZ_pred, 'depth': XYZ_pred[1:2], 'mask': detection_mask, 'detection': detections, 'masks': detection_masks, 'plane_XYZ': plane_XYZ, 'depth_np': depth_np_pred})
+
+            visualizeBatchPair(options, config, input_pair, detection_pair, indexOffset=i)
 
 
 
