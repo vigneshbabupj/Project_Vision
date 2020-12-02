@@ -534,7 +534,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #input_pair.append({'image': images, 'depth': gt_depth, 'mask': gt_masks, 'bbox': gt_boxes, 'extrinsics': extrinsics, 'segmentation': gt_segmentation, 'parameters': detection_gt_parameters, 'plane': planes, 'camera': camera})
             detection_pair.append({'XYZ': XYZ_pred, 'depth': XYZ_pred[1:2], 'mask': detection_mask, 'detection': detections, 'masks': detection_masks, 'plane_XYZ': plane_XYZ, 'depth_np': depth_np_pred})
 
-            #visualizeBatchPair(options, config, input_pair, detection_pair, indexOffset=i)
+            visualizeBatchPair(options, config, input_pair, detection_pair, indexOffset=i)
 
 
 
@@ -796,10 +796,10 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             is_best = True
 
         # Save last checkpoint
-        torch.save(visionet_checkpoint, 'visionet_checkpoint.pt')
+        torch.save(visionet_checkpoint, '/content/gdrive/My Drive/EVA5/capstone/visionet_checkpoint.pt')
 
         if is_best:
-            torch.save(visionet_checkpoint, 'visionet_best.pt')
+            torch.save(visionet_checkpoint, '/content/gdrive/My Drive/EVA5/capstone/visionet_best.pt')
 
         ##Save model end
 
