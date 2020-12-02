@@ -9,6 +9,8 @@ from bbox_decoder.utils.utils import *
 
 from options import *
 
+from plane_decoder.config import InferenceConfig# PlaneConfig
+
 
 
 def detect(save_img=False):
@@ -26,7 +28,7 @@ def detect(save_img=False):
 
     # Initialize model
     #model = Darknet(opt.cfg, img_size)
-    model = VisionNet(yolo_cfg=opt.cfg,midas_cfg=None,planercnn_cfg=plane_args,path=None)
+    model = VisionNet(yolo_cfg=opt.cfg,midas_cfg=None,planercnn_cfg=InferenceConfig(plane_args),path=None)
 
     # Load weights
     attempt_download(weights)
