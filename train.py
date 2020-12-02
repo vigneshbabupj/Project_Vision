@@ -339,6 +339,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
     # for var_name in optimizer.state_dict():
     #     print(var_name, "\t", optimizer.state_dict()[var_name])
 
+    loss_list=[]
+
 
     for epoch in range(start_epoch, start_epoch+epochs):  # epoch ------------------------------------------------------------------
         #model.train()
@@ -670,7 +672,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             RMSE_loss = torch.sqrt(loss_fn(depth_pred, depth_target))
 
 
-            depth_loss = (0.01*RMSE_loss) + ssim_out    
+            depth_loss = (0.01*RMSE_loss) + ssim_out
 
 
             #print('Depth loss :', 'ssim',ssim_out,'RMSE', RMSE_loss)
@@ -802,6 +804,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             torch.save(visionet_checkpoint, '/content/gdrive/My Drive/EVA5/capstone/visionet_best.pt')
 
         ##Save model end
+
+        loss_list.append(all_loss.item())
 
 
 
