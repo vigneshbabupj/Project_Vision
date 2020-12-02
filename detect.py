@@ -33,7 +33,7 @@ def detect(save_img=False):
     # Load weights
     attempt_download(weights)
     if weights.endswith('.pt'):  # pytorch format
-        model.load_state_dict(torch.load(weights, map_location=device)['model'])
+        model.load_state_dict(torch.load(weights, map_location=device)['state_dict'])
     else:  # darknet format
         load_darknet_weights(model, weights)
 
