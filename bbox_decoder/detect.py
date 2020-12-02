@@ -8,9 +8,7 @@ from bbox_decoder.utils.datasets import *
 from bbox_decoder.utils.utils import *
 
 
-def detect(plane_args,yolo_args,midas_args,save_img=False):
-
-    opt = yolo_args
+def detect(save_img=False):
 
     img_size = (320, 192) if ONNX_EXPORT else opt.img_size  # (320, 192) or (416, 256) or (608, 352) for (height, width)
     out, source, weights, half, view_img, save_txt = opt.output, opt.source, opt.weights, opt.half, opt.view_img, opt.save_txt
@@ -24,7 +22,7 @@ def detect(plane_args,yolo_args,midas_args,save_img=False):
 
     # Initialize model
     #model = Darknet(opt.cfg, img_size)
-    model = VisionNet(yolo_cfg=cfg,midas_cfg=None,planercnn_cfg=config,path=midas_args.weights)
+    model = VisionNet(yolo_cfg=opt.cfg,midas_cfg=None,planercnn_cfg=None,path=none)
 
     # Load weights
     attempt_download(weights)
