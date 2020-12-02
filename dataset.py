@@ -480,7 +480,7 @@ class create_data(Dataset):
         data_pair.append(np.zeros((len(planes), len(planes))))
         data_pair.append(camera.astype(np.float32))
 
-        plane_name = self.plane_names[index]
+        #plane_name = self.plane_names[index]
         #plane_img = cv2.imread(plane_name)
         #plane_img = cv2.cvtColor(plane_img, cv2.COLOR_BGR2GRAY)
         plane_img=0
