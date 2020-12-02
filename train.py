@@ -656,7 +656,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             print('dp_prediction',depth_out.shape)
             print('depth_target',depth_target.shape)
             import matplotlib.pyplot as plt
-            cv2.imshow(depth_out)
+            cv2_imshow(depth_out)
             plt.imshow(depth_out.squeeze().cpu().detach().numpy())
             plt.show()
             plt.imshow(depth_target.squeeze().cpu().detach().numpy())
