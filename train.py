@@ -620,18 +620,17 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                             #.cpu()
                             #.numpy()
                             )
-            # bits=2
+            bits=2
 
-            # depth_min = dp_prediction.min()
-            # depth_max = dp_prediction.max()
+            depth_min = dp_prediction.min()
+            depth_max = dp_prediction.max()
 
-            # max_val = (2**(8*bits))-1
+            max_val = (2**(8*bits))-1
 
-            # if depth_max - depth_min > np.finfo("float").eps:
-            #     depth_pred = max_val * (dp_prediction - depth_min) / (depth_max - depth_min)
-            # else:
-            #     depth_pred = 0
-            #dp_prediction = dp_prediction.unsqueeze(0)
+            if depth_max - depth_min > np.finfo("float").eps:
+                depth_out = max_val * (dp_prediction - depth_min) / (depth_max - depth_min)
+            else:
+                depth_out = 0
             
             depth_target = torch.from_numpy(np.asarray(depth_target)).to(device).type(torch.cuda.FloatTensor).unsqueeze(0)
             #print('depth_target',depth_target.size())
@@ -651,7 +650,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
 
 
-            depth_pred = Variable( dp_prediction,  requires_grad=True)
+            depth_pred = Variable( depth_out,  requires_grad=True)
             depth_target = Variable( depth_target, requires_grad = False)
 
             # print('dp_prediction',dp_prediction.shape)

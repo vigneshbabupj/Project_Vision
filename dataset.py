@@ -338,8 +338,8 @@ class create_data(Dataset):
 
 
         #print('depth_name',depth_name)
-        depth_img = cv2.imread(depth_name)
-        depth_img = cv2.cvtColor(depth_img, cv2.COLOR_BGR2GRAY)
+        depth_img = cv2.imread(depth_name,0)
+        #depth_img = cv2.cvtColor(depth_img, cv2.COLOR_BGR2GRAY)
 
         #print('depth_img',depth_img.shape)
 
