@@ -729,6 +729,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #mem = '%.3gG' % (torch.cuda.memory_reserved() / 1E9 if torch.cuda.is_available() else 0)  # (GB)
 
             #s = ('%10s' * 2 + '%10.3g' * 6) % ('%g/%g' % (epoch, epochs - 1), mem, *mloss, len(targets), img_size)
+            print('%10s' * 2 + '%10.3g' * 6) % ('%g/%g' % (epoch, epochs - 1), mem, *mloss, len(targets), img_size)
             s = ('%10s'+'%10.3g' + '%10.3g' * 6) % ('%g/%g' % (epoch, (start_epoch+epochs) - 1), ssim_out.item(), RMSE_loss.item(), depth_loss.item(), yolo_loss.item(), plane_loss.item(), all_loss.item(), img_size)
             #print(('\n' + '%10s' * 8) % ('Epoch', 'Dp_SSIM', 'Dp_Rmse', 'Dp_loss', 'bbx_loss', 'plnrn_loss', 'All_loss', 'img_size'))
             pbar.set_description(s)
