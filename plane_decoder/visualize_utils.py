@@ -217,7 +217,7 @@ def visualizeBatchDetection(options, config, input_dict, detection_dict, indexOf
             mask = cv2.resize(mask, (box[3] - box[1], box[2] - box[0]))
             segmentation_image[box[0]:box[2], box[1]:box[3]] = np.minimum(segmentation_image[box[0]:box[2], box[1]:box[3]] + np.expand_dims(mask, axis=-1) * np.random.randint(255, size=(3, ), dtype=np.int32), 255)
             continue
-        cv2.imwrite(options.test_dir + '/' + str(indexOffset) + '_segmentation' + suffix + '.png', segmentation_image.astype(np.uint8)[80:560])
+        cv2.imwrite(options.test_dir + '/' + str(indexOffset) + '_segmentation_220' + suffix + '.png', segmentation_image.astype(np.uint8)[80:560])
         if config.NUM_PARAMETER_CHANNELS > 0 and not config.OCCLUSION:
             depth_image = np.zeros((image.shape[0], image.shape[1]))
             for box, patch_depth in zip(boxes, depths):
@@ -267,7 +267,7 @@ def visualizeBatchDetection(options, config, input_dict, detection_dict, indexOf
             pass
         instance_image, normal_image, depth_image = draw_instances(config, image, depth_gt, detections[:, :4], detection_masks > 0.5, detections[:, 4].astype(np.int32), detections[:, 6:], detections[:, 5], draw_mask=True, transform_planes=False, detection_flags=detection_flags)
         image_dict['detection'] = instance_image
-        cv2.imwrite(options.test_dir + '/' + str(indexOffset) + '_segmentation' + suffix + prediction_suffix + '.png', instance_image[80:560])
+        cv2.imwrite(options.test_dir + '/' + str(indexOffset) + '_segmentation_270' + suffix + prediction_suffix + '.png', instance_image[80:560])
     else:
         image_dict['detection'] = np.zeros(image.shape, dtype=image.dtype)
         pass
