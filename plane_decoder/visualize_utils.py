@@ -89,7 +89,7 @@ def visualizeBatchPair(options, config, inp_pair, detection_pair, indexOffset=0,
         detection_images.append(image_dict['detection'])
         continue
     detection_image = tileImages([detection_images])
-    return
+    return detection_image
 
 def visualizeBatchRefinement(options, config, input_dict, results, indexOffset=0, prefix='', suffix='', concise=False):
     if not concise:

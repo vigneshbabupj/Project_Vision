@@ -536,7 +536,11 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #input_pair.append({'image': images, 'depth': gt_depth, 'mask': gt_masks, 'bbox': gt_boxes, 'extrinsics': extrinsics, 'segmentation': gt_segmentation, 'parameters': detection_gt_parameters, 'plane': planes, 'camera': camera})
             detection_pair.append({'XYZ': XYZ_pred, 'depth': XYZ_pred[1:2], 'mask': detection_mask, 'detection': detections, 'masks': detection_masks, 'plane_XYZ': plane_XYZ, 'depth_np': depth_np_pred})
 
-            visualizeBatchPair(options, config, input_pair, detection_pair, indexOffset=i)
+            predicted_detection = visualizeBatchPair(options, config, input_pair, detection_pair, indexOffset=i)
+
+            loss_fn = nn.MSELoss()
+
+            pln_rmse = torch.sqrt(loss_fn(predicted_detection[0], plane_img))
 
 
 
@@ -574,7 +578,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
         
 
             #print('plane_losses :',plane_losses)
-            plane_loss = sum(plane_losses)
+            print('pln_rmse',pln_rmse)
+            plane_loss = sum(plane_losses) + pln_rmse
             plane_losses = [l.data.item() for l in plane_losses] #train_planercnn.py 331
 
             #statistics = [[], [], [], []]
@@ -653,16 +658,14 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             depth_pred = Variable( depth_out,  requires_grad=True)
             depth_target = Variable( depth_target, requires_grad = False)
 
-            print('dp_prediction',depth_out.shape)
-            print('depth_target',depth_target.shape)
-            import matplotlib.pyplot as plt
-            
-            (thresh, blackAndWhiteImage) = cv2.threshold(depth_out, 127, 255, cv2.THRESH_BINARY)
+            # print('dp_prediction',depth_out.shape)
+            # print('depth_target',depth_target.shape)
+            # import matplotlib.pyplot as plt
 
-            plt.imshow(blackAndWhiteImage.squeeze().cpu().detach().numpy())
-            plt.show()
-            plt.imshow(depth_target.squeeze().cpu().detach().numpy())
-            plt.show()
+            # plt.imshow(depth_out.squeeze().cpu().detach().numpy())
+            # plt.show()
+            # plt.imshow(depth_target.squeeze().cpu().detach().numpy())
+            # plt.show()
 
             #print('depth',[[len(x),x.size()]  for x in [depth_pred,depth_target]])
 
@@ -670,7 +673,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #print('ssim_loss :',ssim_loss(depth_pred,depth_target))
             #print('msssim :',msssim(depth_pred,depth_target))
             ssim_out = torch.clamp(1-ssim_loss(depth_pred,depth_target),min=0,max=1) #https://github.com/jorge-pessoa/pytorch-msssim
-            loss_fn = nn.MSELoss()
+            
             RMSE_loss = torch.sqrt(loss_fn(depth_pred, depth_target))
 
 
