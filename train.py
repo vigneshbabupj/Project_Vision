@@ -536,6 +536,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #input_pair.append({'image': images, 'depth': gt_depth, 'mask': gt_masks, 'bbox': gt_boxes, 'extrinsics': extrinsics, 'segmentation': gt_segmentation, 'parameters': detection_gt_parameters, 'plane': planes, 'camera': camera})
             detection_pair.append({'XYZ': XYZ_pred, 'depth': XYZ_pred[1:2], 'mask': detection_mask, 'detection': detections, 'masks': detection_masks, 'plane_XYZ': plane_XYZ, 'depth_np': depth_np_pred})
 
+            print('detections',detections)
+
             predicted_detection = visualizeBatchPair(options, config, input_pair, detection_pair, indexOffset=i)
 
             print('predicted_detection',len(predicted_detection))
