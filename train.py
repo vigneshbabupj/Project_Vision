@@ -560,11 +560,6 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             predicted_detection = visualizeBatchPair(options, config, input_pair, detection_pair, indexOffset=i)
             predicted_detection = torch.from_numpy(predicted_detection)
 
-            #print('predicted_detection',len(predicted_detection))
-            #print(predicted_detection)
-            print(predicted_detection.shape)
-            print(plane_img.shape)
-
             if predicted_detection.shape != plane_img.shape:
                 predicted_detection = torch.nn.functional.interpolate(predicted_detection.permute(2,0,1).unsqueeze(0).unsqueeze(1), size=plane_img.permute(2,0,1).shape).squeeze()
                 pass
@@ -572,9 +567,9 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             plane_img = plane_img.permute(2,0,1)
 
             print('plane_img',plane_img.shape)
-            print('predicted_detection',predicted_detection.shape) 
+            print('predicted_detection',predicted_detection.shape)
 
-            pln_rmse = torch.sqrt(nn.L1Loss(predicted_detection.cuda(), plane_img.cuda()))
+            pln_rmse = torch.sqrt(nn.L1Loss(predicted_detection.cuda().type(torch.cuda.FloatTensor), plane_img.cuda().type(torch.cuda.FloatTensor)))
 
 
 
