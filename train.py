@@ -498,9 +498,9 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # print('depth_np_pred',len(depth_np_pred),depth_np_pred.size())
 
 
-            rpn_class_loss, rpn_bbox_loss, mrcnn_class_loss, mrcnn_bbox_loss, mrcnn_mask_loss, mrcnn_parameter_loss = compute_losses(config, rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox, target_class_ids, mrcnn_class_logits, target_deltas, mrcnn_bbox, target_mask, mrcnn_mask, target_parameters, mrcnn_parameters)
+            #rpn_class_loss, rpn_bbox_loss, mrcnn_class_loss, mrcnn_bbox_loss, mrcnn_mask_loss, mrcnn_parameter_loss = compute_losses(config, rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox, target_class_ids, mrcnn_class_logits, target_deltas, mrcnn_bbox, target_mask, mrcnn_mask, target_parameters, mrcnn_parameters)
 
-            plane_losses = [rpn_class_loss + rpn_bbox_loss + mrcnn_class_loss + mrcnn_bbox_loss + mrcnn_mask_loss + mrcnn_parameter_loss]
+            plane_losses =[0]# [rpn_class_loss + rpn_bbox_loss + mrcnn_class_loss + mrcnn_bbox_loss + mrcnn_mask_loss + mrcnn_parameter_loss]
 
 
             if depth_np_pred.shape != gt_depth.shape:
@@ -540,8 +540,6 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             detection_pair.append({'XYZ': XYZ_pred, 'depth': XYZ_pred[1:2], 'mask': detection_mask, 'detection': detections, 'masks': detection_masks, 'plane_XYZ': plane_XYZ, 'depth_np': depth_np_pred})
 
             loss_fn = nn.MSELoss()
-
-
 
             plane_parameters = torch.from_numpy(plane_np['plane_parameters']).cuda()
             plane_masks = torch.from_numpy(plane_np['plane_masks']).cuda()
@@ -778,7 +776,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             mem = '%.3gG' % (torch.cuda.memory_reserved() / 1E9 if torch.cuda.is_available() else 0)  # (GB)
 
             #s = ('%10s' * 2 + '%10.3g' * 6) % ('%g/%g' % (epoch, epochs - 1), mem, *mloss, len(targets), img_size)
-            print(('%10s' * 2 + '%10.3g' * 6) % ('%g/%g' % (epoch, epochs - 1), mem, *mloss, len(targets), img_size))
+            #print(('%10s' * 2 + '%10.3g' * 6) % ('%g/%g' % (epoch, epochs - 1), mem, *mloss, len(targets), img_size))
             s = ('%10s'+'%10.3g' + '%10.3g' * 6) % ('%g/%g' % (epoch, (start_epoch+epochs) - 1), ssim_out.item(), RMSE_loss.item(), depth_loss.item(), yolo_loss.item(), plane_loss.item(), all_loss.item(), img_size)
             #print(('\n' + '%10s' * 8) % ('Epoch', 'Dp_SSIM', 'Dp_Rmse', 'Dp_loss', 'bbx_loss', 'plnrn_loss', 'All_loss', 'img_size'))
             pbar.set_description(s)
