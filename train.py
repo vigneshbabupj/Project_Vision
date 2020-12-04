@@ -538,7 +538,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             predicted_detection = visualizeBatchPair(options, config, input_pair, detection_pair, indexOffset=i)
 
-            print('predicted_detection',predicted_detection)
+            print('predicted_detection',len(predicted_detection))
             print(predicted_detection)
 
             loss_fn = nn.MSELoss()
