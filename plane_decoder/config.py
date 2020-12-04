@@ -201,7 +201,7 @@ class Config(object):
         self.OCCLUSION = 'occlusion' in options.dataset
         
         self.loadAnchorPlanes(options.anchorType)
-        self.PREDICT_DEPTH = True
+        self.PREDICT_DEPTH = False#True
         self.PREDICT_BOUNDARY = False
         self.PREDICT_NORMAL_NP = 'normal_np' in options.suffix
         
