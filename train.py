@@ -1,6 +1,8 @@
 #Yolo import
 import argparse
 
+import gc
+
 import torch.distributed as dist
 import torch.optim as optim
 import torch.optim.lr_scheduler as lr_scheduler
@@ -498,9 +500,9 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # print('depth_np_pred',len(depth_np_pred),depth_np_pred.size())
 
 
-            #rpn_class_loss, rpn_bbox_loss, mrcnn_class_loss, mrcnn_bbox_loss, mrcnn_mask_loss, mrcnn_parameter_loss = compute_losses(config, rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox, target_class_ids, mrcnn_class_logits, target_deltas, mrcnn_bbox, target_mask, mrcnn_mask, target_parameters, mrcnn_parameters)
+            rpn_class_loss, rpn_bbox_loss, mrcnn_class_loss, mrcnn_bbox_loss, mrcnn_mask_loss, mrcnn_parameter_loss = compute_losses(config, rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox, target_class_ids, mrcnn_class_logits, target_deltas, mrcnn_bbox, target_mask, mrcnn_mask, target_parameters, mrcnn_parameters)
 
-            plane_losses =[torch.zeros(1).cuda()]#[rpn_class_loss + rpn_bbox_loss + mrcnn_class_loss + mrcnn_bbox_loss + mrcnn_mask_loss + mrcnn_parameter_loss]
+            plane_losses =[rpn_class_loss + rpn_bbox_loss + mrcnn_class_loss + mrcnn_bbox_loss + mrcnn_mask_loss + mrcnn_parameter_loss]
 
 
             if depth_np_pred.shape != gt_depth.shape:
@@ -620,7 +622,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
         
 
             #print('plane_losses :',plane_losses)
-            print('pln_ssim',pln_ssim)
+            #print('pln_ssim',pln_ssim)
             plane_loss = sum(plane_losses) + pln_ssim
             plane_losses = [l.data.item() for l in plane_losses] #train_planercnn.py 331
 
@@ -719,7 +721,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             RMSE_loss = torch.sqrt(loss_fn(depth_pred, depth_target))
 
 
-            depth_loss = (0.001*RMSE_loss) + ssim_out
+            depth_loss = (0.0001*RMSE_loss) + ssim_out
 
 
             #print('Depth loss :', 'ssim',ssim_out,'RMSE', RMSE_loss)
@@ -767,6 +769,13 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #if ni % accumulate == 0:
             #torch.nn.utils.clip_grad_norm_(model.parameters(), 0.25)
             optimizer.step()
+
+            gc.collect()
+
+            def memReport():
+                for obj in gc.get_objects():
+                    if torch.is_tensor(obj):
+                        print(type(obj), obj.size())
             
             ema.update(model)
 
