@@ -547,7 +547,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                 plane_parameters_pred = torch.nn.functional.interpolate(plane_parameters_pred.unsqueeze(1).unsqueeze(0), size=plane_parameters.shape, mode='bilinear',align_corners=True).squeeze()
                 pass
             if plane_masks_pred.shape != plane_masks.shape:
-                plane_masks_pred = torch.nn.functional.interpolate(plane_masks_pred.unsqueeze(1).unsqueeze(0), size=plane_masks.shape, mode='bilinear',align_corners=True).squeeze()
+                plane_masks_pred = torch.nn.functional.interpolate(plane_masks_pred.unsqueeze(1), size=plane_masks.shape, mode='bilinear',align_corners=True).squeeze()
                 pass
 
            
