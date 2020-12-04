@@ -448,6 +448,10 @@ class create_data(Dataset):
         mask = np.stack(instance_masks, axis=2)
         class_ids = np.array(class_ids, dtype=np.int32)
 
+        print('class_ids',class_ids)
+        print('mask',mask)
+        print('parameters',parameters)
+
         image, image_metas, gt_class_ids, gt_boxes, gt_masks, gt_parameters = load_image_gt(self.config, index, image, depth, mask, class_ids, parameters, augment=False)
         
         print('gt_class_ids',gt_class_ids)
