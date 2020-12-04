@@ -540,8 +540,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             plane_parameters = torch.from_numpy(plane_np['plane_parameters'])
             plane_masks = torch.from_numpy(plane_np['plane_masks'])
-            plane_parameters_pred = detection_pair['detection'][:, 6:9]
-            plane_masks_pred = detection_pair['masks'][:, 80:560]
+            plane_parameters_pred = detection_pair[0]['detection'][:, 6:9]
+            plane_masks_pred = detection_pair[0]['masks'][:, 80:560]
 
             
             plane_params_loss = loss_fn(plane_parameters_pred,plane_parameters) + loss_fn(plane_masks_pred,plane_masks)
