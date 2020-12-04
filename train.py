@@ -544,10 +544,10 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             plane_masks_pred = detection_pair[0]['masks'][:, 80:560]
 
             if plane_parameters_pred.shape != plane_parameters.shape:
-                plane_parameters_pred = torch.nn.functional.interpolate(plane_parameters_pred.unsqueeze(1), size=plane_parameters.shape, mode='nearest',align_corners=False).squeeze(1)
+                plane_parameters_pred = torch.nn.functional.interpolate(plane_parameters_pred.unsqueeze(1), size=plane_parameters.shape, mode='linear',align_corners=True).squeeze(1)
                 pass
             if plane_masks_pred.shape != plane_masks.shape:
-                plane_masks_pred = torch.nn.functional.interpolate(plane_masks_pred.unsqueeze(1), size=plane_masks.shape, mode='nearest',align_corners=False).squeeze(1)
+                plane_masks_pred = torch.nn.functional.interpolate(plane_masks_pred.unsqueeze(1), size=plane_masks.shape, mode='linear',align_corners=True).squeeze(1)
                 pass
 
            
@@ -825,10 +825,10 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             is_best = True
 
         # Save last checkpoint
-        torch.save(visionet_checkpoint, '/content/gdrive/My Drive/EVA5/capstone/visionet_checkpoint.pt')
+        torch.save(visionet_checkpoint, '/content/gdrive/My Drive/EVA/EVA5/capstone/visionet_checkpoint.pt')
 
         if is_best:
-            torch.save(visionet_checkpoint, '/content/gdrive/My Drive/EVA5/capstone/visionet_best.pt')
+            torch.save(visionet_checkpoint, '/content/gdrive/My Drive/EVA/EVA5/capstone/visionet_best.pt')
 
         ##Save model end
 
