@@ -558,6 +558,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
 
             predicted_detection = visualizeBatchPair(options, config, input_pair, detection_pair, indexOffset=i)
+            predicted_detection = torch.from_numpy(predicted_detection)
 
             #print('predicted_detection',len(predicted_detection))
             #print(predicted_detection)

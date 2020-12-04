@@ -612,6 +612,7 @@ class create_data(Dataset):
 
         for p in range(31):
             up_plane[0][p] = torch.from_numpy(up_plane[0][p]).unsqueeze(0)
+        up_plane[1] = torch.from_numpy(up_plane[1]).cuda()
 
 
         # print('plane item:',len(plane_item[0]))
