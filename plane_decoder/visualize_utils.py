@@ -259,7 +259,7 @@ def visualizeBatchDetection(options, config, input_dict, detection_dict, indexOf
     
 
     if 'detection' in detection_dict and len(detection_dict['detection']) > 0:
-        print('&'*88)
+        #print('&'*88)
 
         detections = detection_dict['detection'].detach().cpu().numpy()
         detection_masks = detection_dict['masks'].detach().cpu().numpy().transpose((1, 2, 0))
