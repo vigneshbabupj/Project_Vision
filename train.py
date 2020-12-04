@@ -27,6 +27,9 @@ last = wdir + 'last.pt'
 best = wdir + 'best.pt'
 results_file = 'results.txt'
 
+import warnings
+warnings.filterwarnings("ignore")
+
 # Hyperparameters https://github.com/ultralytics/yolov3/issues/310
 
 hyp = {'giou': 3.54,  # giou loss gain
@@ -537,6 +540,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             detection_pair.append({'XYZ': XYZ_pred, 'depth': XYZ_pred[1:2], 'mask': detection_mask, 'detection': detections, 'masks': detection_masks, 'plane_XYZ': plane_XYZ, 'depth_np': depth_np_pred})
 
             loss_fn = nn.MSELoss()
+
+
 
             plane_parameters = torch.from_numpy(plane_np['plane_parameters']).cuda()
             plane_masks = torch.from_numpy(plane_np['plane_masks']).cuda()
