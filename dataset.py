@@ -307,7 +307,7 @@ class create_data(Dataset):
         for im in self.img_files:
             im = im.split(os.sep)
             im[3]= 'inference'
-            np_file = im
+            np_file = im.copy()
             im[4] = im[4].replace(os.path.splitext(im[4])[-1], '_segmentation_0_final.png')
             np_file[4] = np_file[4].replace(os.path.splitext(np_file[4])[-1], '.npz')
             im = os.sep.join(im)
