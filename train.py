@@ -445,7 +445,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             # print('rpn_match',rpn_match.size())
             # print('rpn_bbox',rpn_bbox.size())
             # print('gt_class_ids',gt_class_ids.size())
-            # print('gt_masks',gt_masks.size())
+            # print('gt_masks',gt_masks)
             # print('gt_parameters',gt_parameters.size())
             # print('gt_depth',gt_depth.size())
             # print('extrinsics',extrinsics.size())

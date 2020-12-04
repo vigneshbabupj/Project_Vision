@@ -86,7 +86,7 @@ def visualizeBatchPair(options, config, inp_pair, detection_pair, indexOffset=0,
     detection_images = []    
     for pair_index, (input_dict, detection_dict) in enumerate(zip(inp_pair, detection_pair)):
         image_dict = visualizeBatchDetection(options, config, input_dict, detection_dict, indexOffset=indexOffset, prefix=prefix, suffix='_' + str(pair_index), prediction_suffix=suffix, write_ply=write_ply, write_new_view=write_new_view)
-        print(image_dict['detection'])
+        #print(image_dict['detection'])
         detection_images.append(image_dict['detection'])
         continue
     detection_image = tileImages([detection_images])
@@ -270,7 +270,6 @@ def visualizeBatchDetection(options, config, input_dict, detection_dict, indexOf
             pass
         instance_image, normal_image, depth_image = draw_instances(config, image, depth_gt, detections[:, :4], detection_masks > 0.5, detections[:, 4].astype(np.int32), detections[:, 6:], detections[:, 5], draw_mask=True, transform_planes=False, detection_flags=detection_flags)
         image_dict['detection'] = instance_image
-        print('instance_image',instance_image)
         cv2.imwrite(options.test_dir + '/' + str(indexOffset) + '_segmentation_270' + suffix + prediction_suffix + '.png', instance_image[80:560])
     else:
         image_dict['detection'] = np.zeros(image.shape, dtype=image.dtype)

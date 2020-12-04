@@ -449,6 +449,13 @@ class create_data(Dataset):
         class_ids = np.array(class_ids, dtype=np.int32)
 
         image, image_metas, gt_class_ids, gt_boxes, gt_masks, gt_parameters = load_image_gt(self.config, index, image, depth, mask, class_ids, parameters, augment=False)
+        
+        print('gt_class_ids',gt_class_ids)
+        print('gt_boxes',gt_boxes)
+        print('gt_masks',gt_masks)
+        print('gt_parameters',gt_parameters)
+
+
         ## RPN Targets
         rpn_match, rpn_bbox = build_rpn_targets(image.shape, self.anchors,
                                                 gt_class_ids, gt_boxes, self.config)
