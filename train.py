@@ -569,6 +569,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                 predicted_detection = torch.nn.functional.interpolate(predicted_detection.permute(2,0,1).unsqueeze(0).unsqueeze(1), size=plane_img.permute(2,0,1).shape).squeeze()
                 pass
 
+            print('plane_img',plane_img.shape)
+
             pln_rmse = torch.sqrt(loss_fn(predicted_detection, plane_img))
 
 
