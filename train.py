@@ -543,12 +543,14 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             plane_parameters_pred = detection_pair[0]['detection'][:, 6:9]
             plane_masks_pred = detection_pair[0]['masks'][:, 80:560]
 
-            print(plane_parameters.shape)
-            print(plane_masks.shape)
-            print(plane_parameters_pred.shape)
-            print(plane_masks_pred.shape)
+            if plane_parameters_pred.shape != plane_parameters.shape:
+                plane_parameters_pred = torch.nn.functional.interpolate(plane_parameters_pred, size=plane_parameters.shape, mode='bilinear',align_corners=False)
+                pass
+            if plane_masks_pred.shape != plane_masks.shape:
+                plane_masks_pred = torch.nn.functional.interpolate(plane_masks_pred, size=plane_masks.shape, mode='bilinear',align_corners=False)
+                pass
 
-            
+           
             plane_params_loss = loss_fn(plane_parameters_pred,plane_parameters) + loss_fn(plane_masks_pred,plane_masks)
 
             print('plane_params_loss',plane_params_loss)
