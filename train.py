@@ -560,6 +560,8 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             #print('predicted_detection',len(predicted_detection))
             #print(predicted_detection)
+            print(predicted_detection[0].shape)
+            print(plane_img.shape)
 
             pln_rmse = torch.sqrt(loss_fn(predicted_detection[0], plane_img))
 
