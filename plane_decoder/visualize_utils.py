@@ -260,7 +260,7 @@ def visualizeBatchDetection(options, config, input_dict, detection_dict, indexOf
 
     if 'detection' in detection_dict and len(detection_dict['detection']) > 0:
         print('&'*88)
-        print(detection_dict['detection'])
+
         detections = detection_dict['detection'].detach().cpu().numpy()
         detection_masks = detection_dict['masks'].detach().cpu().numpy().transpose((1, 2, 0))
         if 'flag' in detection_dict:
@@ -270,6 +270,7 @@ def visualizeBatchDetection(options, config, input_dict, detection_dict, indexOf
             pass
         instance_image, normal_image, depth_image = draw_instances(config, image, depth_gt, detections[:, :4], detection_masks > 0.5, detections[:, 4].astype(np.int32), detections[:, 6:], detections[:, 5], draw_mask=True, transform_planes=False, detection_flags=detection_flags)
         image_dict['detection'] = instance_image
+        print('instance_image',instance_image)
         cv2.imwrite(options.test_dir + '/' + str(indexOffset) + '_segmentation_270' + suffix + prediction_suffix + '.png', instance_image[80:560])
     else:
         image_dict['detection'] = np.zeros(image.shape, dtype=image.dtype)
