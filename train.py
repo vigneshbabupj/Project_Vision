@@ -569,7 +569,13 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             print('plane_img',plane_img.shape)
             print('predicted_detection',predicted_detection.shape)
 
-            pln_rmse = torch.sqrt(nn.MSELoss(predicted_detection.cuda().type(torch.cuda.FloatTensor), plane_img.cuda().type(torch.cuda.FloatTensor)))
+            plane_loss_ssim = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
+            
+            
+            pln_ssim = torch.clamp(1-plane_loss_ssim(predicted_detection,plane_img),min=0,max=1) #https://github.com/jorge-pessoa/pytorch-msssim
+            
+
+            #pln_rmse = torch.sqrt(nn.MSELoss(predicted_detection.cuda().type(torch.cuda.FloatTensor), plane_img.cuda().type(torch.cuda.FloatTensor)))
 
 
 
@@ -607,7 +613,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
         
 
             #print('plane_losses :',plane_losses)
-            print('pln_rmse',pln_rmse)
+            print('pln_rmse',pln_ssim)
             plane_loss = sum(plane_losses) + pln_rmse
             plane_losses = [l.data.item() for l in plane_losses] #train_planercnn.py 331
 
