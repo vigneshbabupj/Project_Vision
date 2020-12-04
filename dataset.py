@@ -303,12 +303,17 @@ class create_data(Dataset):
         # midas dataset end
 
         self.plane_names=[]
+        self.plane_nps=[]
         for im in self.img_files:
             im = im.split(os.sep)
-            im[3]= 'plane_images'
-            im[4] = im[4].replace(os.path.splitext(im[4])[-1], '.jpg')
+            im[3]= 'inference'
+            np_file = im
+            im[4] = im[4].replace(os.path.splitext(im[4])[-1], '_segmentation_0_final.png')
+            np_file[4] = np_file[4].replace(os.path.splitext(np_file[4])[-1], '.npz')
             im = os.sep.join(im)
+            np_file = os.sep.join(np_file)
             self.plane_names.append(im)
+            self.plane_nps.append(np_file)
 
 
     def __getitem__(self,index):
@@ -448,17 +453,7 @@ class create_data(Dataset):
         mask = np.stack(instance_masks, axis=2)
         class_ids = np.array(class_ids, dtype=np.int32)
 
-        print('class_ids',class_ids)
-        print('mask',mask)
-        print('parameters',parameters)
-
         image, image_metas, gt_class_ids, gt_boxes, gt_masks, gt_parameters = load_image_gt(self.config, index, image, depth, mask, class_ids, parameters, augment=False)
-        
-        print('gt_class_ids',gt_class_ids)
-        print('gt_boxes',gt_boxes)
-        print('gt_masks',gt_masks)
-        print('gt_parameters',gt_parameters)
-
 
         ## RPN Targets
         rpn_match, rpn_bbox = build_rpn_targets(image.shape, self.anchors,
@@ -495,8 +490,10 @@ class create_data(Dataset):
         plane_img = cv2.imread(plane_name)
         #plane_img = cv2.cvtColor(plane_img, cv2.COLOR_BGR2GRAY)
         #plane_img=0
+        plane_np_name = self.plane_nps[index]
+        plane_np = np.load(plane_np_name)
 
-        plane_data = [data_pair,plane_img]
+        plane_data = [data_pair,plane_img,plane_np]
 
 
 

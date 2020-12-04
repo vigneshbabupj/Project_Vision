@@ -422,7 +422,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #depth init end
 
             #planercnn init start
-            data_pair,plane_img = plane_data
+            data_pair,plane_img,plane_np = plane_data
             sampleIndex = i
             sample = data_pair
 
@@ -536,13 +536,23 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             #input_pair.append({'image': images, 'depth': gt_depth, 'mask': gt_masks, 'bbox': gt_boxes, 'extrinsics': extrinsics, 'segmentation': gt_segmentation, 'parameters': detection_gt_parameters, 'plane': planes, 'camera': camera})
             detection_pair.append({'XYZ': XYZ_pred, 'depth': XYZ_pred[1:2], 'mask': detection_mask, 'detection': detections, 'masks': detection_masks, 'plane_XYZ': plane_XYZ, 'depth_np': depth_np_pred})
 
+            loss_fn = nn.MSELoss()
+
+            plane_parameters = torch.from_numpy(plane_np['plane_parameters'])
+            plane_masks = torch.from_numpy(plane_np['plane_masks'])
+            plane_parameters_pred = detection_pair['detection'][:, 6:9]
+            plane_masks_pred = detection_pair['masks'][:, 80:560]
+
+            
+            plane_params_loss = loss_fn(plane_parameters_pred,plane_parameters) + loss_fn(plane_masks_pred,plane_masks)
+
+            print('plane_params_loss',plane_params_loss)
+
 
             predicted_detection = visualizeBatchPair(options, config, input_pair, detection_pair, indexOffset=i)
 
-            print('predicted_detection',len(predicted_detection))
-            print(predicted_detection)
-
-            loss_fn = nn.MSELoss()
+            #print('predicted_detection',len(predicted_detection))
+            #print(predicted_detection)
 
             pln_rmse = torch.sqrt(loss_fn(predicted_detection[0], plane_img))
 
