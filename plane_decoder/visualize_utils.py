@@ -86,6 +86,7 @@ def visualizeBatchPair(options, config, inp_pair, detection_pair, indexOffset=0,
     detection_images = []    
     for pair_index, (input_dict, detection_dict) in enumerate(zip(inp_pair, detection_pair)):
         image_dict = visualizeBatchDetection(options, config, input_dict, detection_dict, indexOffset=indexOffset, prefix=prefix, suffix='_' + str(pair_index), prediction_suffix=suffix, write_ply=write_ply, write_new_view=write_new_view)
+        print(image_dict['detection'])
         detection_images.append(image_dict['detection'])
         continue
     detection_image = tileImages([detection_images])
