@@ -551,6 +551,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
                 pass
 
            
+            
             plane_params_loss = loss_fn(plane_parameters_pred,plane_parameters) + loss_fn(plane_masks_pred,plane_masks)
 
             print('plane_params_loss',plane_params_loss)
@@ -560,10 +561,10 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             #print('predicted_detection',len(predicted_detection))
             #print(predicted_detection)
-            print(predicted_detection[0].shape)
+            print(predicted_detection.shape)
             print(plane_img.shape)
 
-            pln_rmse = torch.sqrt(loss_fn(predicted_detection[0], plane_img))
+            pln_rmse = torch.sqrt(loss_fn(predicted_detection, plane_img))
 
 
 
