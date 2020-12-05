@@ -110,7 +110,7 @@ from torch.autograd import Variable
 
 
 
-def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas_loss,resume_train=False):
+def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas_loss,resume_train=False,model_path=''):
 
     #Plane config
     options = plane_args
@@ -183,7 +183,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
     if resume_train:
 
-        Vsn_chkpt = torch.load('visionet_checkpoint.pt', map_location=device)
+        Vsn_chkpt = torch.load(model_path+'visionet_checkpoint.pt', map_location=device)
 
         model.load_state_dict(Vsn_chkpt['state_dict'])
         optimizer.load_state_dict(Vsn_chkpt['optimizer'])
@@ -354,7 +354,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
         model.train()
 
         #print(('\n' + '%10s' * 8) % ('Epoch', 'gpu_mem', 'GIoU', 'obj', 'cls', 'total', 'targets', 'img_size'))
-        print(('\n' + '%10s' * 8) % ('Epoch', 'Dp_loss', 'bbx_loss', 'pln_loss', 'All_loss', 'img_size'))
+        print(('\n' + '%10s' * 6) % ('Epoch', 'Dp_loss', 'bbx_loss', 'pln_loss', 'All_loss', 'img_size'))
 
         pbar = tqdm(enumerate(trainloader))
 
@@ -857,10 +857,10 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             is_best = True
 
         # Save last checkpoint
-        torch.save(visionet_checkpoint, '/content/gdrive/My Drive/EVA/EVA5/capstone/visionet_checkpoint.pt')
+        torch.save(visionet_checkpoint, model_path+'visionet_checkpoint.pt')
 
         if is_best:
-            torch.save(visionet_checkpoint, '/content/gdrive/My Drive/EVA/EVA5/capstone/visionet_best.pt')
+            torch.save(visionet_checkpoint, model_path+'visionet_best.pt')
 
         ##Save model end
 
