@@ -587,7 +587,7 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
             plane_loss_ssim = pytorch_ssim.SSIM() #https://github.com/Po-Hsun-Su/pytorch-ssim
             
             
-            pln_ssim = torch.clamp(1-plane_loss_ssim(predicted_detection.unsqueeze(0),plane_img.unsqueeze(0)),min=0,max=1) #https://github.com/jorge-pessoa/pytorch-msssim
+            pln_ssim = torch.clamp(1-plane_loss_ssim(predicted_detection.unsqueeze(0).type(torch.cuda.FloatTensor),plane_img.unsqueeze(0).type(torch.cuda.FloatTensor)),min=0,max=1) #https://github.com/jorge-pessoa/pytorch-msssim
             
 
             #pln_rmse = torch.sqrt(nn.MSELoss(predicted_detection.cuda().type(torch.cuda.FloatTensor), plane_img.cuda().type(torch.cuda.FloatTensor)))
