@@ -545,25 +545,29 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
 
             loss_fn = nn.MSELoss()
 
-            plane_parameters = torch.from_numpy(plane_np['plane_parameters']).cuda()
-            plane_masks = torch.from_numpy(plane_np['plane_masks']).cuda()
-            plane_parameters_pred = detection_pair[0]['detection'][:, 6:9]
-            plane_masks_pred = detection_pair[0]['masks'][:, 80:560]
+            try:
 
-            if plane_parameters_pred.shape != plane_parameters.shape:
-                plane_parameters_pred = torch.nn.functional.interpolate(plane_parameters_pred.unsqueeze(1).unsqueeze(0), size=plane_parameters.shape, mode='bilinear',align_corners=True).squeeze()
-                pass
-            if plane_masks_pred.shape != plane_masks.shape:
-                plane_masks_pred = torch.nn.functional.interpolate(plane_masks_pred.unsqueeze(1).unsqueeze(0), size=plane_masks.shape, mode='trilinear',align_corners=True).squeeze()
-                pass
+                plane_parameters = torch.from_numpy(plane_np['plane_parameters']).cuda()
+                plane_masks = torch.from_numpy(plane_np['plane_masks']).cuda()
+                plane_parameters_pred = detection_pair[0]['detection'][:, 6:9]
+                plane_masks_pred = detection_pair[0]['masks'][:, 80:560]
 
-            # print('plane_parameters',plane_parameters.shape)
-            # print('plane_masks',plane_masks.shape)
-            # print('plane_parameters_pred',plane_parameters_pred.shape)
-            # print('plane_masks_pred',plane_masks_pred.shape)
-           
-            
-            plane_params_loss = loss_fn(plane_parameters_pred,plane_parameters) + loss_fn(plane_masks_pred,plane_masks)
+                if plane_parameters_pred.shape != plane_parameters.shape:
+                    plane_parameters_pred = torch.nn.functional.interpolate(plane_parameters_pred.unsqueeze(1).unsqueeze(0), size=plane_parameters.shape, mode='bilinear',align_corners=True).squeeze()
+                    pass
+                if plane_masks_pred.shape != plane_masks.shape:
+                    plane_masks_pred = torch.nn.functional.interpolate(plane_masks_pred.unsqueeze(1).unsqueeze(0), size=plane_masks.shape, mode='trilinear',align_corners=True).squeeze()
+                    pass
+
+                # print('plane_parameters',plane_parameters.shape)
+                # print('plane_masks',plane_masks.shape)
+                # print('plane_parameters_pred',plane_parameters_pred.shape)
+                # print('plane_masks_pred',plane_masks_pred.shape)
+               
+                
+                plane_params_loss = loss_fn(plane_parameters_pred,plane_parameters) + loss_fn(plane_masks_pred,plane_masks)
+            except:
+                plane_params_loss = 1
 
             #print('plane_params_loss',plane_params_loss)
 
