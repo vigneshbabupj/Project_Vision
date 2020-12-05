@@ -114,6 +114,8 @@ class create_data(Dataset):
             self.img_files = [x.replace('/', os.sep) for x in f.read().splitlines()  # os-agnostic
                               if os.path.splitext(x)[-1].lower() in img_formats]
 
+        rm = 'images/7.-With-A-Puffy-Jacket-Boots-And-A-Belt.jpg'
+        if rm in self.img_files: self.img_files.remove(rm)
         self.imagePaths = self.img_files
 
         
