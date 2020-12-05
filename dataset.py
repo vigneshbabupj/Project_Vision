@@ -491,7 +491,7 @@ class create_data(Dataset):
         plane_name = self.plane_names[index]
         plane_img = cv2.imread(plane_name)
         
-        if not plane_img is None:
+        if plane_img is None:
             plane_img = np.zeros((self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM,3), dtype=np.int32)
         #plane_img = cv2.cvtColor(plane_img, cv2.COLOR_BGR2GRAY)
         #plane_img=0
