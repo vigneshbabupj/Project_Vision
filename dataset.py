@@ -489,7 +489,10 @@ class create_data(Dataset):
         data_pair.append(camera.astype(np.float32))
 
         plane_name = self.plane_names[index]
-        plane_img = cv2.imread(plane_name)
+        try:
+            plane_img = cv2.imread(plane_name)
+        except:
+            plane_img = np.zeros((self.config.IMAGE_MIN_DIM, self.config.IMAGE_MAX_DIM), dtype=np.int32)
         #plane_img = cv2.cvtColor(plane_img, cv2.COLOR_BGR2GRAY)
         #plane_img=0
         plane_np_name = self.plane_nps[index]
