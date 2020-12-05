@@ -879,3 +879,5 @@ def train(plane_args,yolo_args,midas_args,add_plane_loss,add_yolo_loss,add_midas
     dist.destroy_process_group() if torch.cuda.device_count() > 1 else None
     torch.cuda.empty_cache()
 
+    return loss_list
+
