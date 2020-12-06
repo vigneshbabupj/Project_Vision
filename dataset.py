@@ -118,6 +118,21 @@ class create_data(Dataset):
         if rm in self.img_files: self.img_files.remove(rm)
         self.imagePaths = self.img_files
 
+        self.Yolo_transform = Compose(
+                            [
+                                Resize(
+                                    512,
+                                    512,
+                                    resize_target=None,
+                                    keep_aspect_ratio=True,
+                                    ensure_multiple_of=32,
+                                    resize_method="lower_bound",
+                                    image_interpolation_method=cv2.INTER_CUBIC,
+                                ),
+                                NormalizeImage(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+                            ]
+                                )
+
         
 
 
@@ -588,9 +603,12 @@ class create_data(Dataset):
         img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
         img = np.ascontiguousarray(img)
 
+        
+        img_yolo= self.Yolo_transform({"image": img})["image"]
+
         labels_out[labels_out>1]=1
 
-        yolo_item=[torch.from_numpy(img), labels_out, self.img_files[index], shapes]
+        yolo_item=[torch.from_numpy(img_yolo), labels_out, self.img_files[index], shapes]
 
         ## Yolo LoadImagesAndLabels END
 
