@@ -174,7 +174,7 @@ def detection(save_img=False):
         midas_out = (
                 torch.nn.functional.interpolate(
                     midas_out.unsqueeze(1),
-                    size=img.shape[:2],
+                    size=img.shape[2:],
                     mode="bicubic",
                     align_corners=False,
                 )
@@ -188,7 +188,7 @@ def detection(save_img=False):
             out,os.path.splitext(os.path.basename(save_path))[0]
         )
         import matplotlib.pyplot as plt
-        plt.imshow(midas_out.squeeze())
+        plt.imshow(midas_out)
         plt.show()
 
         utils.write_depth(filename+'_depth', midas_out, bits=2)
