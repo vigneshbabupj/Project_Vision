@@ -604,11 +604,11 @@ class create_data(Dataset):
         img = np.ascontiguousarray(img)
 
         
-        img_yolo= self.Yolo_transform({"image": img})["image"]
+        #img_yolo= self.Yolo_transform({"image": img})["image"]
 
         labels_out[labels_out>1]=1
 
-        yolo_item=[torch.from_numpy(img_yolo), labels_out, self.img_files[index], shapes]
+        yolo_item=[torch.from_numpy(img), labels_out, self.img_files[index], shapes]
 
         ## Yolo LoadImagesAndLabels END
 
