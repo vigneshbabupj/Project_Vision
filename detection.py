@@ -187,6 +187,10 @@ def detection(save_img=False):
         filename = os.path.join(
             out,os.path.splitext(os.path.basename(save_path))[0]
         )
+        import matplotlib.pyplot as plt
+        plt.imshow(midas_out.squeeze().cpu().detach().numpy())
+        plt.show()
+
         utils.write_depth(filename+'_depth', midas_out, bits=2)
 
     if save_txt or save_img:
