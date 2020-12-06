@@ -197,7 +197,7 @@ def detection(save_img=False):
 
 if __name__ == '__main__':
 	plane_args = plane_parse_args()
-	yolo_args = yolo_detect_args()
+	opt = yolo_detect_args()
 	midas_args = midas_parse_args()
 
 	with torch.no_grad():
