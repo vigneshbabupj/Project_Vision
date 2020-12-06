@@ -9,6 +9,8 @@ from plane_decoder.config import InferenceConfig
 from bbox_decoder.utils.datasets import *
 from bbox_decoder.utils.utils import *
 
+from depth_decoder import utils
+
 
 def detection(save_img=False):
 
