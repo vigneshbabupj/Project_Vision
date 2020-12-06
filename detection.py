@@ -188,7 +188,7 @@ def detection(save_img=False):
             out,os.path.splitext(os.path.basename(save_path))[0]
         )
         import matplotlib.pyplot as plt
-        plt.imshow(midas_out.squeeze().cpu().detach().numpy())
+        plt.imshow(midas_out.squeeze())
         plt.show()
 
         utils.write_depth(filename+'_depth', midas_out, bits=2)
